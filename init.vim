@@ -5,12 +5,9 @@ call plug#begin()
 	Plug 'kien/ctrlp.vim'
 	Plug 'tpope/vim-fugitive'
 	Plug 'Yggdroot/indentLine'
-
 	Plug 'itchyny/vim-gitbranch'
 	Plug 'vv9k/vim-github-dark'
-
 	Plug 'neovim/nvim-lspconfig'
-
 	Plug 'fatih/vim-go'
 	Plug 'moll/vim-node'
 	Plug 'pangloss/vim-javascript'
@@ -148,10 +145,11 @@ function! InitDartLSP()
 lua <<EOF
 	require('lspconfig').dartls.setup({})
 EOF
+	let g:lsc_server_commands = {'dart': 'dart_language_server'}
+	let g:lsc_enable_autocomplete = v:false
+	let g:lsc_auto_map = v:false
 	let g:dartfmt_options = ['--fix', '-l 150']
 	let g:dart_format_on_save = 1
-	let g:lsc_enable_autocomplete = v:false
-	let g:lsc_auto_map = v:true
 endfunc
 
 function! InitLSP()
@@ -195,7 +193,7 @@ endfunc
 call InitGeneralOptions()
 call InitIndentation()
 call InitTheme()
-call InitShortcuts()
 call InitWebFormatters()
 call InitLSP()
 call InitCtrlP()
+call InitShortcuts()
