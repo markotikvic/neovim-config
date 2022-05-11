@@ -27,9 +27,13 @@ function! GetVimModeName()
 		return '[NORMAL]'
 	elseif s:ShortMode == 'i'
 		return '[INSERT]'
+	elseif s:ShortMode == 'v'
+		return '[VISUAL]'
+	elseif s:ShortMode == 'V'
+		return '[VISUAL-BLOCK]'
 	endif
 
-	return '[VISUAL]'
+	return '['.s:ShortMode.']'
 endfunc
 
 function! InitIndentation()
@@ -65,7 +69,7 @@ function! InitGeneralOptions()
 	set cursorline
 	"Show only filename (not full path) in status line
 	set laststatus=2
-	set statusline=%{GetVimModeName()}\ %f%m\ %P\ %l/%L\ :%c\ %{gitbranch#name()}\ \(%{&ff}\)
+	set statusline=%{GetVimModeName()}\ %f%m\ \@%{gitbranch#name()}\ %P\ %l/%L\ :%c\ \(%{&ff}\)
 
 	syntax on
 	syntax enable
@@ -128,7 +132,7 @@ function! InitShortcuts()
 	nnoremap <leader>dup :tabe %<CR>
 endfunc
 
-function! InitCSharpLSP()
+function! InitCSharp()
 lua <<EOF
 	local pid = vim.fn.getpid()
 	require('lspconfig').omnisharp.setup({
@@ -141,7 +145,7 @@ EOF
 	let g:OmniSharp_highlighting = 0
 endfunc
 
-function! InitDartLSP()
+function! InitDart()
 lua <<EOF
 	require('lspconfig').dartls.setup({})
 EOF
@@ -152,9 +156,12 @@ EOF
 	let g:dart_format_on_save = 1
 endfunc
 
-function! InitLSP()
-	call InitCSharpLSP()
-	call InitDartLSP()
+function! InitProgLangs()
+	call InitCSharp()
+	call InitDart()
+	call InitGo()
+	call InitTypeScript()
+	call InitWebFormatters()
 endfunc
 
 function! InitWebFormatters()
@@ -169,31 +176,23 @@ function! InitWebFormatters()
 	au BufRead,BufNewFile *.vm set filetype=velocity
 endfunc
 
-"Golang
-"Stop scratch window from opening (gocode->neocomplete)
-"set completeopt-=preview
-"Run go imports on save
-"let g:go_fmt_command = "goimports"
-"autocmd FileType go command! Rename GoRename
+function! InitGo()
+lua <<EOF
+	require('lspconfig').gopls.setup{}
+EOF
+	"Stop scratch window from opening (gocode->neocomplete)
+	set completeopt-=preview
+	"Run go imports on save
+	let g:go_fmt_command = "goimports"
+endfunc
 
-"Dart
-"au BufRead,BufNewFile *.dart set filetype=dart
-"Set max line length to be 150 columns
-"let g:dartfmt_options = ['--fix', '-l 150']
-"let g:dart_format_on_save = 1
-"autocmd FileType dart command! Fr LSClientFindReferences
-"autocmd FileType dart command! Fi :tab split | LSCLientFindImplementations
-"autocmd FileType dart command! Fd LSClientGoToDefinitionSplit
-"autocmd FileType dart command! Rename LSClientRename
-"autocmd FileType dart command! FixImports DartOrganizeImports
-
-"TypeScript
-"let g:typescript_compiler_binary = 'tsc --noEmit'
+function! InitTypeScript()
+	let g:typescript_compiler_binary = 'tsc --noEmit'
+endfunc
 
 call InitGeneralOptions()
 call InitIndentation()
 call InitTheme()
-call InitWebFormatters()
-call InitLSP()
+call InitProgLangs()
 call InitCtrlP()
 call InitShortcuts()
