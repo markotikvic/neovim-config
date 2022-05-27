@@ -7,6 +7,7 @@ call plug#begin()
 	Plug 'Yggdroot/indentLine'
 	Plug 'itchyny/vim-gitbranch'
 	Plug 'vv9k/vim-github-dark'
+	Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'fatih/vim-go'
 	Plug 'moll/vim-node'
@@ -86,7 +87,7 @@ function! InitTheme()
 	if &term =~ '256color'
 		set t_ut =
 	endif
-	colorscheme ghdark
+	colorscheme tokyonight
 endfunc
 
 
@@ -123,8 +124,8 @@ function! InitShortcuts()
 	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "<C-j>"
 	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "<C-k>"
 
-	nnoremap <leader>gD :lua vim.lsp.buf.declaration()<CR>
-	nnoremap <leader>gd :lua vim.lsp.buf.definition()<CR>
+	nnoremap <leader>fD :lua vim.lsp.buf.declaration()<CR>
+	nnoremap <leader>fd :lua vim.lsp.buf.definition()<CR>
 	nnoremap <leader>fi :lua vim.lsp.buf.implementation()<CR>
 	nnoremap <leader>fr :lua vim.lsp.buf.references()<CR>
 	nnoremap <leader>fm :lua vim.lsp.buf.formatting()<CR>
