@@ -92,7 +92,8 @@ function! InitTheme()
 	if &term =~ '256color'
 		set t_ut =
 	endif
-	colorscheme jellybeans
+	"colorscheme jellybeans
+	colorscheme ghdark
 endfunc
 
 
