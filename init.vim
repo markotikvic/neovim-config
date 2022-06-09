@@ -3,11 +3,14 @@ let mapleader = ";"
 call plug#begin()
 	Plug 'vim-scripts/AutoComplPop'
 	Plug 'kien/ctrlp.vim'
+	Plug 'junegunn/fzf'
+	Plug 'junegunn/fzf.vim'
 	Plug 'tpope/vim-fugitive'
 	Plug 'Yggdroot/indentLine'
 	Plug 'itchyny/vim-gitbranch'
 	Plug 'vv9k/vim-github-dark'
 	Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+	Plug 'nanotech/jellybeans.vim'
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'fatih/vim-go'
 	Plug 'moll/vim-node'
@@ -76,6 +79,8 @@ function! InitGeneralOptions()
 	syntax enable
 	set guifont=Fira\ Mono\ Regular\ 10
 
+	set hidden
+
 	"Red color for trailing whitespaces
 	match ErrorMsg '\s\+$'
 endfunc
@@ -87,19 +92,24 @@ function! InitTheme()
 	if &term =~ '256color'
 		set t_ut =
 	endif
-	colorscheme tokyonight
+	colorscheme jellybeans
 endfunc
 
 
 function! InitCtrlP()
-	" CtrlP
 	let g:ctrlp_map = '<c-p>'
 	let g:ctrlp_cmd = 'CtrlP .'
 	let g:ctrlp_match_window = 'bottom,order:ttb,min:5,max:25'
 	let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)|node_modules|obj|bin|dist$'
 endfunc
 
-function! InitShortcuts()
+function! InitFzf()
+	" fzf
+	nnoremap <leader>o :Buffers<CR>
+	nnoremap <leader>O :Files<CR>
+endfunc
+
+function! InitGeneralShortcuts()
 	"Horizontal split
 	map <C-n> :split<CR>
 	"Vertical split
@@ -111,8 +121,6 @@ function! InitShortcuts()
 	"Freed <C-l> in Netrw
 	nmap <leader><leader><leader><leader><leader><leader>l <Plug>NetrwRefresh
 	map <C-l> :tabnext<CR>
-	"Open file explorer in new tab
-	nnoremap <C-o> :tabe<CR>:E<CR>
 	"Open file under cursor
 	nnoremap <leader>gf <C-w>gf
 	"Close current buffer
@@ -123,14 +131,6 @@ function! InitShortcuts()
 	"Navigate the autocomplete box with <C-j> and <C-k>
 	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "<C-j>"
 	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "<C-k>"
-
-	nnoremap <leader>fD :lua vim.lsp.buf.declaration()<CR>
-	nnoremap <leader>fd :lua vim.lsp.buf.definition()<CR>
-	nnoremap <leader>fi :lua vim.lsp.buf.implementation()<CR>
-	nnoremap <leader>fr :lua vim.lsp.buf.references()<CR>
-	nnoremap <leader>fm :lua vim.lsp.buf.formatting()<CR>
-	nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
-	nnoremap <leader>dup :tabe %<CR>
 endfunc
 
 function! InitCSharp()
@@ -157,12 +157,19 @@ EOF
 	let g:dart_format_on_save = 1
 endfunc
 
-function! InitProgLangs()
+function! InitLSP()
 	call InitCSharp()
 	call InitDart()
 	call InitGo()
 	call InitTypeScript()
 	call InitWebFormatters()
+
+	nnoremap <leader>fD :lua vim.lsp.buf.declaration()<CR>
+	nnoremap <leader>fd :lua vim.lsp.buf.definition()<CR>
+	nnoremap <leader>fi :lua vim.lsp.buf.implementation()<CR>
+	nnoremap <leader>fr :lua vim.lsp.buf.references()<CR>
+	nnoremap <leader>fm :lua vim.lsp.buf.formatting()<CR>
+	nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
 endfunc
 
 function! InitWebFormatters()
@@ -194,6 +201,7 @@ endfunc
 call InitGeneralOptions()
 call InitIndentation()
 call InitTheme()
-call InitProgLangs()
-call InitCtrlP()
-call InitShortcuts()
+call InitLSP()
+"call InitCtrlP()
+call InitFzf()
+call InitGeneralShortcuts()
