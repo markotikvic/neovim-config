@@ -28,16 +28,26 @@ function! GetVimModeName()
 	let s:ShortMode = mode()
 
 	if s:ShortMode == 'n'
-		return '[NORMAL]'
+		return '[Normal]'
 	elseif s:ShortMode == 'i'
-		return '[INSERT]'
+		return '[Insert]'
 	elseif s:ShortMode == 'v'
-		return '[VISUAL]'
+		return '[Visual]'
 	elseif s:ShortMode == 'V'
-		return '[VISUAL-BLOCK]'
+		return '[Visual-Block]'
 	endif
 
 	return '['.s:ShortMode.']'
+endfunc
+
+function! GetGitBranch()
+	let s:BranchName = gitbranch#name()
+
+	if s:BranchName != ''
+		return '@'.s:BranchName
+	endif
+
+	return s:BranchName
 endfunc
 
 function! InitIndentation()
@@ -73,7 +83,7 @@ function! InitGeneralOptions()
 	set cursorline
 	"Show only filename (not full path) in status line
 	set laststatus=2
-	set statusline=%{GetVimModeName()}\ %f%m\ \@%{gitbranch#name()}\ %P\ %l/%L\ :%c\ \(%{&ff}\)
+	set statusline=%{GetGitBranch()}\ %f%m\ %=\(%{&ff}\)\ %P\ %l/%L\ :%c
 
 	syntax on
 	syntax enable
@@ -106,8 +116,8 @@ endfunc
 
 function! InitFzf()
 	" fzf
-	nnoremap <leader>o :Buffers<CR>
-	nnoremap <leader>O :Files<CR>
+	nnoremap <leader>z :Buffers<CR>
+	nnoremap <leader>Z :Files<CR>
 endfunc
 
 function! InitGeneralShortcuts()
