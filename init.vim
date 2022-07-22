@@ -73,6 +73,7 @@ function! InitGeneralOptions()
 	set noexpandtab
 	set number
 	set relativenumber
+	set nowrap
 	"Continue comments on new lines
 	set formatoptions+=r
 	set nohlsearch
@@ -116,8 +117,8 @@ endfunc
 
 function! InitFzf()
 	" fzf
-	nnoremap <leader>z :Buffers<CR>
-	nnoremap <leader>Z :Files<CR>
+	nnoremap <leader>a :Buffers<CR>
+	nnoremap <leader>z :Files<CR>
 endfunc
 
 function! InitGeneralShortcuts()
