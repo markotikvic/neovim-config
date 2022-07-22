@@ -148,11 +148,13 @@ endfunc
 function! InitCSharp()
 lua <<EOF
 	local pid = vim.fn.getpid()
+	local home = vim.fn.getenv('HOME')
+
 	require('lspconfig').omnisharp.setup({
 		on_attach = function(_, bufnr)
 			vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 		end,
-		cmd = { '/home/markotikvic/.cache/omnisharp-vim/omnisharp-roslyn/run', "--languageserver" , "--hostPID", tostring(pid)};
+		cmd = { home .. '/.cache/omnisharp-vim/omnisharp-roslyn/run', "--languageserver" , "--hostPID", tostring(pid)};
 	})
 EOF
 	let g:OmniSharp_highlighting = 0
