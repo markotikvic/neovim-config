@@ -9,6 +9,8 @@ call plug#begin()
 	Plug 'Yggdroot/indentLine'
 	Plug 'itchyny/vim-gitbranch'
 	Plug 'vv9k/vim-github-dark'
+	Plug 'feline-nvim/feline.nvim'
+	Plug 'lewis6991/gitsigns.nvim'
 	Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 	Plug 'nanotech/jellybeans.vim'
 	Plug 'neovim/nvim-lspconfig'
@@ -59,6 +61,16 @@ function! InitIndentation()
 	let g:indentLine_leadingSpaceChar = '•'
 endfunc
 
+function! InitStatusLine()
+	"Show only filename (not full path) in status line
+	set laststatus=2
+	"set statusline=%{GetGitBranch()}\ %f%m\ %=\(%{&ff}\)\ %P\ %l/%L\ :%c
+lua <<EOF
+	require('gitsigns').setup()
+	require('feline').setup()
+EOF
+endfunc
+
 function! InitGeneralOptions()
 	filetype plugin indent on
 
@@ -80,31 +92,21 @@ function! InitGeneralOptions()
 	set incsearch
 	"Completion rules
 	set wildmode=longest,list,full
-	"Status Line
-	set cursorline
-	"Show only filename (not full path) in status line
-	set laststatus=2
-	set statusline=%{GetGitBranch()}\ %f%m\ %=\(%{&ff}\)\ %P\ %l/%L\ :%c
-
-	syntax on
-	syntax enable
-	set guifont=Fira\ Mono\ Regular\ 10
-
-	set hidden
 
 	"Red color for trailing whitespaces
 	match ErrorMsg '\s\+$'
 endfunc
 
 function! InitTheme()
+	set cursorline
+	syntax on
+	syntax enable
+	set guifont=Fira\ Mono\ Regular\ 10
+	set hidden
 	set background=dark
 	set termguicolors
-	"Disable Background Color Erase (BCE) so that color schemes render properly when inside 256-color tmux and GNU screen.
-	if &term =~ '256color'
-		set t_ut =
-	endif
-	"colorscheme jellybeans
 	colorscheme ghdark
+	call InitStatusLine()
 endfunc
 
 
@@ -121,7 +123,7 @@ function! InitFzf()
 	nnoremap <leader>z :Files<CR>
 endfunc
 
-function! InitGeneralShortcuts()
+function! InitShortcuts()
 	"Horizontal split
 	map <C-n> :split<CR>
 	"Vertical split
@@ -134,12 +136,11 @@ function! InitGeneralShortcuts()
 	nmap <leader><leader><leader><leader><leader><leader>l <Plug>NetrwRefresh
 	map <C-l> :tabnext<CR>
 	"Open file under cursor
-	nnoremap <leader>gf <C-w>gf
+	nnoremap <leader>gf :only<CR> <C-w>gf
 	"Close current buffer
 	nnoremap <C-d> :q<CR>
 	"Switch to next buffer in current tab
 	nnoremap <tab> <C-w>w
-
 	"Navigate the autocomplete box with <C-j> and <C-k>
 	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "<C-j>"
 	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "<C-k>"
@@ -218,4 +219,4 @@ call InitTheme()
 call InitLSP()
 "call InitCtrlP()
 call InitFzf()
-call InitGeneralShortcuts()
+call InitShortcuts()
