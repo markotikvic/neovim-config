@@ -9,6 +9,7 @@ call plug#begin()
 	Plug 'Yggdroot/indentLine'
 	Plug 'itchyny/vim-gitbranch'
 	Plug 'vv9k/vim-github-dark'
+	Plug 'EdenEast/nightfox.nvim'
 	Plug 'feline-nvim/feline.nvim'
 	Plug 'lewis6991/gitsigns.nvim'
 	Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
@@ -45,10 +46,6 @@ endfunc
 function! GetGitBranch()
 	let s:BranchName = gitbranch#name()
 
-	if s:BranchName != ''
-		return '@'.s:BranchName
-	endif
-
 	return s:BranchName
 endfunc
 
@@ -61,14 +58,41 @@ function! InitIndentation()
 	let g:indentLine_leadingSpaceChar = '•'
 endfunc
 
+hi StatusLineBaseStyle guibg=#1c4a42 guifg=#FFFFFF
+hi StatusLineBoldStyle guibg=#1c4a42 guifg=#FFFFFF gui=bold
+
+function! ActiveStatusLine()
+	let line = ""
+	let line .= "%#StatusLineBoldStyle#"
+	let line .= "%f%m"
+	let line .= "%#StatusLineBaseStyle#"
+	let line .= "\ \|"
+	let line .= "\ %l:%c"
+	let line .= "\ \|"
+	let line .= "%="
+	let line .= "%#StatusLineBoldStyle#"
+	let line .= "%{GetGitBranch()}"
+	let line .= "%#StatusLineBaseStyle#"
+	let line .= "\ \|"
+	let line .= "\ \(%{&ff}\)"
+	let line .= "\ \|"
+	let line .= "\ %P"
+	return line
+endfunc
+
+function! InactiveStatusLine()
+	return "%#StatusLineBoldStyle#---"
+endfunc
+
 function! InitStatusLine()
-	"Show only filename (not full path) in status line
+	"Always show status line
 	set laststatus=2
-	"set statusline=%{GetGitBranch()}\ %f%m\ %=\(%{&ff}\)\ %P\ %l/%L\ :%c
-lua <<EOF
-	require('gitsigns').setup()
-	require('feline').setup()
-EOF
+
+	augroup Statusline
+		autocmd!
+		autocmd WinEnter,BufEnter * setlocal statusline=%!ActiveStatusLine()
+		autocmd WinLeave,BufLeave * setlocal statusline=%!InactiveStatusLine()
+	augroup END
 endfunc
 
 function! InitGeneralOptions()
@@ -97,7 +121,7 @@ function! InitGeneralOptions()
 	match ErrorMsg '\s\+$'
 endfunc
 
-function! InitTheme()
+function! InitColorTheme()
 	set cursorline
 	syntax on
 	syntax enable
@@ -105,7 +129,7 @@ function! InitTheme()
 	set hidden
 	set background=dark
 	set termguicolors
-	colorscheme ghdark
+	colorscheme terafox
 	call InitStatusLine()
 endfunc
 
@@ -136,7 +160,7 @@ function! InitShortcuts()
 	nmap <leader><leader><leader><leader><leader><leader>l <Plug>NetrwRefresh
 	map <C-l> :tabnext<CR>
 	"Open file under cursor
-	nnoremap <leader>gf :only<CR> <C-w>gf
+	nnoremap <leader>gf :only<CR> gf
 	"Close current buffer
 	nnoremap <C-d> :q<CR>
 	"Switch to next buffer in current tab
@@ -215,7 +239,7 @@ endfunc
 
 call InitGeneralOptions()
 call InitIndentation()
-call InitTheme()
+call InitColorTheme()
 call InitLSP()
 "call InitCtrlP()
 call InitFzf()
