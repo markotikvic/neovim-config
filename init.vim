@@ -60,6 +60,7 @@ endfunc
 
 hi StatusLineBaseStyle guibg=#1c4a42 guifg=#FFFFFF
 hi StatusLineBoldStyle guibg=#1c4a42 guifg=#FFFFFF gui=bold
+hi StatusLineInactiveStyle guibg= guifg=#FFFFFF
 
 function! ActiveStatusLine()
 	let line = ""
@@ -81,7 +82,7 @@ function! ActiveStatusLine()
 endfunc
 
 function! InactiveStatusLine()
-	return "%#StatusLineBoldStyle#---"
+	return "%#StatusLineInactiveStyle#%f%m"
 endfunc
 
 function! InitStatusLine()
@@ -114,6 +115,7 @@ function! InitGeneralOptions()
 	set formatoptions+=r
 	set nohlsearch
 	set incsearch
+	set nowrapscan
 	"Completion rules
 	set wildmode=longest,list,full
 
