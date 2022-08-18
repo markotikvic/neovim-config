@@ -55,8 +55,8 @@ function! InitIndentation()
 	let g:indentLine_leadingSpaceChar = '•'
 endfunc
 
-hi StatusLineBaseStyle guibg=#1c4a42 guifg=#FFFFFF
-hi StatusLineBoldStyle guibg=#1c4a42 guifg=#FFFFFF gui=bold
+hi StatusLineBaseStyle guibg=#275056 guifg=#FFFFFF
+hi StatusLineBoldStyle guibg=#275056 guifg=#FFFFFF gui=bold
 hi StatusLineInactiveStyle guibg= guifg=#FFFFFF
 
 function! ActiveStatusLine()
