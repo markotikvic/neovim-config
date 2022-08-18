@@ -10,10 +10,7 @@ call plug#begin()
 	Plug 'itchyny/vim-gitbranch'
 	Plug 'vv9k/vim-github-dark'
 	Plug 'EdenEast/nightfox.nvim'
-	Plug 'feline-nvim/feline.nvim'
-	Plug 'lewis6991/gitsigns.nvim'
-	Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
-	Plug 'nanotech/jellybeans.vim'
+	Plug 'morhetz/gruvbox'
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'fatih/vim-go'
 	Plug 'moll/vim-node'
@@ -123,15 +120,16 @@ function! InitGeneralOptions()
 	match ErrorMsg '\s\+$'
 endfunc
 
-function! InitColorTheme()
+function! InitColorScheme()
 	set cursorline
 	syntax on
 	syntax enable
-	set guifont=Fira\ Mono\ Regular\ 10
+	set guifont=Fira\ Mono\ Medium\ 10
 	set hidden
 	set background=dark
 	set termguicolors
 	colorscheme terafox
+	"colorscheme gruvbox
 	call InitStatusLine()
 endfunc
 
@@ -241,7 +239,7 @@ endfunc
 
 call InitGeneralOptions()
 call InitIndentation()
-call InitColorTheme()
+call InitColorScheme()
 call InitLSP()
 "call InitCtrlP()
 call InitFzf()
