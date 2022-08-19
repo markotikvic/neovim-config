@@ -112,7 +112,6 @@ function! InitGeneralOptions()
 	set formatoptions+=r
 	set nohlsearch
 	set incsearch
-	set nowrapscan
 	"Completion rules
 	set wildmode=longest,list,full
 
