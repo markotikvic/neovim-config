@@ -107,7 +107,7 @@ function! InitGeneralOptions()
 	set noexpandtab
 	set number
 	set relativenumber
-	set nowrap
+	set wrap
 	"Continue comments on new lines
 	set formatoptions+=r
 	set nohlsearch
