@@ -72,7 +72,7 @@ function! ActiveStatusLine()
 	let line .= "%{GetGitBranch()}"
 	let line .= "%#StatusLineBaseStyle#"
 	let line .= "\ \|"
-	let line .= "\ \(%{&ff}\)"
+	let line .= "\ %{&ff}"
 	let line .= "\ \|"
 	let line .= "\ %P"
 	return line
