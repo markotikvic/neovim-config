@@ -26,7 +26,6 @@ call plug#end()
 
 function! GetVimModeName()
 	let s:ShortMode = mode()
-
 	if s:ShortMode == 'n'
 		return '[Normal]'
 	elseif s:ShortMode == 'i'
@@ -55,8 +54,8 @@ function! InitIndentation()
 	let g:indentLine_leadingSpaceChar = '•'
 endfunc
 
-hi StatusLineBaseStyle guibg=#EE9B7A guifg=#000000
-hi StatusLineBoldStyle guibg=#EE9B7A guifg=#000000 gui=bold
+hi StatusLineBaseStyle guibg=#494949 guifg=#61C8C6
+hi StatusLineBoldStyle guibg=#494949 guifg=#61C8C6 gui=bold
 hi StatusLineInactiveStyle guibg=#000000 guifg=#FFFFFF
 
 function! ActiveStatusLine()
@@ -127,8 +126,7 @@ function! InitColorScheme()
 	set hidden
 	set background=dark
 	set termguicolors
-	colorscheme terafox
-	"colorscheme gruvbox
+	colorscheme nightfox
 	call InitStatusLine()
 endfunc
 
