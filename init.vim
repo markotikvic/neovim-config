@@ -191,12 +191,19 @@ EOF
 	let g:dart_format_on_save = 1
 endfunc
 
+function! InitCpp()
+lua <<EOF
+	require('lspconfig').clangd.setup{}
+EOF
+endfunc
+
 function! InitLSP()
 	call InitCSharp()
 	call InitDart()
 	call InitGo()
 	call InitTypeScript()
 	call InitWebFormatters()
+	call InitCpp()
 
 	nnoremap <leader>fD :lua vim.lsp.buf.declaration()<CR>
 	nnoremap <leader>fd :lua vim.lsp.buf.definition()<CR>
