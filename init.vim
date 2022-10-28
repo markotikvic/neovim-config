@@ -203,7 +203,7 @@ function! InitLSP()
 	call InitDart()
 	call InitGo()
 	call InitTypeScript()
-	call InitWebFormatters()
+	call InitFormatters()
 	"call InitCpp()
 
 	nnoremap <leader>fD :lua vim.lsp.buf.declaration()<CR>
@@ -231,13 +231,14 @@ setup_diagnostics()
 EOF
 endfunc
 
-function! InitWebFormatters()
+function! InitFormatters()
 	"JS Beautify
-	autocmd FileType javascript command! Fmt :call JsBeautify()
-	autocmd FileType json command! Fmt :call JsonBeautify()
-	autocmd FileType jsx command! Fmt :call JsxBeautify()
-	autocmd FileType html command! Fmt :call HtmlBeautify()
-	autocmd FileType css command! Fmt :call CSSBeautify()
+	autocmd FileType javascript nnoremap <leader>fm :call JsBeautify()<CR>
+	autocmd FileType json nnoremap <leader>fm :call JsonBeautify()<CR>
+	autocmd FileType jsx nnoremap <leader>fm :call JsxBeautify()<CR>
+	autocmd FileType html nnoremap <leader>fm :call HtmlBeautify()<CR>
+	autocmd FileType css nnoremap <leader>fm :call CSSBeautify()<CR>
+	autocmd FileType cpp nnoremap <leader>fm :ClangFormat<CR>
 
 	"Velocity (AtlassianSDK)
 	au BufRead,BufNewFile *.vm set filetype=velocity
