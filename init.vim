@@ -211,7 +211,7 @@ function! InitLSP()
 	nnoremap <leader>fr :lua vim.lsp.buf.references()<CR>
 	nnoremap <leader>fm :lua vim.lsp.buf.formatting()<CR>
 	nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
-	nnoremap <leader>d :lua vim.diagnostic.show_float()<CR>
+	nnoremap <leader>d :lua vim.diagnostic.open_float()<CR>
 
 lua <<EOF
 local function setup_diagnostics()
