@@ -203,7 +203,7 @@ function! InitLSP()
 	call InitGo()
 	call InitTypeScript()
 	call InitWebFormatters()
-	call InitCpp()
+	"call InitCpp()
 
 	nnoremap <leader>fD :lua vim.lsp.buf.declaration()<CR>
 	nnoremap <leader>fd :lua vim.lsp.buf.definition()<CR>
