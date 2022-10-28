@@ -211,6 +211,23 @@ function! InitLSP()
 	nnoremap <leader>fr :lua vim.lsp.buf.references()<CR>
 	nnoremap <leader>fm :lua vim.lsp.buf.formatting()<CR>
 	nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
+	nnoremap <leader>d :lua vim.diagnostic.show_float()<CR>
+
+lua <<EOF
+local function setup_diagnostics()
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics,
+    {
+      virtual_text = false,
+      signs = true,
+      update_in_insert = false,
+      underline = true,
+    }
+  )
+end
+
+setup_diagnostics()
+EOF
 endfunc
 
 function! InitWebFormatters()
