@@ -20,6 +20,7 @@ call plug#begin()
 	Plug 'natebosch/vim-lsc-dart'
 	Plug 'OmniSharp/omnisharp-vim'
 	Plug 'lepture/vim-velocity'
+	Plug 'rhysd/vim-clang-format'
 call plug#end()
 
 function! GetVimModeName()
