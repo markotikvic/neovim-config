@@ -164,6 +164,7 @@ function! InitShortcuts()
 	"Navigate the autocomplete box with <C-j> and <C-k>
 	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "<C-j>"
 	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "<C-k>"
+	nnoremap <leader>m %
 endfunc
 
 function! InitCSharp()
