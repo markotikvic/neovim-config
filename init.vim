@@ -21,6 +21,7 @@ call plug#begin()
 	Plug 'OmniSharp/omnisharp-vim'
 	Plug 'lepture/vim-velocity'
 	Plug 'rhysd/vim-clang-format'
+	"Plug 'averms/black-nvim', {'do': ':UpdateRemotePlugins'}
 call plug#end()
 
 function! GetVimModeName()
@@ -112,6 +113,7 @@ function! InitGeneralOptions()
 	set incsearch
 	"Completion rules
 	set wildmode=longest,list,full
+	set switchbuf+=usetab,newtab
 
 	"Red color for trailing whitespaces
 	match ErrorMsg '\s\+$'
@@ -151,9 +153,9 @@ function! InitShortcuts()
 	map <CR> :vsplit<CR>
 	"Previous tab
 	map <C-h> :tabprevious<CR>
-	"Next tab
-	"Freed <C-l> in Netrw
+	"Free <C-l> in Netrw
 	nmap <leader><leader><leader><leader><leader><leader>l <Plug>NetrwRefresh
+	"Next tab
 	map <C-l> :tabnext<CR>
 	"Open file under cursor
 	nnoremap <leader>gf :only<CR> gf
@@ -164,11 +166,14 @@ function! InitShortcuts()
 	"Navigate the autocomplete box with <C-j> and <C-k>
 	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "<C-j>"
 	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "<C-k>"
+	"Find matching bracket
 	nnoremap <leader>m %
+	"Copy to clipboard
 	vnoremap <leader>y "+y
 endfunc
 
 function! InitCSharp()
+	autocmd FileType cs call InitLspFormatter()
 lua <<EOF
 	local pid = vim.fn.getpid()
 	local home = vim.fn.getenv('HOME')
@@ -184,6 +189,7 @@ EOF
 endfunc
 
 function! InitDart()
+	autocmd FileType dart call InitLspFormatter()
 lua <<EOF
 	require('lspconfig').dartls.setup({})
 EOF
@@ -200,36 +206,42 @@ lua <<EOF
 EOF
 endfunc
 
+function! InitLspFormatter()
+	nnoremap <leader>fm :lua vim.lsp.buf.formatting()<CR>
+endfunc
+
 function! InitLSP()
 	call InitCSharp()
 	call InitDart()
 	call InitGo()
 	call InitTypeScript()
 	call InitFormatters()
-	"call InitCpp()
+	call InitCpp()
+	call InitLspFormatter()
 
 	nnoremap <leader>fD :lua vim.lsp.buf.declaration()<CR>
 	nnoremap <leader>fd :lua vim.lsp.buf.definition()<CR>
 	nnoremap <leader>fi :lua vim.lsp.buf.implementation()<CR>
 	nnoremap <leader>fr :lua vim.lsp.buf.references()<CR>
-	nnoremap <leader>fm :lua vim.lsp.buf.formatting()<CR>
 	nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
-	nnoremap <leader>d :lua vim.diagnostic.open_float()<CR>
+	nnoremap <leader>do :lua vim.diagnostic.open_float()<CR>
+	nnoremap <leader>ds :lua vim.diagnostic.show()<CR>
+	nnoremap <leader>dh :lua vim.diagnostic.hide()<CR>
 
 lua <<EOF
-local function setup_diagnostics()
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics,
-    {
-      virtual_text = true,
-      signs = true,
-      update_in_insert = false,
-      underline = true,
-    }
-  )
-end
+	local function setup_diagnostics()
+	  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+	    vim.lsp.diagnostic.on_publish_diagnostics,
+	    {
+	      virtual_text = true,
+	      signs = true,
+	      update_in_insert = false,
+	      underline = true,
+	    }
+	  )
+	end
 
-setup_diagnostics()
+	setup_diagnostics()
 EOF
 endfunc
 
@@ -247,6 +259,7 @@ function! InitFormatters()
 endfunc
 
 function! InitGo()
+	autocmd FileType go call InitLspFormatter()
 lua <<EOF
 	require('lspconfig').gopls.setup{}
 EOF
@@ -260,6 +273,14 @@ function! InitTypeScript()
 	let g:typescript_compiler_binary = 'tsc --noEmit'
 endfunc
 
+function! InitPython()
+	autocmd FileType py nnoremap <leader>fm :call Black()<CR>
+	let g:black#settings = {
+	    \ 'fast': 1,
+	    \ 'line_length': 100
+	\}
+endfunc
+
 call InitGeneralOptions()
 call InitIndentation()
 call InitColorScheme()
@@ -267,3 +288,4 @@ call InitLSP()
 "call InitCtrlP()
 call InitFzf()
 call InitShortcuts()
+call InitPython()
