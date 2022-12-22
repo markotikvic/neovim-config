@@ -201,9 +201,10 @@ EOF
 endfunc
 
 function! InitCpp()
-lua <<EOF
-	require('lspconfig').clangd.setup{}
-EOF
+"lua <<EOF
+	"require('lspconfig').clangd.setup{}
+"EOF
+	let g:clang_format#style_options =  {"IndentWidth" : 2, "ColumnLimit" : 120}
 endfunc
 
 function! InitLspFormatter()
