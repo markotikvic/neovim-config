@@ -109,8 +109,9 @@ function! InitGeneralOptions()
 	set wrap
 	"Continue comments on new lines
 	set formatoptions+=r
-	set nohlsearch
+	set hlsearch
 	set incsearch
+	set ignorecase
 	"Completion rules
 	set wildmode=longest,list,full
 	set switchbuf+=usetab,newtab
@@ -161,6 +162,8 @@ function! InitShortcuts()
 	nnoremap <leader>gf :only<CR> gf
 	"Close current buffer
 	nnoremap <C-d> :q<CR>
+	"Clear highlight
+	nnoremap <leader>c :noh<CR>
 	"Switch to next buffer in current tab
 	nnoremap <tab> <C-w>w
 	"Navigate the autocomplete box with <C-j> and <C-k>
