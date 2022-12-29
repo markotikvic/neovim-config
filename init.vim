@@ -128,7 +128,7 @@ function! InitColorScheme()
 	set hidden
 	set background=dark
 	set termguicolors
-	colorscheme carbonfox
+	colorscheme nightfox
 	call InitStatusLine()
 endfunc
 
