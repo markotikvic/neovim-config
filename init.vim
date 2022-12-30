@@ -129,8 +129,8 @@ function! InitColorScheme()
 	set hidden
 	set background=dark
 	set termguicolors
-	"colorscheme nightfox
-	colorscheme catppuccin-mocha
+	colorscheme nightfox
+	"colorscheme catppuccin-mocha
 	call InitStatusLine()
 endfunc
 
