@@ -10,7 +10,6 @@ call plug#begin()
 	Plug 'itchyny/vim-gitbranch'
 	Plug 'EdenEast/nightfox.nvim'
 	Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
-	Plug 'overcache/NeoSolarized'
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'fatih/vim-go'
 	Plug 'moll/vim-node'
