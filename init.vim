@@ -129,7 +129,13 @@ function! InitColorScheme()
 	set hidden
 	set background=dark
 	set termguicolors
-	"colorscheme duskfox
+lua <<EOF
+	require("catppuccin").setup({
+		    flavour = "frappe", -- latte, frappe, macchiato, mocha
+		    no_italic = true, -- Force no italic
+		    no_bold = true, -- Force no bold
+		})
+EOF
 	colorscheme catppuccin-frappe
 	call InitStatusLine()
 endfunc
