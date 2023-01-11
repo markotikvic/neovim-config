@@ -215,7 +215,8 @@ function! InitCpp()
 "lua <<EOF
 	"require('lspconfig').clangd.setup{}
 "EOF
-	let g:clang_format#style_options =  {"IndentWidth" : 2, "ColumnLimit" : 160}
+	let g:clang_format#code_style = "google"
+	let g:clang_format#style_options = {"IndentWidth" : 2, "ColumnLimit" : 160, "DerivePointerAlignment": v:false, "SortIncludes" : v:false}
 endfunc
 
 function! InitLspFormatter()
