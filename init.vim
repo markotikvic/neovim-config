@@ -112,7 +112,7 @@ function! InitGeneralOptions()
 	set formatoptions+=r
 	set hlsearch
 	set incsearch
-	set ignorecase
+	"set ignorecase
 	"Completion rules
 	set wildmode=longest,list,full
 	set switchbuf+=usetab,newtab
@@ -215,7 +215,7 @@ function! InitCpp()
 "lua <<EOF
 	"require('lspconfig').clangd.setup{}
 "EOF
-	let g:clang_format#style_options =  {"IndentWidth" : 2, "ColumnLimit" : 120}
+	let g:clang_format#style_options =  {"IndentWidth" : 2, "ColumnLimit" : 160}
 endfunc
 
 function! InitLspFormatter()
