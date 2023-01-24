@@ -131,12 +131,12 @@ function! InitColorScheme()
 	set termguicolors
 lua <<EOF
 	require("catppuccin").setup({
-		    flavour = "frappe", -- latte, frappe, macchiato, mocha
+		    flavour = "macchiato", -- latte, frappe, macchiato, mocha
 		    no_italic = true, -- Force no italic
 		    no_bold = true, -- Force no bold
 		})
 EOF
-	colorscheme catppuccin-frappe
+	colorscheme catppuccin-macchiato
 	call InitStatusLine()
 endfunc
 
