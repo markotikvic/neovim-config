@@ -10,6 +10,7 @@ call plug#begin()
 	Plug 'itchyny/vim-gitbranch'
 	Plug 'EdenEast/nightfox.nvim'
 	Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
+	Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'fatih/vim-go'
 	Plug 'moll/vim-node'
@@ -131,12 +132,13 @@ function! InitColorScheme()
 	set termguicolors
 lua <<EOF
 	require("catppuccin").setup({
-		    flavour = "macchiato", -- latte, frappe, macchiato, mocha
+		    flavour = "mocha", -- latte, frappe, macchiato, mocha
 		    no_italic = true, -- Force no italic
 		    no_bold = true, -- Force no bold
 		})
 EOF
-	colorscheme catppuccin-macchiato
+	colorscheme catppuccin
+
 	call InitStatusLine()
 endfunc
 
