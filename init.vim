@@ -11,6 +11,7 @@ call plug#begin()
 	Plug 'EdenEast/nightfox.nvim'
 	Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 	Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+	Plug 'jacoborus/tender.vim'
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'fatih/vim-go'
 	Plug 'moll/vim-node'
@@ -137,7 +138,8 @@ lua <<EOF
 		    no_bold = true, -- Force no bold
 		})
 EOF
-	colorscheme catppuccin
+	"colorscheme catppuccin
+	colorscheme tender
 
 	call InitStatusLine()
 endfunc
@@ -154,6 +156,7 @@ function! InitFzf()
 	" fzf
 	nnoremap <leader>a :Buffers<CR>
 	nnoremap <leader>z :Files<CR>
+	nnoremap <leader>l :Lines<CR>
 endfunc
 
 function! InitShortcuts()
@@ -183,6 +186,7 @@ function! InitShortcuts()
 	nnoremap <leader>m %
 	"Copy to clipboard
 	vnoremap <leader>y "+y
+	nnoremap <leader>vim :e $MYVIMRC<CR>
 endfunc
 
 function! InitCSharp()
