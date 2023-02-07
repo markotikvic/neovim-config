@@ -27,27 +27,6 @@ call plug#begin()
 	"Plug 'averms/black-nvim', {'do': ':UpdateRemotePlugins'}
 call plug#end()
 
-function! GetVimModeName()
-	let s:ShortMode = mode()
-	if s:ShortMode == 'n'
-		return '[Normal]'
-	elseif s:ShortMode == 'i'
-		return '[Insert]'
-	elseif s:ShortMode == 'v'
-		return '[Visual]'
-	elseif s:ShortMode == 'V'
-		return '[Visual-Block]'
-	endif
-
-	return '['.s:ShortMode.']'
-endfunc
-
-function! GetGitBranch()
-	let s:BranchName = gitbranch#name()
-
-	return s:BranchName
-endfunc
-
 function! InitIndentation()
 	"Indent Line
 	let g:indentLine_enabled = 0
@@ -71,7 +50,7 @@ function! ActiveStatusLine()
 	let line .= "\ \|"
 	let line .= "%="
 	let line .= "%#StatusLineBoldStyle#"
-	let line .= "%{GetGitBranch()}"
+	let line .= "%{gitbranch#name()}"
 	let line .= "%#StatusLineBaseStyle#"
 	let line .= "\ \|"
 	let line .= "\ %{&ff}"
@@ -95,13 +74,12 @@ function! InitStatusLine()
 	augroup END
 endfunc
 
-function! InitGeneralOptions()
+function! InitGeneralSettings()
 	filetype plugin indent on
 
 	"For autocomplete
 	let g:acp_ignorecaseOption = 0
 
-	"Encoding + General
 	set encoding=utf-8
 	set autoindent
 	set tabstop=8
@@ -144,44 +122,30 @@ EOF
 	call InitStatusLine()
 endfunc
 
-
 function! InitCtrlP()
 	let g:ctrlp_map = '<c-p>'
 	let g:ctrlp_cmd = 'CtrlP .'
 	let g:ctrlp_match_window = 'bottom,order:ttb,min:5,max:25'
 	let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)|node_modules|obj|bin|dist$'
+	"Navigate the autocomplete box with <C-j> and <C-k>
+	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "<C-j>"
+	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "<C-k>"
 endfunc
 
 function! InitFzf()
-	" fzf
 	nnoremap <leader>a :Buffers<CR>
 	nnoremap <leader>z :Files<CR>
 	nnoremap <leader>l :Lines<CR>
 endfunc
 
 function! InitShortcuts()
-	"Horizontal split
 	map <C-n> :split<CR>
-	"Vertical split
 	map <C-m> :vsplit<CR>
 	map <CR> :vsplit<CR>
-	"Previous tab
-	map <C-h> :tabprevious<CR>
-	"Free <C-l> in Netrw
-	nmap <leader><leader><leader><leader><leader><leader>l <Plug>NetrwRefresh
-	"Next tab
-	map <C-l> :tabnext<CR>
-	"Open file under cursor
 	nnoremap <leader>gf :only<CR> gf
-	"Close current buffer
 	nnoremap <C-d> :q<CR>
-	"Clear highlight
 	nnoremap <leader>c :noh<CR>
-	"Switch to next buffer in current tab
 	nnoremap <tab> <C-w>w
-	"Navigate the autocomplete box with <C-j> and <C-k>
-	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "<C-j>"
-	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "<C-k>"
 	"Find matching bracket
 	nnoremap <leader>m %
 	"Copy to clipboard
@@ -229,24 +193,7 @@ function! InitLspFormatter()
 	nnoremap <leader>fm :lua vim.lsp.buf.formatting()<CR>
 endfunc
 
-function! InitLSP()
-	call InitCSharp()
-	call InitDart()
-	call InitGo()
-	call InitTypeScript()
-	call InitFormatters()
-	call InitCpp()
-	call InitLspFormatter()
-
-	nnoremap <leader>fD :lua vim.lsp.buf.declaration()<CR>
-	nnoremap <leader>fd :lua vim.lsp.buf.definition()<CR>
-	nnoremap <leader>fi :lua vim.lsp.buf.implementation()<CR>
-	nnoremap <leader>fr :lua vim.lsp.buf.references()<CR>
-	nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
-	nnoremap <leader>do :lua vim.diagnostic.open_float()<CR>
-	nnoremap <leader>ds :lua vim.diagnostic.show()<CR>
-	nnoremap <leader>dh :lua vim.diagnostic.hide()<CR>
-
+function! InitLspDiagnostics()
 lua <<EOF
 	local function setup_diagnostics()
 	  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
@@ -262,6 +209,29 @@ lua <<EOF
 
 	setup_diagnostics()
 EOF
+endfunc
+
+function! InitLspShortcuts()
+	nnoremap <leader>fD :lua vim.lsp.buf.declaration()<CR>
+	nnoremap <leader>fd :lua vim.lsp.buf.definition()<CR>
+	nnoremap <leader>fi :lua vim.lsp.buf.implementation()<CR>
+	nnoremap <leader>fr :lua vim.lsp.buf.references()<CR>
+	nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
+	nnoremap <leader>do :lua vim.diagnostic.open_float()<CR>
+	nnoremap <leader>ds :lua vim.diagnostic.show()<CR>
+	nnoremap <leader>dh :lua vim.diagnostic.hide()<CR>
+endfunc
+
+function! InitLsp()
+	call InitCSharp()
+	call InitDart()
+	call InitGo()
+	call InitTypeScript()
+	call InitFormatters()
+	call InitCpp()
+	call InitLspFormatter()
+	call InitLspDiagnostics()
+	call InitLspShortcuts()
 endfunc
 
 function! InitFormatters()
@@ -300,10 +270,10 @@ function! InitPython()
 	\}
 endfunc
 
-call InitGeneralOptions()
+call InitGeneralSettings()
 call InitIndentation()
 call InitColorScheme()
-call InitLSP()
+call InitLsp()
 "call InitCtrlP()
 call InitFzf()
 call InitShortcuts()
