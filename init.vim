@@ -127,9 +127,6 @@ function! InitCtrlP()
 	let g:ctrlp_cmd = 'CtrlP .'
 	let g:ctrlp_match_window = 'bottom,order:ttb,min:5,max:25'
 	let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)|node_modules|obj|bin|dist$'
-	"Navigate the autocomplete box with <C-j> and <C-k>
-	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "<C-j>"
-	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "<C-k>"
 endfunc
 
 function! InitFzfShortcuts()
@@ -140,6 +137,10 @@ endfunc
 
 function! InitShortcuts()
 	call InitFzfShortcuts()
+
+	"Navigate the autocomplete box with <C-j> and <C-k>
+	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "<C-j>"
+	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "<C-k>"
 
 	map <C-n> :split<CR>
 	map <C-m> :vsplit<CR>
