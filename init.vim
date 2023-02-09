@@ -132,13 +132,15 @@ function! InitCtrlP()
 	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "<C-k>"
 endfunc
 
-function! InitFzf()
+function! InitFzfShortcuts()
 	nnoremap <leader>a :Buffers<CR>
 	nnoremap <leader>z :Files<CR>
 	nnoremap <leader>l :Lines<CR>
 endfunc
 
 function! InitShortcuts()
+	call InitFzfShortcuts()
+
 	map <C-n> :split<CR>
 	map <C-m> :vsplit<CR>
 	map <CR> :vsplit<CR>
@@ -153,7 +155,7 @@ function! InitShortcuts()
 	nnoremap <leader>vim :e $MYVIMRC<CR>
 endfunc
 
-function! InitCSharp()
+function! InitDotnet()
 	autocmd FileType cs call InitLspFormatter()
 lua <<EOF
 	local pid = vim.fn.getpid()
@@ -186,7 +188,7 @@ function! InitCpp()
 	"require('lspconfig').clangd.setup{}
 "EOF
 	let g:clang_format#code_style = "google"
-	let g:clang_format#style_options = {"IndentWidth" : 2, "ColumnLimit" : 160, "DerivePointerAlignment": v:false, "SortIncludes" : v:false}
+	let g:clang_format#style_options = {"IndentWidth" : 2, "ColumnLimit" : 160, "DerivePointerAlignment": v:false, "SortIncludes" : v:true}
 endfunc
 
 function! InitLspFormatter()
@@ -223,12 +225,13 @@ function! InitLspShortcuts()
 endfunc
 
 function! InitLsp()
-	call InitCSharp()
+	call InitDotnet()
 	call InitDart()
 	call InitGo()
 	call InitTypeScript()
-	call InitFormatters()
+	call InitPython()
 	call InitCpp()
+	call InitFormatters()
 	call InitLspFormatter()
 	call InitLspDiagnostics()
 	call InitLspShortcuts()
@@ -274,7 +277,4 @@ call InitGeneralSettings()
 call InitIndentation()
 call InitColorScheme()
 call InitLsp()
-"call InitCtrlP()
-call InitFzf()
 call InitShortcuts()
-call InitPython()
