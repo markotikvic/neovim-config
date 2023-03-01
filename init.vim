@@ -129,14 +129,15 @@ function! InitCtrlP()
 	let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)|node_modules|obj|bin|dist$'
 endfunc
 
-function! InitFzfShortcuts()
+function! InitFzf()
 	nnoremap <leader>a :Buffers<CR>
 	nnoremap <leader>z :Files<CR>
 	nnoremap <leader>l :Lines<CR>
+	let $FZF_DEFAULT_COMMAND='find . ! -path */Debug/* ! -path */bin/* ! -path */obj/* ! -path */node_modules/* -type f'
 endfunc
 
 function! InitShortcuts()
-	call InitFzfShortcuts()
+	call InitFzf()
 
 	"Navigate the autocomplete box with <C-j> and <C-k>
 	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "<C-j>"
