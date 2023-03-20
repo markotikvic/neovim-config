@@ -24,7 +24,7 @@ call plug#begin()
 	Plug 'OmniSharp/omnisharp-vim'
 	Plug 'lepture/vim-velocity'
 	Plug 'rhysd/vim-clang-format'
-	"Plug 'averms/black-nvim', {'do': ':UpdateRemotePlugins'}
+	Plug 'averms/black-nvim', {'do': ':UpdateRemotePlugins'}
 call plug#end()
 
 function! InitIndentation()
@@ -36,8 +36,8 @@ function! InitIndentation()
 	let g:indentLine_leadingSpaceChar = '•'
 endfunc
 
-hi StatusLineBaseStyle guibg=#494949 guifg=#61C8C6
-hi StatusLineBoldStyle guibg=#494949 guifg=#61C8C6 gui=bold
+hi StatusLineBaseStyle guibg=#4D8153 guifg=#61C8C6
+hi StatusLineBoldStyle guibg=#4D8153 guifg=#61C8C6 gui=bold
 hi StatusLineInactiveStyle guibg=#000000 guifg=#FFFFFF
 
 function! ActiveStatusLine()
@@ -66,12 +66,6 @@ endfunc
 function! InitStatusLine()
 	"Always show status line
 	set laststatus=2
-
-	augroup Statusline
-		autocmd!
-		autocmd WinEnter,BufEnter * setlocal statusline=%!ActiveStatusLine()
-		autocmd WinLeave,BufLeave * setlocal statusline=%!InactiveStatusLine()
-	augroup END
 endfunc
 
 function! InitGeneralSettings()
@@ -133,7 +127,8 @@ function! InitFzf()
 	nnoremap <leader>a :Buffers<CR>
 	nnoremap <leader>z :Files<CR>
 	nnoremap <leader>l :Lines<CR>
-	let $FZF_DEFAULT_COMMAND='find . ! -path */Debug/* ! -path */bin/* ! -path */obj/* ! -path */node_modules/* -type f'
+	nnoremap <leader>L :Ag<CR>
+	let $FZF_DEFAULT_COMMAND='find . ! -path */build/* ! -path */Debug/* ! -path */bin/* ! -path */obj/* ! -path */node_modules/* -type f'
 endfunc
 
 function! InitShortcuts()
@@ -187,10 +182,19 @@ endfunc
 
 function! InitCpp()
 "lua <<EOF
-	"require('lspconfig').clangd.setup{}
+	"require('lspconfig').clangd.setup{
+	"}
 "EOF
-	let g:clang_format#code_style = "google"
-	let g:clang_format#style_options = {"IndentWidth" : 2, "ColumnLimit" : 160, "DerivePointerAlignment": v:false, "SortIncludes" : v:true}
+	let g:clang_format#code_style = 'google'
+	let g:clang_format#style_options = {
+		\ 'IndentWidth' : 2,
+		\ 'ColumnLimit' : 160,
+		\ 'DerivePointerAlignment' : 'false',
+		\ 'SortIncludes' : 'true',
+		\ 'IncludeBlocks' : 'Regroup',
+		\ 'SpacesBeforeTrailingComments' : 1,
+		\ 'SpaceBeforeCpp11BracedList': 'true',
+	\ }
 endfunc
 
 function! InitLspFormatter()
@@ -268,7 +272,9 @@ function! InitTypeScript()
 endfunc
 
 function! InitPython()
-	autocmd FileType py nnoremap <leader>fm :call Black()<CR>
+	let g:python3_host_prog = '/usr/bin/python3'
+	let g:black_use_virtualenv = 0
+	autocmd FileType python nnoremap <leader>fm :call Black()<CR>
 	let g:black#settings = {
 	    \ 'fast': 1,
 	    \ 'line_length': 100
