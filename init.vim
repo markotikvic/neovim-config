@@ -36,22 +36,14 @@ function! InitIndentation()
 	let g:indentLine_leadingSpaceChar = '•'
 endfunc
 
-hi StatusLineBaseStyle guibg=#4D8153 guifg=#61C8C6
-hi StatusLineBoldStyle guibg=#4D8153 guifg=#61C8C6 gui=bold
-hi StatusLineInactiveStyle guibg=#000000 guifg=#FFFFFF
-
-function! ActiveStatusLine()
+function! StatusLineFormat()
 	let line = ""
-	let line .= "%#StatusLineBoldStyle#"
 	let line .= "%f%m"
-	let line .= "%#StatusLineBaseStyle#"
 	let line .= "\ \|"
 	let line .= "\ %l:%c"
 	let line .= "\ \|"
 	let line .= "%="
-	let line .= "%#StatusLineBoldStyle#"
 	let line .= "%{gitbranch#name()}"
-	let line .= "%#StatusLineBaseStyle#"
 	let line .= "\ \|"
 	let line .= "\ %{&ff}"
 	let line .= "\ \|"
@@ -59,13 +51,10 @@ function! ActiveStatusLine()
 	return line
 endfunc
 
-function! InactiveStatusLine()
-	return "%#StatusLineInactiveStyle#%f%m"
-endfunc
-
 function! InitStatusLine()
 	"Always show status line
 	set laststatus=2
+	set statusline=%!StatusLineFormat()
 endfunc
 
 function! InitGeneralSettings()
@@ -103,17 +92,8 @@ function! InitColorScheme()
 	set hidden
 	set background=dark
 	set termguicolors
-lua <<EOF
-	require("catppuccin").setup({
-		    flavour = "mocha", -- latte, frappe, macchiato, mocha
-		    no_italic = true, -- Force no italic
-		    no_bold = true, -- Force no bold
-		})
-EOF
-	"colorscheme catppuccin
-	colorscheme tender
-
 	call InitStatusLine()
+	colorscheme tender
 endfunc
 
 function! InitCtrlP()
