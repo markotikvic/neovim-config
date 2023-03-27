@@ -37,17 +37,21 @@ function! InitIndentation()
 endfunc
 
 function! StatusLineFormat()
+	let spacePipe = "\ \|"
+	let fileEncoding = "\ %{&ff}\ %{&fileencoding?&fileencoding:&encoding}"
+
 	let line = ""
 	let line .= "%f%m"
-	let line .= "\ \|"
+	let line .= spacePipe
 	let line .= "\ %l:%c"
-	let line .= "\ \|"
+	let line .= spacePipe
 	let line .= "%="
 	let line .= "%{gitbranch#name()}"
-	let line .= "\ \|"
-	let line .= "\ %{&ff}"
-	let line .= "\ \|"
+	let line .= spacePipe
+	let line .= fileEncoding
+	let line .= spacePipe
 	let line .= "\ %P"
+
 	return line
 endfunc
 
@@ -130,6 +134,7 @@ function! InitShortcuts()
 	"Copy to clipboard
 	vnoremap <leader>y "+y
 	nnoremap <leader>vim :e $MYVIMRC<CR>
+	nnoremap <leader>R :source $MYVIMRC<CR>
 endfunc
 
 function! InitDotnet()
@@ -171,7 +176,7 @@ function! InitCpp()
 		\ 'ColumnLimit' : 160,
 		\ 'DerivePointerAlignment' : 'false',
 		\ 'SortIncludes' : 'true',
-		\ 'IncludeBlocks' : 'Regroup',
+		\ 'IncludeBlocks' : 'Preserve',
 		\ 'SpacesBeforeTrailingComments' : 1,
 		\ 'SpaceBeforeCpp11BracedList': 'true',
 	\ }
