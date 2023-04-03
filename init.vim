@@ -8,9 +8,6 @@ call plug#begin()
 	Plug 'tpope/vim-fugitive'
 	Plug 'Yggdroot/indentLine'
 	Plug 'itchyny/vim-gitbranch'
-	Plug 'EdenEast/nightfox.nvim'
-	Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
-	Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 	Plug 'jacoborus/tender.vim'
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'fatih/vim-go'
@@ -36,21 +33,38 @@ function! InitIndentation()
 	let g:indentLine_leadingSpaceChar = '•'
 endfunc
 
-function! StatusLineFormat()
-	let spacePipe = "\ \|"
-	let fileEncoding = "\ %{&ff}\ %{&fileencoding?&fileencoding:&encoding}"
+function! LongModeName()
+	let currentmode={
+	\ 'n': 'NORMAL',
+	\ 'v': 'VISUAL',
+	\ 'V': 'V·LINE',
+	\ 's': 'SELECT',
+	\ 'S': 'S·LINE',
+	\ 'i': 'INSERT',
+	\ 'R': 'REPLACE',
+        \ 'Rv': 'V·REPLACE',
+	\ 'c': 'COMMAND',
+	\ 't': 'TERMINAL',
+	\}
 
-	let line = ""
+	return currentmode[mode()]
+endfunc
+
+function! StatusLineFormat()
+	let spacePipe = "\ \|\ "
+	let fileEncoding = "%{&ff}\ %{&fileencoding?&fileencoding:&encoding}"
+
+	let line = "%{LongModeName()}"
+	let line .= spacePipe
 	let line .= "%f%m"
-	let line .= spacePipe
-	let line .= "\ %l:%c"
-	let line .= spacePipe
 	let line .= "%="
 	let line .= "%{gitbranch#name()}"
 	let line .= spacePipe
 	let line .= fileEncoding
 	let line .= spacePipe
-	let line .= "\ %P"
+	let line .= "%l:%c"
+	let line .= spacePipe
+	let line .= "%P"
 
 	return line
 endfunc
@@ -96,8 +110,8 @@ function! InitColorScheme()
 	set hidden
 	set background=dark
 	set termguicolors
-	call InitStatusLine()
 	colorscheme tender
+	call InitStatusLine()
 endfunc
 
 function! InitCtrlP()
