@@ -25,7 +25,6 @@ call plug#begin()
 call plug#end()
 
 function! InitIndentation()
-	"Indent Line
 	let g:indentLine_enabled = 0
 	let g:indentLine_char = '¦'
 	let g:indentLine_leadingSpaceEnabled = 0
@@ -34,7 +33,7 @@ function! InitIndentation()
 endfunc
 
 function! LongModeName()
-	let currentmode={
+	let modes = {
 	\ 'n': 'NORMAL',
 	\ 'v': 'VISUAL',
 	\ 'V': 'V·LINE',
@@ -47,14 +46,19 @@ function! LongModeName()
 	\ 't': 'TERMINAL',
 	\}
 
-	return currentmode[mode()]
+	let m = mode()
+	if has_key(modes, m)
+		return modes[m]
+	endif
+
+	return m
 endfunc
 
 function! StatusLineFormat()
 	let spacePipe = "\ \|\ "
 	let fileEncoding = "%{&ff}\ %{&fileencoding?&fileencoding:&encoding}"
 
-	let line = "%{LongModeName()}"
+	let line = " %{LongModeName()}"
 	let line .= spacePipe
 	let line .= "%f%m"
 	let line .= "%="
@@ -64,7 +68,7 @@ function! StatusLineFormat()
 	let line .= spacePipe
 	let line .= "%l:%c"
 	let line .= spacePipe
-	let line .= "%P"
+	let line .= "%P "
 
 	return line
 endfunc
@@ -77,40 +81,43 @@ endfunc
 
 function! InitGeneralSettings()
 	filetype plugin indent on
-
 	"For autocomplete
 	let g:acp_ignorecaseOption = 0
-
-	set encoding=utf-8
-	set autoindent
-	set tabstop=8
-	set shiftwidth=8
-	set noexpandtab
-	set number
-	set relativenumber
-	set wrap
-	"Continue comments on new lines
-	set formatoptions+=r
-	set hlsearch
-	set incsearch
-	"set ignorecase
-	"Completion rules
-	set wildmode=longest,list,full
-	set switchbuf+=usetab,newtab
-
-	"Red color for trailing whitespaces
-	match ErrorMsg '\s\+$'
+lua <<EOF
+	vim.o.encoding = "utf-8"
+	vim.o.autoindent = true
+	vim.o.tabstop = 8
+	vim.o.shiftwidth = 8
+	vim.o.expandtab = false
+	vim.o.number = true
+	vim.o.relativenumber = true
+	vim.o.wrap = true
+	--Continue comments on new lines
+	vim.o.formatoptions = vim.o.formatoptions.."r"
+	vim.o.hlsearch = true
+	vim.o.incsearch = true
+	--vim.o.ignorecase = true
+	--Completion rules
+	vim.o.wildmode = "longest,list,full"
+	vim.o.switchbuf = vim.o.switchbuf..",usetab,newtab"
+	--Red color for trailing whitespaces
+	vim.cmd([[ match ErrorMsg '\s\+$' ]])
+EOF
 endfunc
 
 function! InitColorScheme()
-	set cursorline
-	syntax on
-	syntax enable
-	set guifont=Fira\ Mono\ Medium\ 10
-	set hidden
-	set background=dark
-	set termguicolors
-	colorscheme tender
+lua <<EOF
+	vim.o.cursorline = true
+	vim.o.guifont = "Fira Mono Medium 10"
+	vim.o.hidden = true
+	vim.o.background = "dark"
+	vim.o.termguicolors = true
+	vim.cmd([[
+		syntax on
+		syntax enable
+		colorscheme tender
+	]])
+EOF
 	call InitStatusLine()
 endfunc
 
@@ -122,33 +129,40 @@ function! InitCtrlP()
 endfunc
 
 function! InitFzf()
-	nnoremap <leader>a :Buffers<CR>
-	nnoremap <leader>z :Files<CR>
-	nnoremap <leader>l :Lines<CR>
-	nnoremap <leader>L :Ag<CR>
+lua <<EOF
+	vim.keymap.set('n', '<leader>a', '<cmd>Buffers<cr>')--nnoremap <leader>a :Buffers<CR>
+	vim.keymap.set('n', '<leader>z', '<cmd>Files<cr>')--nnoremap <leader>z :Files<CR>
+	vim.keymap.set('n', '<leader>l', '<cmd>Lines<cr>')--nnoremap <leader>l :Lines<CR>
+	vim.keymap.set('n', '<leader>L', '<cmd>Ag<cr>')--nnoremap <leader>L :Ag<CR>
+EOF
 	let $FZF_DEFAULT_COMMAND='find . ! -path */build/* ! -path */Debug/* ! -path */bin/* ! -path */obj/* ! -path */node_modules/* -type f'
 endfunc
 
 function! InitShortcuts()
-	call InitFzf()
+lua <<EOF
+	--Navigate the autocomplete box with <C-j> and <C-k>
+	vim.keymap.set('n', '<c-j>', function()
+		if vim.fn.pumvisible() == 1 then return '<c-n>' end
+		return '<c-j>'
+	end, { expr = true })
 
-	"Navigate the autocomplete box with <C-j> and <C-k>
-	inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "<C-j>"
-	inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "<C-k>"
+	vim.keymap.set('n', '<c-k>', function()
+		if vim.fn.pumvisible() == 1 then return '<c-p>' end
+		return '<c-k>'
+	end, { expr = true })
 
-	map <C-n> :split<CR>
-	map <C-m> :vsplit<CR>
-	map <CR> :vsplit<CR>
-	nnoremap <leader>gf :only<CR> gf
-	nnoremap <C-d> :q<CR>
-	nnoremap <leader>c :noh<CR>
-	nnoremap <tab> <C-w>w
-	"Find matching bracket
-	nnoremap <leader>m %
-	"Copy to clipboard
-	vnoremap <leader>y "+y
-	nnoremap <leader>vim :e $MYVIMRC<CR>
-	nnoremap <leader>R :source $MYVIMRC<CR>
+	vim.keymap.set('n', '<c-n>', '<cmd>split<cr>') --map <C-n> :split<CR>
+	vim.keymap.set('n', '<c-m>', '<cmd>vsplit<cr>') --map <C-m> :vsplit<CR>
+	vim.keymap.set('n', '<cr>', '<cmd>vsplit<cr>') --mandatory in order for c-m to work in neovim
+	vim.keymap.set('n', '<leader>gf', '<cmd>only<cr> gf') --nnoremap <leader>gf :only<CR> gf
+	vim.keymap.set('n', '<c-d>', '<cmd>q<cr>') --nnoremap <C-d> :q<CR>
+	vim.keymap.set('n', '<leader>c', '<cmd>noh<cr>') --nnoremap <leader>c :noh<CR>
+	vim.keymap.set('n', '<tab>', '<c-w>w') --nnoremap <tab> <C-w>w
+	vim.keymap.set('n', '<leader>m', '%') --nnoremap <leader>m %
+	vim.keymap.set('n', '<leader>y', '"+y') --vnoremap <leader>y "+y -- copy to clipboard
+	vim.keymap.set('n', '<leader>vim', '<cmd>e $MYVIMRC<cr>') --nnoremap <leader>vim :e $MYVIMRC<CR>
+	vim.keymap.set('n', '<leader>re', '<cmd>source $MYVIMRC<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
+EOF
 endfunc
 
 function! InitDotnet()
@@ -197,7 +211,10 @@ function! InitCpp()
 endfunc
 
 function! InitLspFormatter()
-	nnoremap <leader>fm :lua vim.lsp.buf.formatting()<CR>
+	"nnoremap <leader>fm :lua vim.lsp.buf.formatting()<CR>
+lua <<EOF
+	vim.keymap.set('n', '<leader>fm', vim.lsp.buf.formatting)
+EOF
 endfunc
 
 function! InitLspDiagnostics()
@@ -219,14 +236,16 @@ EOF
 endfunc
 
 function! InitLspShortcuts()
-	nnoremap <leader>fD :lua vim.lsp.buf.declaration()<CR>
-	nnoremap <leader>fd :lua vim.lsp.buf.definition()<CR>
-	nnoremap <leader>fi :lua vim.lsp.buf.implementation()<CR>
-	nnoremap <leader>fr :lua vim.lsp.buf.references()<CR>
-	nnoremap <leader>rn :lua vim.lsp.buf.rename()<CR>
-	nnoremap <leader>do :lua vim.diagnostic.open_float()<CR>
-	nnoremap <leader>ds :lua vim.diagnostic.show()<CR>
-	nnoremap <leader>dh :lua vim.diagnostic.hide()<CR>
+lua <<EOF
+	vim.keymap.set('n', '<leader>fD', vim.lsp.buf.declaration)
+	vim.keymap.set('n', '<leader>fd', vim.lsp.buf.definition)
+	vim.keymap.set('n', '<leader>fi', vim.lsp.buf.implementation)
+	vim.keymap.set('n', '<leader>fr', vim.lsp.buf.references)
+	vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename)
+	vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float)
+	vim.keymap.set('n', '<leader>ds', vim.diagnostic.show)
+	vim.keymap.set('n', '<leader>dh', vim.diagnostic.hide)
+EOF
 endfunc
 
 function! InitLsp()
@@ -284,4 +303,5 @@ call InitGeneralSettings()
 call InitIndentation()
 call InitColorScheme()
 call InitLsp()
+call InitFzf()
 call InitShortcuts()
