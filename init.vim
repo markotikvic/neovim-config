@@ -135,21 +135,22 @@ lua <<EOF
 	vim.keymap.set('n', '<leader>l', '<cmd>Lines<cr>')--nnoremap <leader>l :Lines<CR>
 	vim.keymap.set('n', '<leader>L', '<cmd>Ag<cr>')--nnoremap <leader>L :Ag<CR>
 EOF
+	let g:fzf_preview_window = []
 	let $FZF_DEFAULT_COMMAND='find . ! -path */build/* ! -path */Debug/* ! -path */bin/* ! -path */obj/* ! -path */node_modules/* -type f'
 endfunc
 
 function! InitShortcuts()
 lua <<EOF
 	--Navigate the autocomplete box with <C-j> and <C-k>
-	vim.keymap.set('n', '<c-j>', function()
+	vim.keymap.set('i', '<c-j>', function()
 		if vim.fn.pumvisible() == 1 then return '<c-n>' end
 		return '<c-j>'
-	end, { expr = true })
+	end, { expr = true, noremap = true })
 
-	vim.keymap.set('n', '<c-k>', function()
+	vim.keymap.set('i', '<c-k>', function()
 		if vim.fn.pumvisible() == 1 then return '<c-p>' end
 		return '<c-k>'
-	end, { expr = true })
+	end, { expr = true, noremap = true })
 
 	vim.keymap.set('n', '<c-n>', '<cmd>split<cr>') --map <C-n> :split<CR>
 	vim.keymap.set('n', '<c-m>', '<cmd>vsplit<cr>') --map <C-m> :vsplit<CR>
