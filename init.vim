@@ -134,8 +134,8 @@ function! InitFzf()
 lua <<EOF
 	vim.keymap.set('n', '<leader>a', '<cmd>Buffers<cr>')--nnoremap <leader>a :Buffers<CR>
 	vim.keymap.set('n', '<leader>z', '<cmd>Files<cr>')--nnoremap <leader>z :Files<CR>
-	vim.keymap.set('n', '<leader>l', '<cmd>Lines<cr>')--nnoremap <leader>l :Lines<CR>
-	vim.keymap.set('n', '<leader>L', '<cmd>Ag<cr>')--nnoremap <leader>L :Ag<CR>
+	vim.keymap.set('n', '<leader>s', '<cmd>Lines<cr>')--nnoremap <leader>l :Lines<CR>
+	vim.keymap.set('n', '<leader>F', '<cmd>Ag<cr>')--nnoremap <leader>L :Ag<CR>
 EOF
 	let g:fzf_preview_window = []
 	let $FZF_DEFAULT_COMMAND='find . ! -path */build/* ! -path */Debug/* ! -path */bin/* ! -path */obj/* ! -path */node_modules/* -type f'
