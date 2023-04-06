@@ -9,6 +9,7 @@ call plug#begin()
 	Plug 'Yggdroot/indentLine'
 	Plug 'itchyny/vim-gitbranch'
 	Plug 'jacoborus/tender.vim'
+	Plug 'morhetz/gruvbox'
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'fatih/vim-go'
 	Plug 'moll/vim-node'
@@ -115,7 +116,8 @@ lua <<EOF
 	vim.cmd([[
 		syntax on
 		syntax enable
-		colorscheme tender
+		let g:gruvbox_contrast_dark = "hard"
+		colorscheme gruvbox
 	]])
 EOF
 	call InitStatusLine()
