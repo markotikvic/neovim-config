@@ -10,6 +10,7 @@ call plug#begin()
 	Plug 'itchyny/vim-gitbranch'
 	Plug 'jacoborus/tender.vim'
 	Plug 'morhetz/gruvbox'
+	Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'fatih/vim-go'
 	Plug 'moll/vim-node'
@@ -165,6 +166,8 @@ lua <<EOF
 	vim.keymap.set('n', '<leader>y', '"+y') --vnoremap <leader>y "+y -- copy to clipboard
 	vim.keymap.set('n', '<leader>vim', '<cmd>e $MYVIMRC<cr>') --nnoremap <leader>vim :e $MYVIMRC<CR>
 	vim.keymap.set('n', '<leader>re', '<cmd>source $MYVIMRC<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
+	vim.keymap.set('n', '<leader>re', '<cmd>source $MYVIMRC<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
+	vim.keymap.set('n', '<leader>t', '<cmd>ToggleTerm<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
 EOF
 endfunc
 
@@ -302,9 +305,18 @@ function! InitPython()
 	\}
 endfunc
 
+function! InitTerminalPlugin()
+lua <<EOF
+	require("toggleterm").setup{
+		direction = 'float'
+	}
+EOF
+endfunc
+
 call InitGeneralSettings()
 call InitIndentation()
 call InitColorScheme()
 call InitLsp()
 call InitFzf()
 call InitShortcuts()
+call InitTerminalPlugin()
