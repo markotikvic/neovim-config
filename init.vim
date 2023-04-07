@@ -310,6 +310,7 @@ lua <<EOF
 	require("toggleterm").setup{
 		direction = 'float'
 	}
+	vim.cmd([[ set mouse=a ]])
 EOF
 endfunc
 
