@@ -163,7 +163,7 @@ lua <<EOF
 	vim.keymap.set('n', '<leader>c', '<cmd>noh<cr>') --nnoremap <leader>c :noh<CR>
 	vim.keymap.set('n', '<tab>', '<c-w>w') --nnoremap <tab> <C-w>w
 	vim.keymap.set('n', '<leader>m', '%') --nnoremap <leader>m %
-	vim.keymap.set('n', '<leader>y', '"+y') --vnoremap <leader>y "+y -- copy to clipboard
+	vim.keymap.set('v', '<leader>y', '"+y') --vnoremap <leader>y "+y -- copy to clipboard
 	vim.keymap.set('n', '<leader>vim', '<cmd>e $MYVIMRC<cr>') --nnoremap <leader>vim :e $MYVIMRC<CR>
 	vim.keymap.set('n', '<leader>re', '<cmd>source $MYVIMRC<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
 	vim.keymap.set('n', '<leader>re', '<cmd>source $MYVIMRC<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
@@ -172,7 +172,6 @@ EOF
 endfunc
 
 function! InitDotnet()
-	autocmd FileType cs call InitLspFormatter()
 lua <<EOF
 	local pid = vim.fn.getpid()
 	local home = vim.fn.getenv('HOME')
@@ -188,7 +187,6 @@ EOF
 endfunc
 
 function! InitDart()
-	autocmd FileType dart call InitLspFormatter()
 lua <<EOF
 	require('lspconfig').dartls.setup({})
 EOF
@@ -200,26 +198,20 @@ EOF
 endfunc
 
 function! InitCpp()
-"lua <<EOF
-	"require('lspconfig').clangd.setup{
-	"}
-"EOF
-	let g:clang_format#code_style = 'google'
-	let g:clang_format#style_options = {
-		\ 'IndentWidth' : 2,
-		\ 'ColumnLimit' : 160,
-		\ 'DerivePointerAlignment' : 'false',
-		\ 'SortIncludes' : 'true',
-		\ 'IncludeBlocks' : 'Preserve',
-		\ 'SpacesBeforeTrailingComments' : 1,
-		\ 'SpaceBeforeCpp11BracedList': 'true',
-	\ }
-endfunc
-
-function! InitLspFormatter()
-	"nnoremap <leader>fm :lua vim.lsp.buf.formatting()<CR>
 lua <<EOF
-	vim.keymap.set('n', '<leader>fm', vim.lsp.buf.formatting)
+	-- require('lspconfig').clangd.setup{ }
+	vim.cmd([[
+		let g:clang_format#code_style = 'google'
+		let g:clang_format#style_options = {
+			\ 'IndentWidth' : 2,
+			\ 'ColumnLimit' : 160,
+			\ 'DerivePointerAlignment' : 'false',
+			\ 'SortIncludes' : 'true',
+			\ 'IncludeBlocks' : 'Preserve',
+			\ 'SpacesBeforeTrailingComments' : 1,
+			\ 'SpaceBeforeCpp11BracedList': 'true',
+		\ }
+	]])
 EOF
 endfunc
 
@@ -241,7 +233,14 @@ lua <<EOF
 EOF
 endfunc
 
+function! InitLspFormatShortcut()
+lua <<EOF
+	vim.keymap.set('n', '<leader>fm', vim.lsp.buf.formatting)
+EOF
+endfunc
+
 function! InitLspShortcuts()
+	call InitLspFormatShortcut()
 lua <<EOF
 	vim.keymap.set('n', '<leader>fD', vim.lsp.buf.declaration)
 	vim.keymap.set('n', '<leader>fd', vim.lsp.buf.definition)
@@ -262,13 +261,14 @@ function! InitLsp()
 	call InitPython()
 	call InitCpp()
 	call InitFormatters()
-	call InitLspFormatter()
 	call InitLspDiagnostics()
 	call InitLspShortcuts()
 endfunc
 
 function! InitFormatters()
-	"JS Beautify
+	autocmd FileType cs call InitLspFormatShortcut()
+	autocmd FileType go call InitLspFormatShortcut()
+	autocmd FileType dart call InitLspFormatShortcut()
 	autocmd FileType javascript nnoremap <leader>fm :call JsBeautify()<CR>
 	autocmd FileType json nnoremap <leader>fm :call JsonBeautify()<CR>
 	autocmd FileType jsx nnoremap <leader>fm :call JsxBeautify()<CR>
@@ -281,18 +281,21 @@ function! InitFormatters()
 endfunc
 
 function! InitGo()
-	autocmd FileType go call InitLspFormatter()
 lua <<EOF
 	require('lspconfig').gopls.setup{}
+	-- Stop scratch window from opening (gocode->neocomplete)
+	-- Run go imports on save
+	vim.cmd([[
+		set completeopt-=preview
+		let g:go_fmt_command = "goimports"
+	]])
 EOF
-	"Stop scratch window from opening (gocode->neocomplete)
-	set completeopt-=preview
-	"Run go imports on save
-	let g:go_fmt_command = "goimports"
 endfunc
 
 function! InitTypeScript()
-	let g:typescript_compiler_binary = 'tsc --noEmit'
+lua <<EOF
+	vim.cmd([[ let g:typescript_compiler_binary = 'tsc --noEmit' ]])
+EOF
 endfunc
 
 function! InitPython()
