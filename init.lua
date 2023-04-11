@@ -1,101 +1,80 @@
-let mapleader = ";"
+require("plugins")
 
-function! InitPython()
-	let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
-	let g:black#settings = {
-	    \ 'fast': 1,
-	    \ 'line_length': 100
-	\}
-endfunc
+vim.g.mapleader = ";"
 
-call InitPython()
+function initPython()
+	vim.cmd([[
+		let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
+		let g:black#settings = {
+		    \ 'fast': 1,
+		    \ 'line_length': 100
+		\}
+	]])
+end
 
-call plug#begin()
-	Plug 'vim-scripts/AutoComplPop'
-	Plug 'kien/ctrlp.vim'
-	Plug 'junegunn/fzf'
-	Plug 'junegunn/fzf.vim'
-	Plug 'tpope/vim-fugitive'
-	Plug 'Yggdroot/indentLine'
-	Plug 'itchyny/vim-gitbranch'
-	Plug 'jacoborus/tender.vim'
-	Plug 'morhetz/gruvbox'
-	Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
-	Plug 'neovim/nvim-lspconfig'
-	Plug 'fatih/vim-go'
-	Plug 'moll/vim-node'
-	Plug 'pangloss/vim-javascript'
-	Plug 'maksimr/vim-jsbeautify'
-	Plug 'leafgarland/typescript-vim'
-	Plug 'dart-lang/dart-vim-plugin'
-	Plug 'natebosch/vim-lsc'
-	Plug 'natebosch/vim-lsc-dart'
-	Plug 'OmniSharp/omnisharp-vim'
-	Plug 'lepture/vim-velocity'
-	Plug 'rhysd/vim-clang-format'
-	Plug 'averms/black-nvim', {'do': ':UpdateRemotePlugins'}
-call plug#end()
+function initIndentation()
+	vim.cmd([[
+		let g:indentLine_enabled = 0
+		let g:indentLine_char = '¦'
+		let g:indentLine_leadingSpaceEnabled = 0
+		"Bullet U+2022
+		let g:indentLine_leadingSpaceChar = '•'
+	]])
+end
 
-function! InitIndentation()
-	let g:indentLine_enabled = 0
-	let g:indentLine_char = '¦'
-	let g:indentLine_leadingSpaceEnabled = 0
-	"Bullet U+2022
-	let g:indentLine_leadingSpaceChar = '•'
-endfunc
+function getLongModeName()
+	local modes = {}
 
-function! LongModeName()
-	let modes = {
-	\ 'n': 'NORMAL',
-	\ 'v': 'VISUAL',
-	\ 'V': 'V·LINE',
-	\ 's': 'SELECT',
-	\ 'S': 'S·LINE',
-	\ 'i': 'INSERT',
-	\ 'R': 'REPLACE',
-        \ 'Rv': 'V·REPLACE',
-	\ 'c': 'COMMAND',
-	\ 't': 'TERMINAL',
-	\}
+	modes['n'] = 'NORMAL'
+	modes['v'] = 'VISUAL'
+	modes['V'] = 'V·LINE'
+	modes['s'] = 'SELECT'
+	modes['S'] = 'S·LINE'
+	modes['i'] = 'INSERT'
+	modes['R'] = 'REPLACE'
+	modes['Rv'] = 'V·REPLACE'
+	modes['c'] = 'COMMAND'
+	modes['t'] = 'TERMINAL'
 
-	let m = mode()
-	if has_key(modes, m)
-		return modes[m]
-	endif
+	local m = vim.fn.mode()
+
+	for k,v in pairs(modes) do
+		if k == m then
+			return v
+		end
+	end
 
 	return m
-endfunc
+end
 
-function! StatusLineFormat()
-	let spacePipe = "\ \|\ "
-	let fileEncoding = "%{&ff}\ %{&fileencoding?&fileencoding:&encoding}"
+function getStatusLineFormat()
+	local spacePipe = " | "
 
-	let line = " %{LongModeName()}"
-	let line .= spacePipe
-	let line .= "%f%m"
-	let line .= "%="
-	let line .= "%{gitbranch#name()}"
-	let line .= spacePipe
-	let line .= fileEncoding
-	let line .= spacePipe
-	let line .= "%l:%c"
-	let line .= spacePipe
-	let line .= "%P "
+	local line = " "..getLongModeName()
+	line = line..spacePipe
+	line = line.."%f%m"
+	line = line.."%="
+	line = line..">> "..vim.call("gitbranch#name").." <<"
+	line = line..spacePipe
+	line = line..vim.opt.ff:get().." "..vim.opt.encoding:get()
+	line = line..spacePipe
+	line = line.."%l:%c"
+	line = line..spacePipe
+	line = line.."%P "
 
 	return line
-endfunc
+end
 
-function! InitStatusLine()
-	"Always show status line
-	set laststatus=2
-	set statusline=%!StatusLineFormat()
-endfunc
+function initStatusLine()
+	vim.o.laststatus=2
+	vim.o.statusline=getStatusLineFormat()
+end
 
-function! InitGeneralSettings()
-	filetype plugin indent on
-	"For autocomplete
-	let g:acp_ignorecaseOption = 0
-lua <<EOF
+function initGeneralSettings()
+	vim.cmd([[
+		filetype plugin indent on
+		let g:acp_ignorecaseOption = 0
+	]])
 	vim.o.encoding = "utf-8"
 	vim.o.autoindent = true
 	vim.o.tabstop = 8
@@ -114,46 +93,44 @@ lua <<EOF
 	vim.o.switchbuf = vim.o.switchbuf..",usetab,newtab"
 	--Red color for trailing whitespaces
 	vim.cmd([[ match ErrorMsg '\s\+$' ]])
-EOF
-endfunc
+end
 
-function! InitColorScheme()
-lua <<EOF
+function initColorScheme()
 	vim.o.cursorline = true
 	vim.o.guifont = "Fira Mono Medium 10"
 	vim.o.hidden = true
 	vim.o.background = "dark"
 	vim.o.termguicolors = true
+	vim.o.syntax = "on"
+	vim.o.syntax = "enable"
 	vim.cmd([[
-		syntax on
-		syntax enable
 		let g:gruvbox_contrast_dark = "hard"
 		colorscheme gruvbox
 	]])
-EOF
-	call InitStatusLine()
-endfunc
+	initStatusLine()
+end
 
-function! InitCtrlP()
-	let g:ctrlp_map = '<c-p>'
-	let g:ctrlp_cmd = 'CtrlP .'
-	let g:ctrlp_match_window = 'bottom,order:ttb,min:5,max:25'
-	let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)|node_modules|obj|bin|dist$'
-endfunc
+function initCtrlP()
+	vim.cmd([[
+		let g:ctrlp_map = '<c-p>'
+		let g:ctrlp_cmd = 'CtrlP .'
+		let g:ctrlp_match_window = 'bottom,order:ttb,min:5,max:25'
+		let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)|node_modules|obj|bin|dist$'
+	]])
+end
 
-function! InitFzf()
-lua <<EOF
+function initFzf()
 	vim.keymap.set('n', '<leader>a', '<cmd>Buffers<cr>')--nnoremap <leader>a :Buffers<CR>
 	vim.keymap.set('n', '<leader>z', '<cmd>Files<cr>')--nnoremap <leader>z :Files<CR>
 	vim.keymap.set('n', '<leader>s', '<cmd>Lines<cr>')--nnoremap <leader>l :Lines<CR>
 	vim.keymap.set('n', '<leader>F', '<cmd>Ag<cr>')--nnoremap <leader>L :Ag<CR>
-EOF
-	let g:fzf_preview_window = []
-	let $FZF_DEFAULT_COMMAND='find . ! -path */build/* ! -path */Debug/* ! -path */bin/* ! -path */obj/* ! -path */node_modules/* -type f'
-endfunc
+	vim.cmd([[
+		let g:fzf_preview_window = []
+		let $FZF_DEFAULT_COMMAND='find . ! -path */build/* ! -path */Debug/* ! -path */bin/* ! -path */obj/* ! -path */node_modules/* -type f'
+	]])
+end
 
-function! InitShortcuts()
-lua <<EOF
+function initShortcuts()
 	--Navigate the autocomplete box with <C-j> and <C-k>
 	vim.keymap.set('i', '<c-j>', function()
 		if vim.fn.pumvisible() == 1 then return '<c-n>' end
@@ -178,11 +155,9 @@ lua <<EOF
 	vim.keymap.set('n', '<leader>re', '<cmd>source $MYVIMRC<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
 	vim.keymap.set('n', '<leader>re', '<cmd>source $MYVIMRC<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
 	vim.keymap.set('n', '<leader>t', '<cmd>ToggleTerm<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
-EOF
-endfunc
+end
 
-function! InitDotnet()
-lua <<EOF
+function initDotnet()
 	local pid = vim.fn.getpid()
 	local home = vim.fn.getenv('HOME')
 
@@ -192,23 +167,21 @@ lua <<EOF
 		end,
 		cmd = { home .. '/.cache/omnisharp-vim/omnisharp-roslyn/run', "--languageserver" , "--hostPID", tostring(pid)};
 	})
-EOF
-	let g:OmniSharp_highlighting = 0
-endfunc
+	vim.cmd([[ let g:OmniSharp_highlighting = 0 ]])
+end
 
-function! InitDart()
-lua <<EOF
+function initDart()
 	require('lspconfig').dartls.setup({})
-EOF
-	let g:lsc_server_commands = {'dart': 'dart_language_server'}
-	let g:lsc_enable_autocomplete = v:false
-	let g:lsc_auto_map = v:false
-	let g:dartfmt_options = ['--fix', '-l 150']
-	let g:dart_format_on_save = 1
-endfunc
+	vim.cmd([[
+		let g:lsc_server_commands = {'dart': 'dart_language_server'}
+		let g:lsc_enable_autocomplete = v:false
+		let g:lsc_auto_map = v:false
+		let g:dartfmt_options = ['--fix', '-l 150']
+		let g:dart_format_on_save = 1
+	]])
+end
 
-function! InitCpp()
-lua <<EOF
+function initCpp()
 	-- require('lspconfig').clangd.setup{ }
 	vim.cmd([[
 		let g:clang_format#code_style = 'google'
@@ -222,11 +195,9 @@ lua <<EOF
 			\ 'SpaceBeforeCpp11BracedList': 'true',
 		\ }
 	]])
-EOF
-endfunc
+end
 
-function! InitLspDiagnostics()
-lua <<EOF
+function initLspDiagnostics()
 	local function setup_diagnostics()
 	  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 	    vim.lsp.diagnostic.on_publish_diagnostics,
@@ -240,18 +211,14 @@ lua <<EOF
 	end
 
 	setup_diagnostics()
-EOF
-endfunc
+end
 
-function! InitLspFormatShortcut()
-lua <<EOF
+function initLspFormatShortcut()
 	vim.keymap.set('n', '<leader>fm', vim.lsp.buf.formatting)
-EOF
-endfunc
+end
 
-function! InitLspShortcuts()
-	call InitLspFormatShortcut()
-lua <<EOF
+function initLspShortcuts()
+	initLspFormatShortcut()
 	vim.keymap.set('n', '<leader>fD', vim.lsp.buf.declaration)
 	vim.keymap.set('n', '<leader>fd', vim.lsp.buf.definition)
 	vim.keymap.set('n', '<leader>fi', vim.lsp.buf.implementation)
@@ -260,38 +227,38 @@ lua <<EOF
 	vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float)
 	vim.keymap.set('n', '<leader>ds', vim.diagnostic.show)
 	vim.keymap.set('n', '<leader>dh', vim.diagnostic.hide)
-EOF
-endfunc
+end
 
-function! InitLsp()
-	call InitDotnet()
-	call InitDart()
-	call InitGo()
-	call InitTypeScript()
-	call InitCpp()
-	call InitFormatters()
-	call InitLspDiagnostics()
-	call InitLspShortcuts()
-endfunc
+function initLsp()
+	initDotnet()
+	initDart()
+	initGo()
+	initTypeScript()
+	initCpp()
+	initPython()
+	initFormatters()
+	initLspDiagnostics()
+	initLspShortcuts()
+end
 
-function! InitFormatters()
-	autocmd FileType cs call InitLspFormatShortcut()
-	autocmd FileType go call InitLspFormatShortcut()
-	autocmd FileType dart call InitLspFormatShortcut()
-	autocmd FileType javascript nnoremap <leader>fm :call JsBeautify()<CR>
-	autocmd FileType json nnoremap <leader>fm :call JsonBeautify()<CR>
-	autocmd FileType jsx nnoremap <leader>fm :call JsxBeautify()<CR>
-	autocmd FileType html nnoremap <leader>fm :call HtmlBeautify()<CR>
-	autocmd FileType css nnoremap <leader>fm :call CSSBeautify()<CR>
-	autocmd FileType cpp nnoremap <leader>fm :ClangFormat<CR>
-	autocmd FileType python nnoremap <leader>fm :call Black()<CR>
+function initFormatters()
+	vim.cmd([[
+		autocmd FileType cs call initLspFormatShortcut()
+		autocmd FileType go call initLspFormatShortcut()
+		autocmd FileType dart call initLspFormatShortcut()
+		autocmd FileType javascript nnoremap <leader>fm :call JsBeautify()<CR>
+		autocmd FileType json nnoremap <leader>fm :call JsonBeautify()<CR>
+		autocmd FileType jsx nnoremap <leader>fm :call JsxBeautify()<CR>
+		autocmd FileType html nnoremap <leader>fm :call HtmlBeautify()<CR>
+		autocmd FileType css nnoremap <leader>fm :call CSSBeautify()<CR>
+		autocmd FileType cpp nnoremap <leader>fm :ClangFormat<CR>
+		autocmd FileType python nnoremap <leader>fm :call Black()<CR>
 
-	"Velocity (AtlassianSDK)
-	au BufRead,BufNewFile *.vm set filetype=velocity
-endfunc
+		au BufRead,BufNewFile *.vm set filetype=velocity
+	]])
+end
 
-function! InitGo()
-lua <<EOF
+function initGo()
 	require('lspconfig').gopls.setup{}
 	-- Stop scratch window from opening (gocode->neocomplete)
 	-- Run go imports on save
@@ -299,28 +266,23 @@ lua <<EOF
 		set completeopt-=preview
 		let g:go_fmt_command = "goimports"
 	]])
-EOF
-endfunc
+end
 
-function! InitTypeScript()
-lua <<EOF
+function initTypeScript()
 	vim.cmd([[ let g:typescript_compiler_binary = 'tsc --noEmit' ]])
-EOF
-endfunc
+end
 
-function! InitTerminalPlugin()
-lua <<EOF
+function initTerminalPlugin()
 	require("toggleterm").setup{
 		direction = 'float'
 	}
 	vim.cmd([[ set mouse=a ]])
-EOF
-endfunc
+end
 
-call InitGeneralSettings()
-call InitIndentation()
-call InitColorScheme()
-call InitLsp()
-call InitFzf()
-call InitShortcuts()
-call InitTerminalPlugin()
+initGeneralSettings()
+initIndentation()
+initColorScheme()
+initLsp()
+initFzf()
+initShortcuts()
+initTerminalPlugin()
