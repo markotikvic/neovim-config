@@ -1,5 +1,15 @@
 let mapleader = ";"
 
+function! InitPython()
+	let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
+	let g:black#settings = {
+	    \ 'fast': 1,
+	    \ 'line_length': 100
+	\}
+endfunc
+
+call InitPython()
+
 call plug#begin()
 	Plug 'vim-scripts/AutoComplPop'
 	Plug 'kien/ctrlp.vim'
@@ -258,7 +268,6 @@ function! InitLsp()
 	call InitDart()
 	call InitGo()
 	call InitTypeScript()
-	call InitPython()
 	call InitCpp()
 	call InitFormatters()
 	call InitLspDiagnostics()
@@ -275,6 +284,7 @@ function! InitFormatters()
 	autocmd FileType html nnoremap <leader>fm :call HtmlBeautify()<CR>
 	autocmd FileType css nnoremap <leader>fm :call CSSBeautify()<CR>
 	autocmd FileType cpp nnoremap <leader>fm :ClangFormat<CR>
+	autocmd FileType python nnoremap <leader>fm :call Black()<CR>
 
 	"Velocity (AtlassianSDK)
 	au BufRead,BufNewFile *.vm set filetype=velocity
@@ -296,16 +306,6 @@ function! InitTypeScript()
 lua <<EOF
 	vim.cmd([[ let g:typescript_compiler_binary = 'tsc --noEmit' ]])
 EOF
-endfunc
-
-function! InitPython()
-	let g:python3_host_prog = '/usr/bin/python3'
-	let g:black_use_virtualenv = 0
-	autocmd FileType python nnoremap <leader>fm :call Black()<CR>
-	let g:black#settings = {
-	    \ 'fast': 1,
-	    \ 'line_length': 100
-	\}
 endfunc
 
 function! InitTerminalPlugin()
