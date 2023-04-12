@@ -2,16 +2,6 @@ require("plugins")
 
 vim.g.mapleader = ";"
 
-function config_python()
-	vim.cmd([[
-    let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
-		let g:black#settings = {
-		    \ 'fast': 1,
-		    \ 'line_length': 100
-		\}
-	]])
-end
-
 function get_long_mode_name()
 	local modes = {}
 
@@ -61,7 +51,7 @@ function get_status_line_format()
 	return line
 end
 
-function configStatusLine()
+function config_status_line()
 	vim.o.laststatus=2
 	vim.o.statusline=get_status_line_format()
 end
@@ -96,7 +86,7 @@ function config_color_scheme()
 	vim.o.syntax = "enable"
   vim.g.gruvbox_contrast_dark = "hard"
 	vim.cmd([[ colorscheme gruvbox ]])
-	configStatusLine()
+	config_status_line()
 end
 
 function config_fzf()
@@ -166,6 +156,16 @@ function config_dart()
   vim.g.lsc_auto_map = false
   vim.g.dartfmt_options = {"--fix", "-l 150"}
   vim.g.dart_format_on_save = 1
+end
+
+function config_python()
+	vim.cmd([[
+    let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
+		let g:black#settings = {
+		    \ 'fast': 1,
+		    \ 'line_length': 100
+		\}
+	]])
 end
 
 function config_cpp()
