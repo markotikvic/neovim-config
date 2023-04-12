@@ -223,8 +223,6 @@ function config_formatters()
 		autocmd FileType css nnoremap <leader>fm :call CSSBeautify()<CR>
 		autocmd FileType cpp nnoremap <leader>fm :ClangFormat<CR>
 		autocmd FileType python nnoremap <leader>fm :call Black()<CR>
-
-		au BufRead,BufNewFile *.vm set filetype=velocity
 	]])
 end
 

@@ -2,7 +2,6 @@ vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
 	use 'vim-scripts/AutoComplPop'
-	use 'kien/ctrlp.vim'
 	use 'junegunn/fzf'
 	use 'junegunn/fzf.vim'
 	use 'tpope/vim-fugitive'
@@ -20,7 +19,6 @@ return require('packer').startup(function(use)
 	use 'natebosch/vim-lsc'
 	use 'natebosch/vim-lsc-dart'
 	use 'OmniSharp/omnisharp-vim'
-	use 'lepture/vim-velocity'
 	use 'rhysd/vim-clang-format'
 	use 'averms/black-nvim'
 end)
