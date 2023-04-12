@@ -6,7 +6,6 @@ return require('packer').startup(function(use)
 	use 'junegunn/fzf'
 	use 'junegunn/fzf.vim'
 	use 'tpope/vim-fugitive'
-	use 'Yggdroot/indentLine'
 	use 'itchyny/vim-gitbranch'
 	use 'jacoborus/tender.vim'
 	use 'morhetz/gruvbox'
