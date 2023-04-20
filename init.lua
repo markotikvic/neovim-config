@@ -95,7 +95,7 @@ function config_fzf()
 	vim.keymap.set('n', '<leader>s', '<cmd>Lines<cr>')--nnoremap <leader>l :Lines<CR>
 	vim.keymap.set('n', '<leader>F', '<cmd>Ag<cr>')--nnoremap <leader>L :Ag<CR>
 	vim.cmd([[
-    let g:fzf_preview_window = []
+    let g:fzf_preview_window = ['right,60%']
 		let $FZF_DEFAULT_COMMAND='find . ! -path */.git/* ! -path */install/* ! -path */build/* ! -path */Debug/* ! -path */bin/* ! -path */obj/* ! -path */node_modules/* -type f'
 	]])
 end
@@ -223,6 +223,8 @@ function config_formatters()
 		autocmd FileType css nnoremap <leader>fm :call CSSBeautify()<CR>
 		autocmd FileType cpp nnoremap <leader>fm :ClangFormat<CR>
 		autocmd FileType python nnoremap <leader>fm :call Black()<CR>
+		au BufRead,BufNewFile *.vm set filetype=velocity
+		au BufRead,BufNewFile *.lox set filetype=lua
 	]])
 end
 
