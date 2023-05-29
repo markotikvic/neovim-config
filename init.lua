@@ -114,6 +114,8 @@ function config_telescope()
   }
 
   local builtin = require('telescope.builtin')
+  --builtin.buffers({ sort_mru = true })
+  --builtin.buffers({ sort_lastused = true, ignore_current_buffer = true })
 	vim.keymap.set('n', '<leader>a', builtin.buffers, {})
 	vim.keymap.set('n', '<leader>z', builtin.find_files, {})
 	vim.keymap.set('n', '<leader>s', builtin.live_grep, {})
@@ -267,7 +269,7 @@ end
 config_general_settings()
 config_color_scheme()
 config_lsp()
--- config_fzf()
-config_telescope()
+config_fzf()
+-- config_telescope()
 config_shortcuts()
 config_terminal()
