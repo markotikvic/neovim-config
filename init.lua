@@ -100,6 +100,25 @@ function config_fzf()
 	]])
 end
 
+function config_telescope()
+  require('telescope').setup{
+    defaults = {
+      file_ignore_patterns = {".git", "node_modules", "build", "Debug", "bin", "obj", "install"},
+      mappings = {
+        i = {
+          ["<C-j>"] = require('telescope.actions').move_selection_next,
+          ["<C-k>"] = require('telescope.actions').move_selection_previous,
+        },
+      },
+    }
+  }
+
+  local builtin = require('telescope.builtin')
+	vim.keymap.set('n', '<leader>a', builtin.buffers, {})
+	vim.keymap.set('n', '<leader>z', builtin.find_files, {})
+	vim.keymap.set('n', '<leader>s', builtin.live_grep, {})
+end
+
 function config_shortcuts()
 	--Navigate the autocomplete box with <C-j> and <C-k>
 	vim.keymap.set('i', '<c-j>', function()
@@ -248,6 +267,7 @@ end
 config_general_settings()
 config_color_scheme()
 config_lsp()
-config_fzf()
+-- config_fzf()
+config_telescope()
 config_shortcuts()
 config_terminal()

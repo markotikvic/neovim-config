@@ -21,4 +21,12 @@ return require('packer').startup(function(use)
 	use 'OmniSharp/omnisharp-vim'
 	use 'rhysd/vim-clang-format'
 	use 'averms/black-nvim'
+  use {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    run = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+  }
+  use {
+    'nvim-telescope/telescope.nvim', tag = '0.1.1',
+    requires = { {'nvim-lua/plenary.nvim'} }
+  }
 end)
