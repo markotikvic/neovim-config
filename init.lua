@@ -33,20 +33,12 @@ function get_status_line_format()
 
 	local line = " "..get_long_mode_name()
 	line = line..spacePipe
-	line = line.."%t%m" -- line = line.."%f%m"
-	line = line.."%="
-
+	line = line.."%t%m L%l:%c %P"
   if branch ~= "" then
-    line = line..spacePipe
-    line = line..">> "..branch
+    line = line.." ("..branch..")"
   end
-
-	line = line..spacePipe
+	line = line.."%=" -- align to right
 	line = line..vim.opt.ff:get().." "..vim.opt.encoding:get()
-	line = line..spacePipe
-	line = line.."%l:%c"
-	line = line..spacePipe
-	line = line.."%P "
 
 	return line
 end
