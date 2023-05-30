@@ -51,6 +51,7 @@ end
 function config_general_settings()
 	vim.cmd([[ filetype plugin indent on ]])
   vim.g.acp_ignorecaseOption = 0
+  vim.g.acp_enableAtStartup = 0
 	vim.o.encoding = "utf-8"
 	vim.o.autoindent = true
 	vim.o.tabstop = 8
