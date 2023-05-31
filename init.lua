@@ -24,7 +24,7 @@ function vim_mode()
 		end
 	end
 
-	return m
+	return "["..m.."?]"
 end
 
 function git_branch()
