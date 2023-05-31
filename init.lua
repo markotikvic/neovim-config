@@ -151,8 +151,8 @@ function config_shortcuts()
 	vim.keymap.set('v', '<leader>y', '"+y') --vnoremap <leader>y "+y -- copy to clipboard
 	vim.keymap.set('n', '<leader>vim', '<cmd>e $MYVIMRC<cr>') --nnoremap <leader>vim :e $MYVIMRC<CR>
 	vim.keymap.set('n', '<leader>re', '<cmd>source $MYVIMRC<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
-	vim.keymap.set('n', '<leader>re', '<cmd>source $MYVIMRC<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
 	vim.keymap.set('n', '<leader>t', '<cmd>ToggleTerm<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
+	vim.keymap.set('n', '<leader>Y', 'ggVG"+y') -- select entire buffer
 	vim.keymap.set('n', '<leader>fm', vim.lsp.buf.formatting)
 	vim.keymap.set('n', '<leader>fD', vim.lsp.buf.declaration)
 	vim.keymap.set('n', '<leader>fd', vim.lsp.buf.definition)
