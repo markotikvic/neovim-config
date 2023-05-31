@@ -2,19 +2,19 @@ require("plugins")
 
 vim.g.mapleader = ";"
 
-function get_long_mode_name()
+function vim_mode()
 	local modes = {}
 
-	modes['n'] = 'NORMAL'
-	modes['v'] = 'VISUAL'
-	modes['V'] = 'V·LINE'
-	modes['s'] = 'SELECT'
-	modes['S'] = 'S·LINE'
-	modes['i'] = 'INSERT'
-	modes['R'] = 'REPLACE'
-	modes['Rv'] = 'V·REPLACE'
-	modes['c'] = 'COMMAND'
-	modes['t'] = 'TERMINAL'
+	modes['n'] = '[N]'
+	modes['v'] = '[V]'
+	modes['V'] = '[V·L]'
+	modes['s'] = '[S]'
+	modes['S'] = '[S·L]'
+	modes['i'] = '[I]'
+	modes['R'] = '[R]'
+	modes['Rv'] = '[R-V]'
+	modes['c'] = '[C]'
+	modes['t'] = '[T]'
 
 	local m = vim.fn.mode()
 
@@ -27,25 +27,40 @@ function get_long_mode_name()
 	return m
 end
 
-function get_status_line_format()
-	local spacePipe = " | "
+function git_branch()
   local branch = vim.call("gitbranch#name")
-
-	local line = " "..get_long_mode_name()
-	line = line..spacePipe
-	line = line.."%t%m L%l:%c %P"
   if branch ~= "" then
-    line = line.." ("..branch..")"
+    return "("..branch..")"
   end
+  return ""
+end
+
+function active_status_line_format()
+  local mode = vim_mode()
+  local branch = git_branch()
+	local line = mode.." %t%m L%l:%c %P "..branch
 	line = line.."%=" -- align to right
 	line = line..vim.opt.ff:get().." "..vim.opt.encoding:get()
 
 	return line
 end
 
+function inactive_status_line_format()
+  local line = "%t"
+	line = line.."%=" -- align to right
+	line = line..vim.opt.ff:get().." "..vim.opt.encoding:get()
+  return line
+end
+
 function config_status_line()
-	vim.o.laststatus=2
-	vim.o.statusline=get_status_line_format()
+	vim.o.laststatus = 2
+  vim.api.nvim_exec([[
+    augroup Statusline
+    au!
+    au WinEnter,BufEnter * setlocal statusline=%!v:lua.active_status_line_format()
+    au WinLeave,BufLeave * setlocal statusline=%!v:lua.inactive_status_line_format()
+    augroup END
+  ]], false)
 end
 
 function config_general_settings()
@@ -79,7 +94,6 @@ function config_color_scheme()
 	vim.o.syntax = "enable"
   vim.g.gruvbox_contrast_dark = "hard"
 	vim.cmd([[ colorscheme gruvbox ]])
-	config_status_line()
 end
 
 function config_fzf()
@@ -261,6 +275,7 @@ end
 
 config_general_settings()
 config_color_scheme()
+config_status_line()
 config_lsp()
 --config_fzf()
 config_telescope()
