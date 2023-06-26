@@ -102,7 +102,7 @@ function config_fzf()
 	vim.keymap.set('n', '<leader>s', '<cmd>Lines<cr>')--nnoremap <leader>l :Lines<CR>
 	vim.keymap.set('n', '<leader>F', '<cmd>Ag<cr>')--nnoremap <leader>L :Ag<CR>
 	vim.cmd([[
-    let g:fzf_preview_window = ['right,60%']
+    let g:fzf_preview_window = ['right,40%']
 		let $FZF_DEFAULT_COMMAND='find . ! -path */.git/* ! -path */install/* ! -path */build/* ! -path */Debug/* ! -path */bin/* ! -path */obj/* ! -path */node_modules/* -type f'
 	]])
 end
@@ -277,7 +277,6 @@ config_general_settings()
 config_color_scheme()
 config_status_line()
 config_lsp()
---config_fzf()
-config_telescope()
+config_fzf()
 config_shortcuts()
 config_terminal()
