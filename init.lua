@@ -92,8 +92,9 @@ function config_color_scheme()
 	vim.o.termguicolors = true
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
-  vim.g.gruvbox_contrast_dark = "hard"
-	vim.cmd([[ colorscheme gruvbox ]])
+  --vim.g.gruvbox_contrast_dark = "hard"
+	--vim.cmd([[ colorscheme gruvbox ]])
+	vim.cmd([[ colorscheme catppuccin-mocha ]])
 end
 
 function config_fzf()
@@ -252,6 +253,7 @@ function config_formatters()
 		autocmd FileType html nnoremap <leader>fm :call HtmlBeautify()<CR>
 		autocmd FileType css nnoremap <leader>fm :call CSSBeautify()<CR>
 		autocmd FileType cpp nnoremap <leader>fm :ClangFormat<CR>
+		autocmd FileType c nnoremap <leader>fm :ClangFormat<CR>
 		autocmd FileType python nnoremap <leader>fm :call Black()<CR>
 		au BufRead,BufNewFile *.vm set filetype=velocity
 		au BufRead,BufNewFile *.lox set filetype=lua

@@ -6,7 +6,7 @@ return require('packer').startup(function(use)
 	use 'junegunn/fzf.vim'
 	use 'tpope/vim-fugitive'
 	use 'itchyny/vim-gitbranch'
-	use 'jacoborus/tender.vim'
+  use { "catppuccin/nvim", as = "catppuccin" }
 	use 'morhetz/gruvbox'
 	use 'akinsho/toggleterm.nvim'
 	use 'neovim/nvim-lspconfig'
