@@ -94,6 +94,15 @@ function config_color_scheme()
 	vim.o.syntax = "enable"
   --vim.g.gruvbox_contrast_dark = "hard"
 	--vim.cmd([[ colorscheme gruvbox ]])
+  require('catppuccin').setup{
+    styles = {
+      conditionals = {}
+    },
+    integrations = {
+      treesitter = false,
+      semantic_tokens = false
+    }
+  }
 	vim.cmd([[ colorscheme catppuccin-mocha ]])
 end
 
