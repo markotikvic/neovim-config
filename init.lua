@@ -113,7 +113,7 @@ function config_fzf()
 	vim.keymap.set('n', '<leader>F', '<cmd>Ag<cr>')--nnoremap <leader>L :Ag<CR>
 	vim.cmd([[
     let g:fzf_preview_window = ['right,40%']
-		let $FZF_DEFAULT_COMMAND='find . ! -path */.git/* ! -path */install/* ! -path */build/* ! -path */Debug/* ! -path */bin/* ! -path */obj/* ! -path */node_modules/* -type f'
+		let $FZF_DEFAULT_COMMAND='find . ! -path "*/.git/*" ! -path "*/install/*" ! -path "*/build/*" ! -path "*/Debug/*" ! -path "*/bin/*" ! -path "*/obj/*" ! -path "*/node_modules/*" -type f'
 	]])
 end
 
