@@ -74,7 +74,7 @@ function config_general_settings()
 	vim.o.expandtab = false
 	vim.o.number = true
 	vim.o.relativenumber = true
-	vim.o.wrap = true
+	vim.o.wrap = false
 	vim.o.formatoptions = vim.o.formatoptions.."r" --Continue comments on new lines
 	vim.o.hlsearch = true
 	vim.o.incsearch = true
@@ -150,18 +150,18 @@ function config_shortcuts()
 		return '<c-k>'
 	end, { expr = true, noremap = true })
 
-	vim.keymap.set('n', '<c-n>', '<cmd>split<cr>') --map <C-n> :split<CR>
-	vim.keymap.set('n', '<c-m>', '<cmd>vsplit<cr>') --map <C-m> :vsplit<CR>
+	vim.keymap.set('n', '<c-n>', '<cmd>split<cr>')
+	vim.keymap.set('n', '<c-m>', '<cmd>vsplit<cr>')
 	vim.keymap.set('n', '<cr>', '<cmd>vsplit<cr>') --mandatory in order for c-m to work in neovim
-	vim.keymap.set('n', '<leader>gf', '<cmd>only<cr> gf') --nnoremap <leader>gf :only<CR> gf
-	vim.keymap.set('n', '<c-d>', '<cmd>q<cr>') --nnoremap <C-d> :q<CR>
-	vim.keymap.set('n', '<leader>c', '<cmd>noh<cr>') --nnoremap <leader>c :noh<CR>
-	vim.keymap.set('n', '<tab>', '<c-w>w') --nnoremap <tab> <C-w>w
-	vim.keymap.set('n', '<leader>m', '%') --nnoremap <leader>m %
-	vim.keymap.set('v', '<leader>y', '"+y') --vnoremap <leader>y "+y -- copy to clipboard
-	vim.keymap.set('n', '<leader>vim', '<cmd>e $MYVIMRC<cr>') --nnoremap <leader>vim :e $MYVIMRC<CR>
-	vim.keymap.set('n', '<leader>re', '<cmd>source $MYVIMRC<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
-	vim.keymap.set('n', '<leader>t', '<cmd>ToggleTerm<cr>') --nnoremap <leader>R :source $MYVIMRC<CR>
+	vim.keymap.set('n', '<leader>gf', '<cmd>only<cr> gf')
+	vim.keymap.set('n', '<c-d>', '<cmd>q<cr>')
+	vim.keymap.set('n', '<leader>c', '<cmd>noh<cr>')
+	vim.keymap.set('n', '<tab>', '<c-w>w')
+	vim.keymap.set('n', '<leader>m', '%')
+	vim.keymap.set('v', '<leader>y', '"+y') -- copy to clipboard
+	vim.keymap.set('n', '<leader>vim', '<cmd>e $MYVIMRC<cr>')
+	vim.keymap.set('n', '<leader>re', '<cmd>source $MYVIMRC<cr>')
+	vim.keymap.set('n', '<leader>t', '<cmd>ToggleTerm<cr>')
 	vim.keymap.set('n', '<leader>Y', 'ggVG"+y') -- select entire buffer
 	vim.keymap.set('n', '<leader>fm', vim.lsp.buf.formatting)
 	vim.keymap.set('n', '<leader>fD', vim.lsp.buf.declaration)
@@ -180,13 +180,16 @@ function config_dotnet()
 	local pid = vim.fn.getpid()
 	local home = vim.fn.getenv('HOME')
 
+  vim.g.OmniSharp_server_use_mono = 0
+	vim.g.OmniSharp_server_use_net6 = 1
+	vim.g.OmniSharp_highlighting = 0
+
 	require('lspconfig').omnisharp.setup({
 		on_attach = function(_, bufnr)
 			vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 		end,
-		cmd = { home .. '/.cache/omnisharp-vim/omnisharp-roslyn/run', "--languageserver" , "--hostPID", tostring(pid)};
+		cmd = { home .. '/.cache/omnisharp-vim/omnisharp-roslyn/OmniSharp', "--languageserver" , "--hostPID", tostring(pid)};
 	})
-	vim.g.OmniSharp_highlighting = 0
 end
 
 function config_dart()
