@@ -74,7 +74,7 @@ function config_general_settings()
 	vim.o.expandtab = false
 	vim.o.number = true
 	vim.o.relativenumber = true
-	vim.o.wrap = false
+	vim.o.wrap = true
 	vim.o.formatoptions = vim.o.formatoptions.."r" --Continue comments on new lines
 	vim.o.hlsearch = true
 	vim.o.incsearch = true
@@ -96,7 +96,8 @@ function config_color_scheme()
 	--vim.cmd([[ colorscheme gruvbox ]])
   require('catppuccin').setup{
     styles = {
-      conditionals = {}
+      conditionals = {},
+      comments = {}
     },
     integrations = {
       treesitter = false,
