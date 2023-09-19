@@ -86,7 +86,6 @@ end
 
 function config_color_scheme()
 	vim.o.cursorline = true
-	vim.o.guifont = "Fira Mono Medium 10"
 	vim.o.hidden = true
 	vim.o.background = "dark"
 	vim.o.termguicolors = true
