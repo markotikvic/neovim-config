@@ -91,19 +91,7 @@ function config_color_scheme()
 	vim.o.termguicolors = true
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
-  --vim.g.gruvbox_contrast_dark = "hard"
-	--vim.cmd([[ colorscheme gruvbox ]])
-  require('catppuccin').setup{
-    styles = {
-      conditionals = {},
-      comments = {}
-    },
-    integrations = {
-      treesitter = false,
-      semantic_tokens = false
-    }
-  }
-	vim.cmd([[ colorscheme catppuccin-mocha ]])
+	vim.cmd([[ colorscheme moonfly ]])
 end
 
 function config_fzf()
@@ -163,7 +151,7 @@ function config_shortcuts()
 	vim.keymap.set('n', '<leader>rl', '<cmd>source $MYVIMRC<cr>')
 	vim.keymap.set('n', '<leader>t', '<cmd>ToggleTerm<cr>')
 	vim.keymap.set('n', '<leader>Y', 'ggVG"+y') -- select entire buffer
-	vim.keymap.set('n', '<leader>fm', vim.lsp.buf.formatting)
+	vim.keymap.set('n', '<leader>fm', vim.lsp.buf.format)
 	vim.keymap.set('n', '<leader>fD', vim.lsp.buf.declaration)
 	vim.keymap.set('n', '<leader>fd', vim.lsp.buf.definition)
 	vim.keymap.set('n', '<leader>fi', vim.lsp.buf.implementation)
