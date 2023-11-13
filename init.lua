@@ -92,6 +92,25 @@ function config_color_scheme()
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
 	vim.cmd([[ colorscheme moonfly ]])
+  require("ibl").setup()
+  --require('catppuccin').setup{
+  --  styles = {
+  --    conditionals = {},
+  --    comments = {}
+  --  },
+  --  color_overrides = {
+  --    mocha = {
+  --      base = "#000000",
+  --      mantle = "#000000",
+  --      crust = "#000000",
+  --    },
+  --  },
+  --  integrations = {
+  --    treesitter = false,
+  --    semantic_tokens = false
+  --  }
+  --}
+  --vim.cmd([[ colorscheme catppuccin-mocha ]])
 end
 
 function config_fzf()
@@ -120,7 +139,7 @@ function config_telescope()
 
   local builtin = require('telescope.builtin')
   --builtin.buffers({ sort_mru = true })
-  --builtin.buffers({ sort_lastused = true, ignore_current_buffer = true })
+  --builtin.buffers({ sort_lastused = true })
 	vim.keymap.set('n', '<leader>a', builtin.buffers, {})
 	vim.keymap.set('n', '<leader>z', builtin.find_files, {})
 	vim.keymap.set('n', '<leader>s', builtin.live_grep, {})
@@ -174,7 +193,8 @@ function config_dotnet()
 	vim.g.OmniSharp_highlighting = 0
 
 	require('lspconfig').omnisharp.setup({
-		on_attach = function(_, bufnr)
+		on_attach = function(client, bufnr)
+      client.server_capabilities.semanticTokensProvider = nil
 			vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 		end,
 		cmd = { home .. '/.cache/omnisharp-vim/omnisharp-roslyn/OmniSharp', "--languageserver" , "--hostPID", tostring(pid)};
