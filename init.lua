@@ -134,15 +134,19 @@ function config_telescope()
           ["<C-k>"] = require('telescope.actions').move_selection_previous,
         },
       },
-    }
+    },
+    pickers = {
+      buffers = {
+        ignore_current_buffer = true,
+        sort_lastused = true,
+      },
+    },
   }
 
-  local builtin = require('telescope.builtin')
-  --builtin.buffers({ sort_mru = true })
-  --builtin.buffers({ sort_lastused = true })
-	vim.keymap.set('n', '<leader>a', builtin.buffers, {})
-	vim.keymap.set('n', '<leader>z', builtin.find_files, {})
-	vim.keymap.set('n', '<leader>s', builtin.live_grep, {})
+  local telescope_builtin = require('telescope.builtin')
+	vim.keymap.set('n', '<leader>a', telescope_builtin.buffers, {})
+	vim.keymap.set('n', '<leader>z', telescope_builtin.find_files, {})
+	vim.keymap.set('n', '<leader>s', telescope_builtin.live_grep, {})
 end
 
 function config_shortcuts()
@@ -211,6 +215,7 @@ function config_dart()
 end
 
 function config_python()
+  -- call :UpdateRemotePlugins
 	vim.cmd([[
     let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
 		let g:black#settings = {
