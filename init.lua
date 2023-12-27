@@ -182,10 +182,17 @@ function config_shortcuts()
 	vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename)
 	vim.keymap.set('n', '<leader>re', ':%s/<C-r><C-w>//gc<Left><Left><Left>')
 	vim.keymap.set('n', '<leader>ry', ':%s/<C-r>"//gc<Left><Left><Left>')
-	vim.keymap.set('v', '<leader>ry', ':s/<C-r>"//gc<Left><Left><Left>')
 	vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float)
 	vim.keymap.set('n', '<leader>ds', vim.diagnostic.show)
 	vim.keymap.set('n', '<leader>dh', vim.diagnostic.hide)
+
+	vim.keymap.set('v', '<leader>re', ':s//gc<Left><Left><Left>')
+	vim.keymap.set('v', '<leader>ry', ':s/<C-r>"//gc<Left><Left><Left>')
+
+	vim.keymap.set('i', '<C-l>', '<Right>')
+	vim.keymap.set('i', '<C-h>', '<Left>')
+	vim.keymap.set('i', '<C-k>', '<Up>')
+	vim.keymap.set('i', '<C-j>', '<Down>')
 end
 
 function config_dotnet()
@@ -225,8 +232,23 @@ function config_python()
 	]])
 end
 
+function config_rust()
+  vim.g.rustfmt_autosave = 1
+  require('lspconfig').rust_analyzer.setup {
+    settings = {
+      ['rust-analyzer'] = {
+        check = {
+          command = "clippy";
+        },
+        diagnostics = {
+          enable = true;
+        }
+      }
+    }
+  }
+end
+
 function config_cpp()
-	-- require('lspconfig').clangd.setup{ }
 	vim.cmd([[
     let g:clang_format#code_style = "google"
 		let g:clang_format#style_options = {
@@ -239,6 +261,8 @@ function config_cpp()
 			\ 'SpaceBeforeCpp11BracedList': 'true',
 		\ }
 	]])
+  -- not usable for PASOP
+	-- require('lspconfig').clangd.setup{}
 end
 
 function config_lsp_diagnostics()
@@ -264,6 +288,7 @@ function config_lsp()
 	config_type_script()
 	config_cpp()
 	config_python()
+  config_rust()
 	config_formatters()
 	config_lsp_diagnostics()
 end
@@ -280,6 +305,7 @@ function config_formatters()
 		autocmd FileType css nnoremap <leader>fm :call CSSBeautify()<CR>
 		autocmd FileType cpp nnoremap <leader>fm :ClangFormat<CR>
 		autocmd FileType c nnoremap <leader>fm :ClangFormat<CR>
+		autocmd FileType rs nnoremap <leader>fm :RustFmt<CR>
 		autocmd FileType python nnoremap <leader>fm :call Black()<CR>
 		au BufRead,BufNewFile *.vm set filetype=velocity
 		au BufRead,BufNewFile *.lox set filetype=lua
