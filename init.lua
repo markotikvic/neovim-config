@@ -82,35 +82,55 @@ function config_general_settings()
 	vim.o.wildmode = "longest,list,full" --Completion rules
 	vim.o.switchbuf = vim.o.switchbuf..",usetab,newtab"
 	vim.cmd([[ match ErrorMsg '\s\+$' ]]) --Red color for trailing whitespaces
+  vim.cmd([[ set mouse= ]])
 end
 
-function config_color_scheme()
+function config_theme()
 	vim.o.cursorline = true
 	vim.o.hidden = true
 	vim.o.background = "dark"
 	vim.o.termguicolors = true
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
-	vim.cmd([[ colorscheme moonfly ]])
+  config_kanagawa()
+  --config_catppuccin()
+	--vim.cmd([[ colorscheme moonfly ]])
+	--vim.cmd([[ colorscheme github_dark_default ]])
   require("ibl").setup()
-  --require('catppuccin').setup{
-  --  styles = {
-  --    conditionals = {},
-  --    comments = {}
-  --  },
-  --  color_overrides = {
-  --    mocha = {
-  --      base = "#000000",
-  --      mantle = "#000000",
-  --      crust = "#000000",
-  --    },
-  --  },
-  --  integrations = {
-  --    treesitter = false,
-  --    semantic_tokens = false
-  --  }
-  --}
-  --vim.cmd([[ colorscheme catppuccin-mocha ]])
+end
+
+function config_kanagawa()
+  require('kanagawa').setup({
+    commentStyle = { italic = true },
+    keywordStyle = { italic = false},
+    statementStyle = { bold = false },
+    theme = "dragon",
+    background = {
+      dark = "dragon",
+      light = "lotus"
+    },
+  })
+	vim.cmd([[ colorscheme kanagawa ]])
+end
+
+function config_catppuccin()
+  require('catppuccin').setup{
+    styles = {
+      conditionals = {},
+    },
+    color_overrides = {
+      mocha = {
+        base = "#000000",
+        mantle = "#000000",
+        crust = "#000000",
+      },
+    },
+    integrations = {
+      treesitter = false,
+      semantic_tokens = false
+    }
+  }
+  vim.cmd([[ colorscheme catppuccin-mocha ]])
 end
 
 function config_fzf()
@@ -127,6 +147,8 @@ end
 function config_telescope()
   require('telescope').setup{
     defaults = {
+      layout_strategy = 'vertical',
+      layout_config = { height = 0.9 },
       file_ignore_patterns = {".git", "node_modules", "build", "Debug", "bin", "obj", "install"},
       mappings = {
         i = {
@@ -330,10 +352,10 @@ function config_terminal()
 end
 
 config_general_settings()
-config_color_scheme()
+config_theme()
 config_status_line()
 config_lsp()
 -- config_fzf()
 config_telescope()
 config_shortcuts()
-config_terminal()
+-- config_terminal()

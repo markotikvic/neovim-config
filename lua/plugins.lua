@@ -33,4 +33,6 @@ return require('packer').startup(function(use)
   use { 'bluz71/vim-moonfly-colors', as = 'moonfly' }
   use "lukas-reineke/indent-blankline.nvim"
   use "rust-lang/rust.vim"
+  use 'projekt0n/github-nvim-theme'
+  use "rebelot/kanagawa.nvim"
 end)
