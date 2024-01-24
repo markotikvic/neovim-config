@@ -92,18 +92,30 @@ function config_theme()
 	vim.o.termguicolors = true
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
-  config_kanagawa()
+  config_nightfox()
+  --config_kanagawa()
   --config_catppuccin()
 	--vim.cmd([[ colorscheme moonfly ]])
 	--vim.cmd([[ colorscheme github_dark_default ]])
   require("ibl").setup()
 end
 
+function config_nightfox()
+  require('nightfox').setup({
+    options = {
+      styles = {
+        comments = "italic",
+      }
+    }
+  })
+  vim.cmd([[ colorscheme nightfox ]])
+end
+
 function config_kanagawa()
   require('kanagawa').setup({
-    commentStyle = { italic = true },
-    keywordStyle = { italic = false},
-    statementStyle = { bold = false },
+    commentStyle = { bold = false, italic = true },
+    keywordStyle = { bold = true, italic = false},
+    statementStyle = { bold = true, italic = false },
     theme = "dragon",
     background = {
       dark = "dragon",
@@ -159,8 +171,9 @@ function config_telescope()
     },
     pickers = {
       buffers = {
-        ignore_current_buffer = true,
-        sort_lastused = true,
+        sort_mru = true,
+        --ignore_current_buffer = true,
+        --sort_lastused = true,
       },
     },
   }

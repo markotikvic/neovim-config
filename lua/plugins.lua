@@ -35,4 +35,6 @@ return require('packer').startup(function(use)
   use "rust-lang/rust.vim"
   use 'projekt0n/github-nvim-theme'
   use "rebelot/kanagawa.nvim"
+  use 'shaunsingh/nord.nvim'
+  use "EdenEast/nightfox.nvim"
 end)
