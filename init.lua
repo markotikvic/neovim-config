@@ -92,8 +92,8 @@ function config_theme()
 	vim.o.termguicolors = true
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
-  config_nightfox()
-  --config_kanagawa()
+  config_kanagawa()
+  --config_nightfox()
   --config_catppuccin()
 	--vim.cmd([[ colorscheme moonfly ]])
 	--vim.cmd([[ colorscheme github_dark_default ]])
@@ -105,6 +105,10 @@ function config_nightfox()
     options = {
       styles = {
         comments = "italic",
+        keywords = "bold",
+        conditionals = "bold",
+        types = "bold",
+        types = "bold",
       }
     }
   })
