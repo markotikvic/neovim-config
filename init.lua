@@ -93,6 +93,7 @@ function config_theme()
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
   config_kanagawa()
+  config_gruvbox()
   --config_nightfox()
   --config_catppuccin()
 	--vim.cmd([[ colorscheme moonfly ]])
@@ -107,7 +108,6 @@ function config_nightfox()
         comments = "italic",
         keywords = "bold",
         conditionals = "bold",
-        types = "bold",
         types = "bold",
       }
     }
@@ -126,7 +126,35 @@ function config_kanagawa()
       light = "lotus"
     },
   })
-	vim.cmd([[ colorscheme kanagawa ]])
+	vim.cmd([[ colorscheme kanagawa-dragon ]])
+end
+
+function config_gruvbox()
+  require('gruvbox').setup({
+    terminal_colors = true, -- add neovim terminal colors
+    undercurl = true,
+    underline = true,
+    bold = true,
+    italic = {
+      strings = false,
+      emphasis = false,
+      comments = true,
+      operators = false,
+      folds = true,
+    },
+    strikethrough = true,
+    invert_selection = false,
+    invert_signs = false,
+    invert_tabline = false,
+    invert_intend_guides = false,
+    inverse = true, -- invert background for search, diffs, statuslines and errors
+    contrast = "dark", -- can be "hard", "soft" or empty string
+    palette_overrides = {},
+    overrides = {},
+    dim_inactive = false,
+    transparent_mode = false,
+  })
+	vim.cmd([[ colorscheme gruvbox ]])
 end
 
 function config_catppuccin()

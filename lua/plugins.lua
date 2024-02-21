@@ -6,8 +6,6 @@ return require('packer').startup(function(use)
 	use 'junegunn/fzf.vim'
 	use 'tpope/vim-fugitive'
 	use 'itchyny/vim-gitbranch'
-  use { "catppuccin/nvim", as = "catppuccin" }
-	use 'morhetz/gruvbox'
 	use 'akinsho/toggleterm.nvim'
 	use 'neovim/nvim-lspconfig'
 	use 'fatih/vim-go'
@@ -30,11 +28,11 @@ return require('packer').startup(function(use)
     requires = { {'nvim-lua/plenary.nvim'} }
   }
   use 'udalov/kotlin-vim'
-  use { 'bluz71/vim-moonfly-colors', as = 'moonfly' }
   use "lukas-reineke/indent-blankline.nvim"
   use "rust-lang/rust.vim"
-  use 'projekt0n/github-nvim-theme'
+  use { 'bluz71/vim-moonfly-colors', as = 'moonfly' }
   use "rebelot/kanagawa.nvim"
-  use 'shaunsingh/nord.nvim'
   use "EdenEast/nightfox.nvim"
+  use { "catppuccin/nvim", as = "catppuccin" }
+	use 'ellisonleao/gruvbox.nvim'
 end)
