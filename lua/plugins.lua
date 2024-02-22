@@ -30,6 +30,10 @@ return require('packer').startup(function(use)
   use 'udalov/kotlin-vim'
   use "lukas-reineke/indent-blankline.nvim"
   use "rust-lang/rust.vim"
+  use {
+    'nvim-lualine/lualine.nvim',
+    requires = { 'nvim-tree/nvim-web-devicons', opt = true }
+  }
   use { 'bluz71/vim-moonfly-colors', as = 'moonfly' }
   use "rebelot/kanagawa.nvim"
   use "EdenEast/nightfox.nvim"

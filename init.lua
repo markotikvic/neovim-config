@@ -35,32 +35,47 @@ function git_branch()
   return ""
 end
 
-function active_status_line_format()
-  local mode = vim_mode()
-  local branch = git_branch()
-	local line = mode.." %t%m L%l:%c %P "..branch
-	line = line.."%=" -- align to right
-	line = line..vim.opt.ff:get().." "..vim.opt.encoding:get()
-
-	return line
-end
-
-function inactive_status_line_format()
-  local line = "%t"
-	line = line.."%=" -- align to right
-	line = line..vim.opt.ff:get().." "..vim.opt.encoding:get()
-  return line
-end
-
 function config_status_line()
-	vim.o.laststatus = 2
-  vim.api.nvim_exec([[
-    augroup Statusline
-    au!
-    au WinEnter,BufEnter * setlocal statusline=%!v:lua.active_status_line_format()
-    au WinLeave,BufLeave * setlocal statusline=%!v:lua.inactive_status_line_format()
-    augroup END
-  ]], false)
+  require('lualine').setup {
+    options = {
+      icons_enabled = false,
+      theme = 'auto',
+      component_separators = { left = '', right = ''},
+      section_separators = { left = '', right = ''},
+      disabled_filetypes = {
+        statusline = {},
+        winbar = {},
+      },
+      ignore_focus = {},
+      always_divide_middle = true,
+      globalstatus = false,
+      refresh = {
+        statusline = 1000,
+        tabline = 1000,
+        winbar = 1000,
+      }
+    },
+    sections = {
+      lualine_a = {'mode'},
+      lualine_b = {'branch', 'diff', 'diagnostics'},
+      lualine_c = {'filename', 'location', 'progress'},
+      lualine_x = {'encoding', 'fileformat', 'filetype'},
+      lualine_y = {},
+      lualine_z = {}
+    },
+    inactive_sections = {
+      lualine_a = {},
+      lualine_b = {},
+      lualine_c = {'filename', 'location'},
+      lualine_x = {},
+      lualine_y = {},
+      lualine_z = {}
+    },
+    tabline = {},
+    winbar = {},
+    inactive_winbar = {},
+    extensions = {}
+  }
 end
 
 function config_general_settings()
@@ -92,13 +107,16 @@ function config_theme()
 	vim.o.termguicolors = true
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
-  config_kanagawa()
-  config_gruvbox()
+  --config_kanagawa()
+  --config_gruvbox()
   --config_nightfox()
   --config_catppuccin()
-	--vim.cmd([[ colorscheme moonfly ]])
-	--vim.cmd([[ colorscheme github_dark_default ]])
+  config_moonfly()
   require("ibl").setup()
+end
+
+function config_moonfly()
+	vim.cmd([[ colorscheme moonfly ]])
 end
 
 function config_nightfox()
@@ -148,7 +166,7 @@ function config_gruvbox()
     invert_tabline = false,
     invert_intend_guides = false,
     inverse = true, -- invert background for search, diffs, statuslines and errors
-    contrast = "dark", -- can be "hard", "soft" or empty string
+    contrast = "hard", -- can be "hard", "soft" or empty string
     palette_overrides = {},
     overrides = {},
     dim_inactive = false,
