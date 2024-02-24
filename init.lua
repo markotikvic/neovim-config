@@ -93,7 +93,7 @@ function config_general_settings()
 	vim.o.formatoptions = vim.o.formatoptions.."r" --Continue comments on new lines
 	vim.o.hlsearch = true
 	vim.o.incsearch = true
-	--vim.o.ignorecase = true
+	vim.o.ignorecase = true
 	vim.o.wildmode = "longest,list,full" --Completion rules
 	vim.o.switchbuf = vim.o.switchbuf..",usetab,newtab"
 	vim.cmd([[ match ErrorMsg '\s\+$' ]]) --Red color for trailing whitespaces
