@@ -57,8 +57,8 @@ function config_status_line()
     },
     sections = {
       lualine_a = {'mode'},
-      lualine_b = {'branch'},
-      lualine_c = {'filename'},
+      lualine_b = {'filename'},
+      lualine_c = {'branch'},
       lualine_x = {'encoding', 'fileformat'},
       lualine_y = {},
       lualine_z = {'location', 'progress'}
@@ -308,6 +308,7 @@ end
 
 function config_python()
   -- call :UpdateRemotePlugins
+	require('lspconfig').pyright.setup{}
 	vim.cmd([[
     let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
 		let g:black#settings = {
@@ -335,19 +336,35 @@ end
 
 function config_cpp()
 	vim.cmd([[
+    nnoremap <leader>fm :ClangFormat<CR>
     let g:clang_format#code_style = "google"
 		let g:clang_format#style_options = {
-			\ 'IndentWidth' : 2,
-			\ 'ColumnLimit' : 160,
-			\ 'DerivePointerAlignment' : 'false',
-			\ 'SortIncludes' : 'true',
-			\ 'IncludeBlocks' : 'Preserve',
-			\ 'SpacesBeforeTrailingComments' : 1,
+			\ 'IndentWidth': 2,
+			\ 'ColumnLimit': 160,
+			\ 'DerivePointerAlignment': 'false',
+			\ 'SortIncludes': 'true',
+			\ 'IncludeBlocks': 'Preserve',
+			\ 'SpacesBeforeTrailingComments': 1,
 			\ 'SpaceBeforeCpp11BracedList': 'true',
 		\ }
 	]])
   -- not usable for PASOP
 	-- require('lspconfig').clangd.setup{}
+end
+
+function config_c()
+	vim.cmd([[
+    nnoremap <leader>fm :ClangFormat<CR>
+    let g:clang_format#code_style = "google"
+		let g:clang_format#style_options = {
+			\ 'IndentWidth': 4,
+			\ 'ColumnLimit': 80,
+			\ 'SortIncludes': 'true',
+			\ 'IncludeBlocks': 'Preserve',
+			\ 'SpacesBeforeTrailingComments': 1,
+      \ 'BreakBeforeBraces': 'Linux',
+		\ }
+	]])
 end
 
 function config_lsp_diagnostics()
@@ -388,8 +405,8 @@ function config_formatters()
 		autocmd FileType jsx nnoremap <leader>fm :call JsxBeautify()<CR>
 		autocmd FileType html nnoremap <leader>fm :call HtmlBeautify()<CR>
 		autocmd FileType css nnoremap <leader>fm :call CSSBeautify()<CR>
-		autocmd FileType cpp nnoremap <leader>fm :ClangFormat<CR>
-		autocmd FileType c nnoremap <leader>fm :ClangFormat<CR>
+		autocmd FileType cpp lua config_cpp()
+		autocmd FileType c lua config_c()
 		autocmd FileType rs nnoremap <leader>fm :RustFmt<CR>
 		autocmd FileType python nnoremap <leader>fm :call Black()<CR>
 		au BufRead,BufNewFile *.vm set filetype=velocity
