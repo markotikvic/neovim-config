@@ -79,7 +79,7 @@ function config_status_line()
 end
 
 function config_general_settings()
-	vim.cmd([[ filetype plugin indent on ]])
+	vim.cmd([[filetype plugin indent on]])
   vim.g.acp_ignorecaseOption = 0
   vim.g.acp_enableAtStartup = 0
 	vim.o.encoding = "utf-8"
@@ -96,8 +96,8 @@ function config_general_settings()
 	vim.o.ignorecase = true
 	vim.o.wildmode = "longest,list,full" --Completion rules
 	vim.o.switchbuf = vim.o.switchbuf..",usetab,newtab"
-	vim.cmd([[ match ErrorMsg '\s\+$' ]]) --Red color for trailing whitespaces
-  vim.cmd([[ set mouse= ]])
+	vim.cmd([[match ErrorMsg '\s\+$']]) --Red color for trailing whitespaces
+  vim.cmd([[set mouse=]])
 end
 
 function config_theme()
@@ -119,11 +119,11 @@ end
 
 function config_monokai()
   require("monokai-pro").setup()
-	vim.cmd([[ colorscheme monokai-pro-classic ]])
+	vim.cmd([[colorscheme monokai-pro-classic]])
 end
 
 function config_moonfly()
-	vim.cmd([[ colorscheme moonfly ]])
+	vim.cmd([[colorscheme moonfly]])
 end
 
 function config_rose_pine()
@@ -134,7 +134,7 @@ function config_rose_pine()
       bold = false,
     },
   })
-	vim.cmd([[ colorscheme rose-pine-moon ]])
+	vim.cmd([[colorscheme rose-pine-moon]])
 end
 
 function config_nightfox()
@@ -148,7 +148,7 @@ function config_nightfox()
       }
     }
   })
-  vim.cmd([[ colorscheme nightfox ]])
+  vim.cmd([[colorscheme nightfox]])
 end
 
 function config_kanagawa()
@@ -162,7 +162,7 @@ function config_kanagawa()
       light = "lotus"
     },
   })
-	vim.cmd([[ colorscheme kanagawa-dragon ]])
+	vim.cmd([[colorscheme kanagawa-dragon]])
 end
 
 function config_gruvbox()
@@ -190,7 +190,7 @@ function config_gruvbox()
     dim_inactive = false,
     transparent_mode = false,
   })
-	vim.cmd([[ colorscheme gruvbox ]])
+	vim.cmd([[colorscheme gruvbox]])
 end
 
 function config_catppuccin()
@@ -210,7 +210,7 @@ function config_catppuccin()
       semantic_tokens = false
     }
   }
-  vim.cmd([[ colorscheme catppuccin-mocha ]])
+  vim.cmd([[colorscheme catppuccin-mocha]])
 end
 
 function config_fzf()
@@ -434,7 +434,7 @@ end
 
 function config_go()
 	require('lspconfig').gopls.setup{}
-	vim.cmd([[ set completeopt-=preview ]]) -- Stop scratch window from opening (gocode->neocomplete)
+	vim.cmd([[set completeopt-=preview]]) -- Stop scratch window from opening (gocode->neocomplete)
   vim.g.go_fmt_command = "goimports" -- Run go imports on save
 end
 
@@ -446,7 +446,7 @@ function config_terminal()
 	require("toggleterm").setup{
 		direction = 'float'
 	}
-	vim.cmd([[ set mouse=a ]])
+	vim.cmd([[set mouse=a]])
 end
 
 config_general_settings()
