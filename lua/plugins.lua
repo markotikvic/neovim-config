@@ -39,4 +39,6 @@ return require('packer').startup(function(use)
   use "EdenEast/nightfox.nvim"
   use { "catppuccin/nvim", as = "catppuccin" }
 	use 'ellisonleao/gruvbox.nvim'
+  use { "rose-pine/neovim", as = "rose-pine" }
+  use { "loctvl842/monokai-pro.nvim" }
 end)

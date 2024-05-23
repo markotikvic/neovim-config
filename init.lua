@@ -111,12 +111,30 @@ function config_theme()
   --config_gruvbox()
   --config_nightfox()
   --config_catppuccin()
-  config_moonfly()
+  --config_rose_pine()
+  --config_moonfly()
+  config_monokai()
   require("ibl").setup()
+end
+
+function config_monokai()
+  require("monokai-pro").setup()
+	vim.cmd([[ colorscheme monokai-pro-classic ]])
 end
 
 function config_moonfly()
 	vim.cmd([[ colorscheme moonfly ]])
+end
+
+function config_rose_pine()
+  require('rose-pine').setup({
+    dark_variant = 'main',
+    styles = {
+      italic = false,
+      bold = false,
+    },
+  })
+	vim.cmd([[ colorscheme rose-pine-moon ]])
 end
 
 function config_nightfox()
