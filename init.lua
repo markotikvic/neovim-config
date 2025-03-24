@@ -2,39 +2,6 @@ require("plugins")
 
 vim.g.mapleader = ";"
 
-function vim_mode()
-	local modes = {}
-
-	modes['n'] = '[N]'
-	modes['v'] = '[V]'
-	modes['V'] = '[V·L]'
-	modes['s'] = '[S]'
-	modes['S'] = '[S·L]'
-	modes['i'] = '[I]'
-	modes['R'] = '[R]'
-	modes['Rv'] = '[R-V]'
-	modes['c'] = '[C]'
-	modes['t'] = '[T]'
-
-	local m = vim.fn.mode()
-
-	for k,v in pairs(modes) do
-		if k == m then
-			return v
-		end
-	end
-
-	return "["..m.."?]"
-end
-
-function git_branch()
-  local branch = vim.call("gitbranch#name")
-  if branch ~= "" then
-    return "("..branch..")"
-  end
-  return ""
-end
-
 function config_status_line()
   require('lualine').setup {
     options = {
@@ -57,11 +24,11 @@ function config_status_line()
     },
     sections = {
       lualine_a = {'mode'},
-      lualine_b = {'filename'},
+      lualine_b = {'filename', 'progress'},
       lualine_c = {'branch'},
       lualine_x = {'encoding', 'fileformat'},
       lualine_y = {},
-      lualine_z = {'location', 'progress'}
+      lualine_z = {}
     },
     inactive_sections = {
       lualine_a = {},
@@ -86,9 +53,9 @@ function config_general_settings()
 	vim.o.autoindent = true
 	vim.o.tabstop = 8
 	vim.o.shiftwidth = 8
-	vim.o.expandtab = false
-	vim.o.number = true
-	vim.o.relativenumber = true
+	vim.o.expandtab = 0
+  vim.o.number = 1
+	vim.o.relativenumber = 1
 	vim.o.wrap = true
 	vim.o.formatoptions = vim.o.formatoptions.."r" --Continue comments on new lines
 	vim.o.hlsearch = true
@@ -107,65 +74,35 @@ function config_theme()
 	vim.o.termguicolors = true
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
-  --config_kanagawa()
-  --config_gruvbox()
-  --config_nightfox()
-  --config_catppuccin()
-  --config_rose_pine()
-  --config_moonfly()
-  config_monokai()
-  require("ibl").setup()
+	config_theme_jellybeans()
+  --require("ibl").setup() -- scope indentation indicator
 end
 
-function config_monokai()
-  require("monokai-pro").setup()
-	vim.cmd([[colorscheme monokai-pro-classic]])
+function config_theme_jellybeans()
+  vim.cmd([[colorscheme jellybeans-nvim]])
 end
 
-function config_moonfly()
+function config_theme_monokai_pro()
+  require("monokai-pro").setup({
+    styles = {
+      comment = { italic = true },
+      keyword = { italic = false, bold = true }, -- any other keyword
+      type = { italic = false, bold = true }, -- (preferred) int, long, char, etc
+      storageclass = { italic = false, bold = true }, -- static, register, volatile, etc
+      structure = { italic = false, bold = true }, -- struct, union, enum, etc
+      parameter = { italic = false }, -- parameter pass in function
+      annotation = { italic = false, bold = true },
+      tag_attribute = { italic = false }, -- attribute of tag in reactjs
+    },
+  })
+	vim.cmd([[colorscheme monokai-pro-octagon]])
+end
+
+function config_theme_moonfly()
 	vim.cmd([[colorscheme moonfly]])
 end
 
-function config_rose_pine()
-  require('rose-pine').setup({
-    dark_variant = 'main',
-    styles = {
-      italic = false,
-      bold = false,
-    },
-  })
-	vim.cmd([[colorscheme rose-pine-moon]])
-end
-
-function config_nightfox()
-  require('nightfox').setup({
-    options = {
-      styles = {
-        comments = "italic",
-        keywords = "bold",
-        conditionals = "bold",
-        types = "bold",
-      }
-    }
-  })
-  vim.cmd([[colorscheme nightfox]])
-end
-
-function config_kanagawa()
-  require('kanagawa').setup({
-    commentStyle = { bold = false, italic = true },
-    keywordStyle = { bold = true, italic = false},
-    statementStyle = { bold = true, italic = false },
-    theme = "dragon",
-    background = {
-      dark = "dragon",
-      light = "lotus"
-    },
-  })
-	vim.cmd([[colorscheme kanagawa-dragon]])
-end
-
-function config_gruvbox()
+function config_theme_gruvbox()
   require('gruvbox').setup({
     terminal_colors = true, -- add neovim terminal colors
     undercurl = true,
@@ -191,37 +128,6 @@ function config_gruvbox()
     transparent_mode = false,
   })
 	vim.cmd([[colorscheme gruvbox]])
-end
-
-function config_catppuccin()
-  require('catppuccin').setup{
-    styles = {
-      conditionals = {},
-    },
-    color_overrides = {
-      mocha = {
-        base = "#000000",
-        mantle = "#000000",
-        crust = "#000000",
-      },
-    },
-    integrations = {
-      treesitter = false,
-      semantic_tokens = false
-    }
-  }
-  vim.cmd([[colorscheme catppuccin-mocha]])
-end
-
-function config_fzf()
-	vim.keymap.set('n', '<leader>a', '<cmd>Buffers<cr>')--nnoremap <leader>a :Buffers<CR>
-	vim.keymap.set('n', '<leader>z', '<cmd>Files<cr>')--nnoremap <leader>z :Files<CR>
-	vim.keymap.set('n', '<leader>s', '<cmd>Lines<cr>')--nnoremap <leader>l :Lines<CR>
-	vim.keymap.set('n', '<leader>F', '<cmd>Ag<cr>')--nnoremap <leader>L :Ag<CR>
-	vim.cmd([[
-    let g:fzf_preview_window = ['right,40%']
-		let $FZF_DEFAULT_COMMAND='find . ! -path "*/.git/*" ! -path "*/install/*" ! -path "*/build/*" ! -path "*/Debug/*" ! -path "*/bin/*" ! -path "*/obj/*" ! -path "*/node_modules/*" -type f'
-	]])
 end
 
 function config_telescope()
@@ -252,7 +158,7 @@ function config_telescope()
 	vim.keymap.set('n', '<leader>s', telescope_builtin.live_grep, {})
 end
 
-function config_shortcuts()
+function config_key_mappings()
 	--Navigate the autocomplete box with <C-j> and <C-k>
 	vim.keymap.set('i', '<c-j>', function()
 		if vim.fn.pumvisible() == 1 then return '<c-n>' end
@@ -264,18 +170,18 @@ function config_shortcuts()
 		return '<c-k>'
 	end, { expr = true, noremap = true })
 
+	vim.keymap.set('n', 'D', '"_D')
+	vim.keymap.set('n', 'dd', '"_dd')
 	vim.keymap.set('n', '<c-n>', '<cmd>split<cr>')
 	vim.keymap.set('n', '<c-m>', '<cmd>vsplit<cr>')
 	vim.keymap.set('n', '<cr>', '<cmd>vsplit<cr>') --mandatory in order for c-m to work in neovim
 	vim.keymap.set('n', '<leader>gf', '<cmd>only<cr> gf')
 	vim.keymap.set('n', '<c-d>', '<cmd>q<cr>')
 	vim.keymap.set('n', '<leader>c', '<cmd>noh<cr>')
-	vim.keymap.set('n', '<tab>', '<c-w>w')
+	--vim.keymap.set('n', '<tab>', '<c-w>w')
 	vim.keymap.set('n', '<leader>m', '%')
-	vim.keymap.set('v', '<leader>y', '"+y') -- copy to clipboard
 	vim.keymap.set('n', '<leader>vim', '<cmd>e $MYVIMRC<cr>')
 	vim.keymap.set('n', '<leader>rl', '<cmd>source $MYVIMRC<cr>')
-	vim.keymap.set('n', '<leader>t', '<cmd>ToggleTerm<cr>')
 	vim.keymap.set('n', '<leader>Y', 'ggVG"+y') -- select entire buffer
 	vim.keymap.set('n', '<leader>fm', vim.lsp.buf.format)
 	vim.keymap.set('n', '<leader>fD', vim.lsp.buf.declaration)
@@ -288,9 +194,15 @@ function config_shortcuts()
 	vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float)
 	vim.keymap.set('n', '<leader>ds', vim.diagnostic.show)
 	vim.keymap.set('n', '<leader>dh', vim.diagnostic.hide)
+	vim.keymap.set('n', '<leader>t0', config_theme_jellybeans)
+	vim.keymap.set('n', '<leader>t1', config_theme_moonfly)
+	vim.keymap.set('n', '<leader>t2', config_theme_monokai_pro)
+	vim.keymap.set('n', '<leader>t3', config_theme_gruvbox)
 
-	vim.keymap.set('v', '<leader>re', ':s//gc<Left><Left><Left>')
-	vim.keymap.set('v', '<leader>ry', ':s/<C-r>"//gc<Left><Left><Left>')
+	vim.keymap.set('v', 'd', '"_d')
+	vim.keymap.set('v', '<leader>y', '"+y') -- copy to clipboard
+	vim.keymap.set('v', '<leader>re', ':s//gc<Left><Left><Left>') -- rename
+	vim.keymap.set('v', '<leader>ry', ':s/<C-r>"//gc<Left><Left><Left>') -- rename from clipboard
 
 	vim.keymap.set('i', '<C-l>', '<Right>')
 	vim.keymap.set('i', '<C-h>', '<Left>')
@@ -338,7 +250,10 @@ end
 
 function config_rust()
   vim.g.rustfmt_autosave = 1
-  require('lspconfig').rust_analyzer.setup {
+  require('lspconfig').rust_analyzer.setup({
+		on_attach = function(client, bufnr)
+      client.server_capabilities.semanticTokensProvider = nil
+		end,
     settings = {
       ['rust-analyzer'] = {
         check = {
@@ -349,7 +264,11 @@ function config_rust()
         }
       }
     }
-  }
+  })
+end
+
+function config_zig()
+  require 'lspconfig'.zls.setup{}
 end
 
 function config_cpp()
@@ -381,6 +300,8 @@ function config_c()
 			\ 'IncludeBlocks': 'Preserve',
 			\ 'SpacesBeforeTrailingComments': 1,
       \ 'BreakBeforeBraces': 'Linux',
+			\ 'DerivePointerAlignment': 'false',
+      \ 'PointerAlignment': 'Right',
 		\ }
 	]])
 end
@@ -406,18 +327,18 @@ function config_lsp()
 	config_dart()
 	config_go()
 	config_type_script()
-	config_cpp()
 	config_python()
   config_rust()
+  config_zig()
 	config_formatters()
 	config_lsp_diagnostics()
 end
 
 function config_formatters()
 	vim.cmd([[
-		autocmd FileType cs lua config_shortcuts()
-		autocmd FileType go lua config_shortcuts()
-		autocmd FileType dart lua config_shortcuts()
+		autocmd FileType cs lua config_key_mappings()
+		autocmd FileType go lua config_key_mappings()
+		autocmd FileType dart lua config_key_mappings()
 		autocmd FileType javascript nnoremap <leader>fm :call JsBeautify()<CR>
 		autocmd FileType json nnoremap <leader>fm :call JsonBeautify()<CR>
 		autocmd FileType jsx nnoremap <leader>fm :call JsxBeautify()<CR>
@@ -442,18 +363,9 @@ function config_type_script()
 	vim.g.typescript_compiler_binary = "tsc --noEmit"
 end
 
-function config_terminal()
-	require("toggleterm").setup{
-		direction = 'float'
-	}
-	vim.cmd([[set mouse=a]])
-end
-
 config_general_settings()
 config_theme()
 config_status_line()
 config_lsp()
--- config_fzf()
 config_telescope()
-config_shortcuts()
--- config_terminal()
+config_key_mappings()
