@@ -28,7 +28,6 @@ return require('packer').startup(function(use)
     requires = { {'nvim-lua/plenary.nvim'} }
   }
   use { 'udalov/kotlin-vim' }
-  use { "lukas-reineke/indent-blankline.nvim" }
   use { "rust-lang/rust.vim" }
   use {
     'nvim-lualine/lualine.nvim',
@@ -41,4 +40,5 @@ return require('packer').startup(function(use)
   use { "peterhoeg/vim-qml", as = "vim-qml" }
   use { 'rktjmp/lush.nvim'}
   use { "metalelf0/jellybeans-nvim" }
+  use { "EdenEast/nightfox.nvim" }
 end)

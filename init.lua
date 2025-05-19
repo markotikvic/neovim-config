@@ -7,41 +7,7 @@ function config_status_line()
     options = {
       icons_enabled = false,
       theme = 'auto',
-      component_separators = { left = '', right = ''},
-      section_separators = { left = '', right = ''},
-      disabled_filetypes = {
-        statusline = {},
-        winbar = {},
-      },
-      ignore_focus = {},
-      always_divide_middle = true,
-      globalstatus = false,
-      refresh = {
-        statusline = 1000,
-        tabline = 1000,
-        winbar = 1000,
-      }
     },
-    sections = {
-      lualine_a = {'mode'},
-      lualine_b = {'filename', 'progress'},
-      lualine_c = {'branch'},
-      lualine_x = {'encoding', 'fileformat'},
-      lualine_y = {},
-      lualine_z = {}
-    },
-    inactive_sections = {
-      lualine_a = {},
-      lualine_b = {},
-      lualine_c = {'filename', 'location'},
-      lualine_x = {},
-      lualine_y = {},
-      lualine_z = {}
-    },
-    tabline = {},
-    winbar = {},
-    inactive_winbar = {},
-    extensions = {}
   }
 end
 
@@ -53,9 +19,9 @@ function config_general_settings()
 	vim.o.autoindent = true
 	vim.o.tabstop = 8
 	vim.o.shiftwidth = 8
-	vim.o.expandtab = 0
-  vim.o.number = 1
-	vim.o.relativenumber = 1
+	vim.o.expandtab = false
+  vim.o.number = true
+	vim.o.relativenumber = true
 	vim.o.wrap = true
 	vim.o.formatoptions = vim.o.formatoptions.."r" --Continue comments on new lines
 	vim.o.hlsearch = true
@@ -74,12 +40,17 @@ function config_theme()
 	vim.o.termguicolors = true
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
-	config_theme_jellybeans()
+  config_theme_jellybeans()
+  --config_theme_nightfox()
   --require("ibl").setup() -- scope indentation indicator
 end
 
 function config_theme_jellybeans()
   vim.cmd([[colorscheme jellybeans-nvim]])
+end
+
+function config_theme_nightfox()
+  vim.cmd([[colorscheme nightfox]])
 end
 
 function config_theme_monokai_pro()
@@ -198,6 +169,7 @@ function config_key_mappings()
 	vim.keymap.set('n', '<leader>t1', config_theme_moonfly)
 	vim.keymap.set('n', '<leader>t2', config_theme_monokai_pro)
 	vim.keymap.set('n', '<leader>t3', config_theme_gruvbox)
+	vim.keymap.set('n', 'E', ':Explore<cr>')
 
 	vim.keymap.set('v', 'd', '"_d')
 	vim.keymap.set('v', '<leader>y', '"+y') -- copy to clipboard
@@ -282,7 +254,7 @@ function config_cpp()
 			\ 'SortIncludes': 'true',
 			\ 'IncludeBlocks': 'Preserve',
 			\ 'SpacesBeforeTrailingComments': 1,
-			\ 'SpaceBeforeCpp11BracedList': 'true',
+			\ 'SpaceBeforeCpp11BracedList': 'false',
 		\ }
 	]])
   -- not usable for PASOP
