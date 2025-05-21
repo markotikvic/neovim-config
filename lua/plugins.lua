@@ -50,4 +50,6 @@ return require('packer').startup(function(use)
   use { "kvrohit/rasmus.nvim" }
   use { "maxmx03/solarized.nvim" }
   use { "kyazdani42/blue-moon" }
+  use { 'projekt0n/github-nvim-theme' }
+  use { "rebelot/kanagawa.nvim" }
 end)

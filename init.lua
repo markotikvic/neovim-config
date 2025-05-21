@@ -41,12 +41,10 @@ function config_theme()
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
   config_theme_catppuccin()
-  --config_theme_nightfox()
-  --config_theme_jellybeans()
-  --config_theme_zenbones()
-  --config_theme_solarized()
-  --config_theme_iceberg()
-  --config_theme_rasmus()
+end
+
+function config_theme_github()
+  vim.cmd([[colorscheme github_dark]])
 end
 
 function config_theme_solarized()
@@ -57,24 +55,15 @@ function config_theme_iceberg()
   vim.cmd([[colorscheme iceberg]])
 end
 
+function config_theme_kanagawa()
+  vim.cmd([[colorscheme kanagawa]])
+end
+
 function config_theme_catppuccin()
   require("catppuccin").setup({
     no_italic = true,
     term_colors = true,
     transparent_background = false,
-    styles = {
-      comments = {},
-      conditionals = {},
-      loops = {},
-      functions = {},
-      keywords = {},
-      strings = {},
-      variables = {},
-      numbers = {},
-      booleans = {},
-      properties = {},
-      types = {},
-    },
     integrations = {
       telescope = {
         enabled = true,
@@ -156,6 +145,32 @@ function config_theme_gruvbox()
 	vim.cmd([[colorscheme gruvbox]])
 end
 
+current_theme = 0
+themes = {
+  config_theme_jellybeans,
+  config_theme_moonfly,
+  config_theme_gruvbox,
+  config_theme_ash,
+  config_theme_catppuccin,
+  config_theme_monokai_pro,
+  config_theme_nightfox,
+  config_theme_rasmus,
+  config_theme_iceberg,
+  config_theme_solarized,
+  config_theme_nord,
+  config_theme_github,
+  config_theme_kanagawa,
+}
+
+function next_theme()
+  themes_count = #themes
+  current_theme = current_theme + 1
+  if current_theme > themes_count then
+    current_theme = 1
+  end
+  themes[current_theme]()
+end
+
 function config_telescope()
   require('telescope').setup{
     defaults = {
@@ -231,13 +246,11 @@ function config_key_mappings()
 	vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename)
 	vim.keymap.set('n', '<leader>re', ':%s/<C-r><C-w>//gc<Left><Left><Left>')
 	vim.keymap.set('n', '<leader>ry', ':%s/<C-r>"//gc<Left><Left><Left>')
+	vim.keymap.set('n', '<leader>R', ':%s//gc<Left><Left><Left>')
 	vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float)
 	vim.keymap.set('n', '<leader>ds', vim.diagnostic.show)
 	vim.keymap.set('n', '<leader>dh', vim.diagnostic.hide)
-	vim.keymap.set('n', '<leader>t0', config_theme_jellybeans)
-	vim.keymap.set('n', '<leader>t1', config_theme_moonfly)
-	vim.keymap.set('n', '<leader>t2', config_theme_monokai_pro)
-	vim.keymap.set('n', '<leader>t3', config_theme_gruvbox)
+	vim.keymap.set('n', '<leader>tt', next_theme)
 	vim.keymap.set('n', 'E', ':Explore<cr>')
 
 	vim.keymap.set('v', 'd', '"_d')
