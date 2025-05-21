@@ -41,4 +41,13 @@ return require('packer').startup(function(use)
   use { 'rktjmp/lush.nvim'}
   use { "metalelf0/jellybeans-nvim" }
   use { "EdenEast/nightfox.nvim" }
+  use { "shaunsingh/nord.nvim" }
+  use { "drewxs/ash.nvim" }
+  use { "cocopon/iceberg.vim" }
+  use { "nvim-treesitter/nvim-treesitter" }
+  use { "zenbones-theme/zenbones.nvim" }
+  use { "catppuccin/nvim", as = "catppuccin" }
+  use { "kvrohit/rasmus.nvim" }
+  use { "maxmx03/solarized.nvim" }
+  use { "kyazdani42/blue-moon" }
 end)

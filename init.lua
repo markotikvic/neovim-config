@@ -40,17 +40,72 @@ function config_theme()
 	vim.o.termguicolors = true
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
-  config_theme_jellybeans()
+  config_theme_catppuccin()
   --config_theme_nightfox()
-  --require("ibl").setup() -- scope indentation indicator
+  --config_theme_jellybeans()
+  --config_theme_zenbones()
+  --config_theme_solarized()
+  --config_theme_iceberg()
+  --config_theme_rasmus()
+end
+
+function config_theme_solarized()
+  vim.cmd([[colorscheme solarized]])
+end
+
+function config_theme_iceberg()
+  vim.cmd([[colorscheme iceberg]])
+end
+
+function config_theme_catppuccin()
+  require("catppuccin").setup({
+    no_italic = true,
+    term_colors = true,
+    transparent_background = false,
+    styles = {
+      comments = {},
+      conditionals = {},
+      loops = {},
+      functions = {},
+      keywords = {},
+      strings = {},
+      variables = {},
+      numbers = {},
+      booleans = {},
+      properties = {},
+      types = {},
+    },
+    integrations = {
+      telescope = {
+        enabled = true,
+      },
+    },
+  })
+  vim.cmd([[colorscheme catppuccin-mocha]])
+end
+
+function config_theme_rasmus()
+  vim.cmd([[colorscheme rasmus]])
+end
+
+function config_theme_zenbones()
+  vim.cmd([[colorscheme zenbones]])
+end
+
+function config_theme_ash()
+  vim.cmd([[colorscheme ash]])
 end
 
 function config_theme_jellybeans()
   vim.cmd([[colorscheme jellybeans-nvim]])
 end
 
+function config_theme_nord()
+  vim.cmd[[colorscheme nord]]
+end
+
 function config_theme_nightfox()
-  vim.cmd([[colorscheme nightfox]])
+  vim.cmd([[colorscheme carbonfox]])
 end
 
 function config_theme_monokai_pro()
@@ -127,6 +182,20 @@ function config_telescope()
 	vim.keymap.set('n', '<leader>a', telescope_builtin.buffers, {})
 	vim.keymap.set('n', '<leader>z', telescope_builtin.find_files, {})
 	vim.keymap.set('n', '<leader>s', telescope_builtin.live_grep, {})
+end
+
+function config_treesitter()
+  require'nvim-treesitter.configs'.setup {
+    ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
+    highlight = {
+      enable = true,
+      -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+      -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+      -- Using this option may slow down your editor, and you may see some duplicate highlights.
+      -- Instead of true it can also be a list of languages
+      additional_vim_regex_highlighting = false,
+    },
+  }
 end
 
 function config_key_mappings()
@@ -337,6 +406,7 @@ end
 
 config_general_settings()
 config_theme()
+config_treesitter()
 config_status_line()
 config_lsp()
 config_telescope()
