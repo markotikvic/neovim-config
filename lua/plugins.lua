@@ -52,4 +52,6 @@ return require('packer').startup(function(use)
   use { "kyazdani42/blue-moon" }
   use { 'projekt0n/github-nvim-theme' }
   use { "rebelot/kanagawa.nvim" }
+  use { "wtfox/jellybeans.nvim" }
+  use { "sainnhe/sonokai" }
 end)

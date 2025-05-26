@@ -5,8 +5,10 @@ vim.g.mapleader = ";"
 function config_status_line()
   require('lualine').setup {
     options = {
-      icons_enabled = false,
+      icons_enabled = true,
       theme = 'auto',
+      --section_separators = { left = '', right = '' },
+      --component_separators = { left = '', right = '' }
     },
   }
 end
@@ -40,135 +42,16 @@ function config_theme()
 	vim.o.termguicolors = true
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
-  config_theme_catppuccin()
-end
-
-function config_theme_github()
-  vim.cmd([[colorscheme github_dark]])
-end
-
-function config_theme_solarized()
-  vim.cmd([[colorscheme solarized]])
-end
-
-function config_theme_iceberg()
-  vim.cmd([[colorscheme iceberg]])
-end
-
-function config_theme_kanagawa()
-  vim.cmd([[colorscheme kanagawa]])
-end
-
-function config_theme_catppuccin()
-  require("catppuccin").setup({
-    no_italic = true,
-    term_colors = true,
-    transparent_background = false,
-    integrations = {
-      telescope = {
-        enabled = true,
-      },
-    },
-  })
-  vim.cmd([[colorscheme catppuccin-mocha]])
-end
-
-function config_theme_rasmus()
-  vim.cmd([[colorscheme rasmus]])
-end
-
-function config_theme_zenbones()
-  vim.cmd([[colorscheme zenbones]])
-end
-
-function config_theme_ash()
-  vim.cmd([[colorscheme ash]])
+  config_theme_jellybeans()
 end
 
 function config_theme_jellybeans()
-  vim.cmd([[colorscheme jellybeans-nvim]])
-end
-
-function config_theme_nord()
-  vim.cmd[[colorscheme nord]]
-end
-
-function config_theme_nightfox()
-  vim.cmd([[colorscheme carbonfox]])
-end
-
-function config_theme_monokai_pro()
-  require("monokai-pro").setup({
-    styles = {
-      comment = { italic = true },
-      keyword = { italic = false, bold = true }, -- any other keyword
-      type = { italic = false, bold = true }, -- (preferred) int, long, char, etc
-      storageclass = { italic = false, bold = true }, -- static, register, volatile, etc
-      structure = { italic = false, bold = true }, -- struct, union, enum, etc
-      parameter = { italic = false }, -- parameter pass in function
-      annotation = { italic = false, bold = true },
-      tag_attribute = { italic = false }, -- attribute of tag in reactjs
-    },
+  require("jellybeans").setup({
+    transparent = false,
+    italics = false,
+    flat_ui = true,
   })
-	vim.cmd([[colorscheme monokai-pro-octagon]])
-end
-
-function config_theme_moonfly()
-	vim.cmd([[colorscheme moonfly]])
-end
-
-function config_theme_gruvbox()
-  require('gruvbox').setup({
-    terminal_colors = true, -- add neovim terminal colors
-    undercurl = true,
-    underline = true,
-    bold = true,
-    italic = {
-      strings = false,
-      emphasis = false,
-      comments = true,
-      operators = false,
-      folds = true,
-    },
-    strikethrough = true,
-    invert_selection = false,
-    invert_signs = false,
-    invert_tabline = false,
-    invert_intend_guides = false,
-    inverse = true, -- invert background for search, diffs, statuslines and errors
-    contrast = "hard", -- can be "hard", "soft" or empty string
-    palette_overrides = {},
-    overrides = {},
-    dim_inactive = false,
-    transparent_mode = false,
-  })
-	vim.cmd([[colorscheme gruvbox]])
-end
-
-current_theme = 0
-themes = {
-  config_theme_jellybeans,
-  config_theme_moonfly,
-  config_theme_gruvbox,
-  config_theme_ash,
-  config_theme_catppuccin,
-  config_theme_monokai_pro,
-  config_theme_nightfox,
-  config_theme_rasmus,
-  config_theme_iceberg,
-  config_theme_solarized,
-  config_theme_nord,
-  config_theme_github,
-  config_theme_kanagawa,
-}
-
-function next_theme()
-  themes_count = #themes
-  current_theme = current_theme + 1
-  if current_theme > themes_count then
-    current_theme = 1
-  end
-  themes[current_theme]()
+  vim.cmd([[colorscheme jellybeans]])
 end
 
 function config_telescope()
@@ -189,6 +72,11 @@ function config_telescope()
         sort_mru = true,
         --ignore_current_buffer = true,
         --sort_lastused = true,
+        mappings = {
+          i = {
+            ["<c-d>"] = "delete_buffer",
+          }
+        }
       },
     },
   }
@@ -201,15 +89,15 @@ end
 
 function config_treesitter()
   require'nvim-treesitter.configs'.setup {
-    ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
-    highlight = {
+    ensure_installed = { "c", "cpp", "lua", "rust", "go", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
+     highlight = {
       enable = true,
       -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
       -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
       -- Using this option may slow down your editor, and you may see some duplicate highlights.
       -- Instead of true it can also be a list of languages
       additional_vim_regex_highlighting = false,
-    },
+     },
   }
 end
 
@@ -234,9 +122,7 @@ function config_key_mappings()
 	vim.keymap.set('n', '<c-d>', '<cmd>q<cr>')
 	vim.keymap.set('n', '<leader>c', '<cmd>noh<cr>')
 	--vim.keymap.set('n', '<tab>', '<c-w>w')
-	vim.keymap.set('n', '<leader>m', '%')
 	vim.keymap.set('n', '<leader>vim', '<cmd>e $MYVIMRC<cr>')
-	vim.keymap.set('n', '<leader>rl', '<cmd>source $MYVIMRC<cr>')
 	vim.keymap.set('n', '<leader>Y', 'ggVG"+y') -- select entire buffer
 	vim.keymap.set('n', '<leader>fm', vim.lsp.buf.format)
 	vim.keymap.set('n', '<leader>fD', vim.lsp.buf.declaration)
@@ -250,7 +136,7 @@ function config_key_mappings()
 	vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float)
 	vim.keymap.set('n', '<leader>ds', vim.diagnostic.show)
 	vim.keymap.set('n', '<leader>dh', vim.diagnostic.hide)
-	vim.keymap.set('n', '<leader>tt', next_theme)
+	vim.keymap.set('n', '<leader>tt', ':exec &bg=="light"? "set bg=dark" : "set bg=light"<CR>')
 	vim.keymap.set('n', 'E', ':Explore<cr>')
 
 	vim.keymap.set('v', 'd', '"_d')
@@ -273,11 +159,11 @@ function config_dotnet()
 	vim.g.OmniSharp_highlighting = 0
 
 	require('lspconfig').omnisharp.setup({
-		on_attach = function(client, bufnr)
+    on_attach = function(client, bufnr)
       client.server_capabilities.semanticTokensProvider = nil
-			vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-		end,
-		cmd = { home .. '/.cache/omnisharp-vim/omnisharp-roslyn/OmniSharp', "--languageserver" , "--hostPID", tostring(pid)};
+      vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+    end,
+    cmd = {home..'/.cache/omnisharp-vim/omnisharp-roslyn/OmniSharp', "--languageserver", "--hostPID", tostring(pid)};
 	})
 end
 
@@ -292,14 +178,14 @@ end
 
 function config_python()
   -- call :UpdateRemotePlugins
-	require('lspconfig').pyright.setup{}
-	vim.cmd([[
+  require('lspconfig').pyright.setup{}
+  vim.cmd([[
     let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
-		let g:black#settings = {
-		    \ 'fast': 1,
-		    \ 'line_length': 100
-		\}
-	]])
+    let g:black#settings = {
+        \ 'fast': 1,
+        \ 'line_length': 100
+    \}
+  ]])
 end
 
 function config_rust()
@@ -409,18 +295,19 @@ end
 
 function config_go()
 	require('lspconfig').gopls.setup{}
-	vim.cmd([[set completeopt-=preview]]) -- Stop scratch window from opening (gocode->neocomplete)
-  vim.g.go_fmt_command = "goimports" -- Run go imports on save
+  --Stop scratch window from opening(gocode->neocomplete)
+  vim.cmd([[set completeopt-=preview]])
+  vim.g.go_fmt_command = "goimports"
 end
 
 function config_type_script()
-	vim.g.typescript_compiler_binary = "tsc --noEmit"
+  vim.g.typescript_compiler_binary = "tsc --noEmit"
 end
 
 config_general_settings()
-config_theme()
-config_treesitter()
-config_status_line()
-config_lsp()
-config_telescope()
 config_key_mappings()
+config_theme()
+config_status_line()
+config_telescope()
+config_treesitter()
+config_lsp()
