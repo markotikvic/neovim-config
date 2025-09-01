@@ -25,13 +25,13 @@ function config_general_settings()
   vim.o.number = true
 	vim.o.relativenumber = true
 	vim.o.wrap = true
-	vim.o.formatoptions = vim.o.formatoptions.."r" --Continue comments on new lines
+	vim.o.formatoptions = vim.o.formatoptions.."r" -- Continue comments on new lines
 	vim.o.hlsearch = true
 	vim.o.incsearch = true
 	vim.o.ignorecase = true
-	vim.o.wildmode = "longest,list,full" --Completion rules
+	vim.o.wildmode = "longest,list,full" -- Completion rules
 	vim.o.switchbuf = vim.o.switchbuf..",usetab,newtab"
-	vim.cmd([[match ErrorMsg '\s\+$']]) --Red color for trailing whitespaces
+	vim.cmd([[match ErrorMsg '\s\+$']]) -- Red color for trailing whitespaces
   vim.cmd([[set mouse=]])
 end
 
@@ -42,7 +42,27 @@ function config_theme()
 	vim.o.termguicolors = true
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
-  config_theme_jellybeans()
+  config_theme_nightfly()
+end
+
+function config_theme_nightfly()
+  vim.g.nightflyIntalics = false
+  -- vim.g.nightflyNormalFloat = true
+  -- vim.o.winborder = "single"
+  vim.cmd([[colorscheme nightfly]])
+end
+
+function config_theme_moonfly()
+  vim.g.moonflyIntalics = false
+  -- vim.g.moonflyNormalFloat = true
+  -- vim.o.winborder = "single"
+  vim.cmd([[colorscheme moonfly]])
+end
+
+function config_theme_sonokai()
+  vim.g.sonokai_style = 'default'
+  vim.gsonokai_better_performance = 1
+  vim.cmd([[colorscheme sonokai]])
 end
 
 function config_theme_jellybeans()
@@ -58,7 +78,6 @@ function config_telescope()
   require('telescope').setup{
     defaults = {
       layout_strategy = 'vertical',
-      layout_config = { height = 0.9 },
       file_ignore_patterns = {".git", "node_modules", "build", "Debug", "bin", "obj", "install"},
       mappings = {
         i = {
@@ -102,7 +121,7 @@ function config_treesitter()
 end
 
 function config_key_mappings()
-	--Navigate the autocomplete box with <C-j> and <C-k>
+	-- Navigate the autocomplete box with <C-j> and <C-k>
 	vim.keymap.set('i', '<c-j>', function()
 		if vim.fn.pumvisible() == 1 then return '<c-n>' end
 		return '<c-j>'
@@ -117,37 +136,37 @@ function config_key_mappings()
 	vim.keymap.set('n', 'dd', '"_dd')
 	vim.keymap.set('n', '<c-n>', '<cmd>split<cr>')
 	vim.keymap.set('n', '<c-m>', '<cmd>vsplit<cr>')
-	vim.keymap.set('n', '<cr>', '<cmd>vsplit<cr>') --mandatory in order for c-m to work in neovim
+	vim.keymap.set('n', '<cr>', '<cmd>vsplit<cr>') -- mandatory in order for c-m to work in neovim
 	vim.keymap.set('n', '<leader>gf', '<cmd>only<cr> gf')
 	vim.keymap.set('n', '<c-d>', '<cmd>q<cr>')
 	vim.keymap.set('n', '<leader>c', '<cmd>noh<cr>')
-	--vim.keymap.set('n', '<tab>', '<c-w>w')
 	vim.keymap.set('n', '<leader>vim', '<cmd>e $MYVIMRC<cr>')
 	vim.keymap.set('n', '<leader>Y', 'ggVG"+y') -- select entire buffer
+	vim.keymap.set('n', '<leader>re', ':%s/<C-r><C-w>//gc<Left><Left><Left>')
+	vim.keymap.set('n', '<leader>ry', ':%s/<C-r>"//gc<Left><Left><Left>')
+	vim.keymap.set('n', '<leader>R', ':%s//gc<Left><Left><Left>')
+	vim.keymap.set('n', 'E', ':Explore<cr>')
+
 	vim.keymap.set('n', '<leader>fm', vim.lsp.buf.format)
 	vim.keymap.set('n', '<leader>fD', vim.lsp.buf.declaration)
 	vim.keymap.set('n', '<leader>fd', vim.lsp.buf.definition)
 	vim.keymap.set('n', '<leader>fi', vim.lsp.buf.implementation)
 	vim.keymap.set('n', '<leader>fr', vim.lsp.buf.references)
 	vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename)
-	vim.keymap.set('n', '<leader>re', ':%s/<C-r><C-w>//gc<Left><Left><Left>')
-	vim.keymap.set('n', '<leader>ry', ':%s/<C-r>"//gc<Left><Left><Left>')
-	vim.keymap.set('n', '<leader>R', ':%s//gc<Left><Left><Left>')
+
 	vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float)
 	vim.keymap.set('n', '<leader>ds', vim.diagnostic.show)
 	vim.keymap.set('n', '<leader>dh', vim.diagnostic.hide)
-	vim.keymap.set('n', '<leader>tt', ':exec &bg=="light"? "set bg=dark" : "set bg=light"<CR>')
-	vim.keymap.set('n', 'E', ':Explore<cr>')
 
 	vim.keymap.set('v', 'd', '"_d')
 	vim.keymap.set('v', '<leader>y', '"+y') -- copy to clipboard
 	vim.keymap.set('v', '<leader>re', ':s//gc<Left><Left><Left>') -- rename
-	vim.keymap.set('v', '<leader>ry', ':s/<C-r>"//gc<Left><Left><Left>') -- rename from clipboard
+	vim.keymap.set('v', '<leader>ry', 'y:s/<C-r>"//gc<Left><Left><Left>') -- rename from clipboard
 
-	vim.keymap.set('i', '<C-l>', '<Right>')
-	vim.keymap.set('i', '<C-h>', '<Left>')
-	vim.keymap.set('i', '<C-k>', '<Up>')
-	vim.keymap.set('i', '<C-j>', '<Down>')
+	vim.keymap.set('i', '<c-l>', '<Right>')
+	vim.keymap.set('i', '<c-h>', '<Left>')
+	vim.keymap.set('i', '<c-k>', '<Up>')
+	vim.keymap.set('i', '<c-j>', '<Down>')
 end
 
 function config_dotnet()
@@ -179,11 +198,18 @@ end
 function config_python()
   -- call :UpdateRemotePlugins
   require('lspconfig').pyright.setup{}
+  --require('lspconfig').ruff.setup({
+  --  init_options = {
+  --    settings = {
+  --      -- Ruff language server settings go here
+  --    }
+  --  }
+  --})
   vim.cmd([[
     let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
     let g:black#settings = {
         \ 'fast': 1,
-        \ 'line_length': 100
+        \ 'line_length': 120
     \}
   ]])
 end
@@ -208,7 +234,49 @@ function config_rust()
 end
 
 function config_zig()
-  require 'lspconfig'.zls.setup{}
+  -- don't show parse errors in a separate window
+  vim.g.zig_fmt_parse_errors = 0
+  -- disable format-on-save from `ziglang/zig.vim`
+  vim.g.zig_fmt_autosave = 0
+  -- enable  format-on-save from nvim-lspconfig + ZLS
+  --
+  -- Formatting with ZLS matches `zig fmt`.
+  -- The Zig FAQ answers some questions about `zig fmt`:
+  -- https://github.com/ziglang/zig/wiki/FAQ
+  vim.api.nvim_create_autocmd('BufWritePre',{
+    pattern = {"*.zig", "*.zon"},
+    callback = function(ev)
+      vim.lsp.buf.format()
+    end
+  })
+
+  require 'lspconfig'.zls.setup {
+    -- Server-specific settings. See `:help lspconfig-setup`
+
+    -- omit the following line if `zls` is in your PATH
+    cmd = { '/home/markotikvic/dev/zig/zls/zig-out/bin/zls' },
+    -- There are two ways to set config options:
+    --   - edit your `zls.json` that applies to any editor that uses ZLS
+    --   - set in-editor config options with the `settings` field below.
+    --
+    -- Further information on how to configure ZLS:
+    -- https://zigtools.org/zls/configure/
+    settings = {
+      zls = {
+        -- Whether to enable build-on-save diagnostics
+        --
+        -- Further information about build-on save:
+        -- https://zigtools.org/zls/guides/build-on-save/
+        -- enable_build_on_save = true,
+
+        -- Neovim already provides basic syntax highlighting
+        semantic_tokens = "partial",
+
+        -- omit the following line if `zig` is in your PATH
+        zig_exe_path = '/home/markotikvic/dev/zig/zig-x86-linux-0.14.1/zig'
+      }
+    }
+  }
 end
 
 function config_cpp()
@@ -235,7 +303,7 @@ function config_c()
     let g:clang_format#code_style = "google"
 		let g:clang_format#style_options = {
 			\ 'IndentWidth': 4,
-			\ 'ColumnLimit': 80,
+			\ 'ColumnLimit': 120,
 			\ 'SortIncludes': 'true',
 			\ 'IncludeBlocks': 'Preserve',
 			\ 'SpacesBeforeTrailingComments': 1,
@@ -247,22 +315,18 @@ function config_c()
 end
 
 function config_lsp_diagnostics()
-	local function setup_diagnostics()
-	  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-	    vim.lsp.diagnostic.on_publish_diagnostics,
-	    {
-	      virtual_text = true,
-	      signs = true,
-	      update_in_insert = false,
-	      underline = true,
-	    }
-	  )
-	end
-
-	setup_diagnostics()
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics,
+    {
+      virtual_text = true,
+      signs = true,
+      update_in_insert = false,
+      underline = true,
+    }
+  )
 end
 
-function config_lsp()
+function config_langs()
 	config_dotnet()
 	config_dart()
 	config_go()
@@ -304,10 +368,14 @@ function config_type_script()
   vim.g.typescript_compiler_binary = "tsc --noEmit"
 end
 
-config_general_settings()
-config_key_mappings()
-config_theme()
-config_status_line()
-config_telescope()
-config_treesitter()
-config_lsp()
+function main()
+  config_general_settings()
+  config_key_mappings()
+  config_theme()
+  config_status_line()
+  config_telescope()
+  config_treesitter()
+  config_langs()
+end
+
+main()

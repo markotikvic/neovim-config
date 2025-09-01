@@ -33,25 +33,12 @@ return require('packer').startup(function(use)
     'nvim-lualine/lualine.nvim',
     requires = { 'nvim-tree/nvim-web-devicons', opt = true }
   }
-  use { 'bluz71/vim-moonfly-colors', as = 'moonfly' }
-	use { 'ellisonleao/gruvbox.nvim' }
-  use { "loctvl842/monokai-pro.nvim" }
   use { "ziglang/zig.vim" }
   use { "peterhoeg/vim-qml", as = "vim-qml" }
   use { 'rktjmp/lush.nvim'}
-  use { "metalelf0/jellybeans-nvim" }
-  use { "EdenEast/nightfox.nvim" }
-  use { "shaunsingh/nord.nvim" }
-  use { "drewxs/ash.nvim" }
-  use { "cocopon/iceberg.vim" }
-  use { "nvim-treesitter/nvim-treesitter" }
-  use { "zenbones-theme/zenbones.nvim" }
-  use { "catppuccin/nvim", as = "catppuccin" }
-  use { "kvrohit/rasmus.nvim" }
-  use { "maxmx03/solarized.nvim" }
-  use { "kyazdani42/blue-moon" }
-  use { 'projekt0n/github-nvim-theme' }
-  use { "rebelot/kanagawa.nvim" }
   use { "wtfox/jellybeans.nvim" }
   use { "sainnhe/sonokai" }
+  use { "nvim-treesitter/nvim-treesitter" }
+  use { "bluz71/vim-nightfly-colors", as = "nightfly" }
+  use { "bluz71/vim-moonfly-colors", as = "moonfly" }
 end)
