@@ -42,36 +42,28 @@ function config_theme()
 	vim.o.termguicolors = true
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
-  config_theme_nightfly()
+  set_theme_sonokai()
+  config_status_line()
 end
 
-function config_theme_nightfly()
+function set_theme_nightfly()
   vim.g.nightflyIntalics = false
   -- vim.g.nightflyNormalFloat = true
   -- vim.o.winborder = "single"
   vim.cmd([[colorscheme nightfly]])
 end
 
-function config_theme_moonfly()
-  vim.g.moonflyIntalics = false
-  -- vim.g.moonflyNormalFloat = true
-  -- vim.o.winborder = "single"
-  vim.cmd([[colorscheme moonfly]])
-end
-
-function config_theme_sonokai()
-  vim.g.sonokai_style = 'default'
+function set_theme_sonokai()
+  vim.g.sonokai_style = 'andromeda'
   vim.gsonokai_better_performance = 1
   vim.cmd([[colorscheme sonokai]])
 end
 
-function config_theme_jellybeans()
-  require("jellybeans").setup({
-    transparent = false,
-    italics = false,
-    flat_ui = true,
-  })
-  vim.cmd([[colorscheme jellybeans]])
+function set_theme_moonfly()
+  vim.g.moonflyIntalics = false
+  -- vim.g.moonflyNormalFloat = true
+  -- vim.o.winborder = "single"
+  vim.cmd([[colorscheme moonfly]])
 end
 
 function config_telescope()
@@ -177,17 +169,19 @@ function config_dotnet()
 	vim.g.OmniSharp_server_use_net6 = 1
 	vim.g.OmniSharp_highlighting = 0
 
-	require('lspconfig').omnisharp.setup({
+	vim.lsp.config('omnisharp', {
     on_attach = function(client, bufnr)
       client.server_capabilities.semanticTokensProvider = nil
       vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
     end,
     cmd = {home..'/.cache/omnisharp-vim/omnisharp-roslyn/OmniSharp', "--languageserver", "--hostPID", tostring(pid)};
 	})
+	vim.lsp.enable('omnisharp')
 end
 
 function config_dart()
-	require('lspconfig').dartls.setup({})
+	vim.lsp.config('dartls', {})
+	vim.lsp.enable('dartls')
   vim.g.lsc_server_commands = {dart = "dart_language_server"}
   vim.g.lsc_enable_autocomplete = false
   vim.g.lsc_auto_map = false
@@ -197,14 +191,8 @@ end
 
 function config_python()
   -- call :UpdateRemotePlugins
-  require('lspconfig').pyright.setup{}
-  --require('lspconfig').ruff.setup({
-  --  init_options = {
-  --    settings = {
-  --      -- Ruff language server settings go here
-  --    }
-  --  }
-  --})
+  vim.lsp.config('pyright', {})
+  vim.lsp.enable('pyright')
   vim.cmd([[
     let g:python3_host_prog = $HOME . '/.local/venv/nvim/bin/python'
     let g:black#settings = {
@@ -216,7 +204,7 @@ end
 
 function config_rust()
   vim.g.rustfmt_autosave = 1
-  require('lspconfig').rust_analyzer.setup({
+  vim.lsp.config('rust_analyzer', {
 		on_attach = function(client, bufnr)
       client.server_capabilities.semanticTokensProvider = nil
 		end,
@@ -231,6 +219,7 @@ function config_rust()
       }
     }
   })
+  vim.lsp.enable('rust_analyzer')
 end
 
 function config_zig()
@@ -250,7 +239,7 @@ function config_zig()
     end
   })
 
-  require 'lspconfig'.zls.setup {
+  vim.lsp.config('zls', {
     -- Server-specific settings. See `:help lspconfig-setup`
 
     -- omit the following line if `zls` is in your PATH
@@ -273,10 +262,12 @@ function config_zig()
         semantic_tokens = "partial",
 
         -- omit the following line if `zig` is in your PATH
-        zig_exe_path = '/home/markotikvic/dev/zig/zig-x86-linux-0.14.1/zig'
+        --zig_exe_path = '/home/markotikvic/dev/zig/zig-x86-linux-0.14.1/zig'
+        zig_exe_path = '/home/markotikvic/dev/zig/zig-x86_64-linux-0.16.0-dev.205+4c0127566/zig'
       }
     }
-  }
+  })
+  vim.lsp.enable('zls')
 end
 
 function config_cpp()
@@ -294,7 +285,7 @@ function config_cpp()
 		\ }
 	]])
   -- not usable for PASOP
-	-- require('lspconfig').clangd.setup{}
+	-- vim.lsp.config('clangd', {})
 end
 
 function config_c()
@@ -358,7 +349,8 @@ function config_formatters()
 end
 
 function config_go()
-	require('lspconfig').gopls.setup{}
+	vim.lsp.config('gopls', {})
+	vim.lsp.enable('gopls')
   --Stop scratch window from opening(gocode->neocomplete)
   vim.cmd([[set completeopt-=preview]])
   vim.g.go_fmt_command = "goimports"
@@ -372,7 +364,6 @@ function main()
   config_general_settings()
   config_key_mappings()
   config_theme()
-  config_status_line()
   config_telescope()
   config_treesitter()
   config_langs()

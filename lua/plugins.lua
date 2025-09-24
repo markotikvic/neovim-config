@@ -6,7 +6,6 @@ return require('packer').startup(function(use)
 	use { 'junegunn/fzf.vim' }
 	use { 'tpope/vim-fugitive' }
 	use { 'itchyny/vim-gitbranch' }
-	use { 'akinsho/toggleterm.nvim' }
 	use { 'neovim/nvim-lspconfig' }
 	use { 'fatih/vim-go' }
 	use { 'moll/vim-node' }
@@ -35,10 +34,8 @@ return require('packer').startup(function(use)
   }
   use { "ziglang/zig.vim" }
   use { "peterhoeg/vim-qml", as = "vim-qml" }
-  use { 'rktjmp/lush.nvim'}
-  use { "wtfox/jellybeans.nvim" }
-  use { "sainnhe/sonokai" }
   use { "nvim-treesitter/nvim-treesitter" }
   use { "bluz71/vim-nightfly-colors", as = "nightfly" }
   use { "bluz71/vim-moonfly-colors", as = "moonfly" }
+  use { "sainnhe/sonokai" }
 end)
