@@ -26,6 +26,7 @@ return require('packer').startup(function(use)
     'nvim-telescope/telescope.nvim', tag = '0.1.4',
     requires = { {'nvim-lua/plenary.nvim'} }
   }
+  use { 'jonarrien/telescope-cmdline.nvim' }
   use { 'udalov/kotlin-vim' }
   use { "rust-lang/rust.vim" }
   use {
@@ -37,5 +38,7 @@ return require('packer').startup(function(use)
   use { "nvim-treesitter/nvim-treesitter" }
   use { "bluz71/vim-nightfly-colors", as = "nightfly" }
   use { "bluz71/vim-moonfly-colors", as = "moonfly" }
-  use { "sainnhe/sonokai" }
+  use { "nuvic/flexoki-nvim", as = "flexoki" }
+  use { "savq/melange-nvim" }
+  use { "wtfox/jellybeans.nvim", as = "jellybeans" }
 end)

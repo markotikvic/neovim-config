@@ -79,30 +79,20 @@ _G.packer_plugins = {
     path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/AutoComplPop",
     url = "https://github.com/vim-scripts/AutoComplPop"
   },
-  ["ash.nvim"] = {
-    loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/ash.nvim",
-    url = "https://github.com/drewxs/ash.nvim"
-  },
   ["black-nvim"] = {
     loaded = true,
     path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/black-nvim",
     url = "https://github.com/averms/black-nvim"
   },
-  ["blue-moon"] = {
-    loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/blue-moon",
-    url = "https://github.com/kyazdani42/blue-moon"
-  },
-  catppuccin = {
-    loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/catppuccin",
-    url = "https://github.com/catppuccin/nvim"
-  },
   ["dart-vim-plugin"] = {
     loaded = true,
     path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/dart-vim-plugin",
     url = "https://github.com/dart-lang/dart-vim-plugin"
+  },
+  ["flexoki-nvim"] = {
+    loaded = true,
+    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/flexoki-nvim",
+    url = "https://github.com/nuvic/flexoki-nvim"
   },
   fzf = {
     loaded = true,
@@ -114,21 +104,6 @@ _G.packer_plugins = {
     path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/fzf.vim",
     url = "https://github.com/junegunn/fzf.vim"
   },
-  ["gruvbox.nvim"] = {
-    loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/gruvbox.nvim",
-    url = "https://github.com/ellisonleao/gruvbox.nvim"
-  },
-  ["iceberg.vim"] = {
-    loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/iceberg.vim",
-    url = "https://github.com/cocopon/iceberg.vim"
-  },
-  ["jellybeans-nvim"] = {
-    loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/jellybeans-nvim",
-    url = "https://github.com/metalelf0/jellybeans-nvim"
-  },
   ["kotlin-vim"] = {
     loaded = true,
     path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/kotlin-vim",
@@ -139,30 +114,15 @@ _G.packer_plugins = {
     path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/lualine.nvim",
     url = "https://github.com/nvim-lualine/lualine.nvim"
   },
-  ["lush.nvim"] = {
-    loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/lush.nvim",
-    url = "https://github.com/rktjmp/lush.nvim"
-  },
-  ["monokai-pro.nvim"] = {
-    loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/monokai-pro.nvim",
-    url = "https://github.com/loctvl842/monokai-pro.nvim"
-  },
   moonfly = {
     loaded = true,
     path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/moonfly",
     url = "https://github.com/bluz71/vim-moonfly-colors"
   },
-  ["nightfox.nvim"] = {
+  nightfly = {
     loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/nightfox.nvim",
-    url = "https://github.com/EdenEast/nightfox.nvim"
-  },
-  ["nord.nvim"] = {
-    loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/nord.nvim",
-    url = "https://github.com/shaunsingh/nord.nvim"
+    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/nightfly",
+    url = "https://github.com/bluz71/vim-nightfly-colors"
   },
   ["nvim-lspconfig"] = {
     loaded = true,
@@ -190,20 +150,10 @@ _G.packer_plugins = {
     path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
-  ["rasmus.nvim"] = {
-    loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/rasmus.nvim",
-    url = "https://github.com/kvrohit/rasmus.nvim"
-  },
   ["rust.vim"] = {
     loaded = true,
     path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/rust.vim",
     url = "https://github.com/rust-lang/rust.vim"
-  },
-  ["solarized.nvim"] = {
-    loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/solarized.nvim",
-    url = "https://github.com/maxmx03/solarized.nvim"
   },
   ["telescope-fzf-native.nvim"] = {
     loaded = true,
@@ -214,11 +164,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
-  },
-  ["toggleterm.nvim"] = {
-    loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/toggleterm.nvim",
-    url = "https://github.com/akinsho/toggleterm.nvim"
   },
   ["typescript-vim"] = {
     loaded = true,
@@ -274,11 +219,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/vim-qml",
     url = "https://github.com/peterhoeg/vim-qml"
-  },
-  ["zenbones.nvim"] = {
-    loaded = true,
-    path = "/home/markotikvic/.local/share/nvim/site/pack/packer/start/zenbones.nvim",
-    url = "https://github.com/zenbones-theme/zenbones.nvim"
   },
   ["zig.vim"] = {
     loaded = true,

@@ -13,7 +13,7 @@ function config_status_line()
   }
 end
 
-function config_general_settings()
+function config_basics()
 	vim.cmd([[filetype plugin indent on]])
   vim.g.acp_ignorecaseOption = 0
   vim.g.acp_enableAtStartup = 0
@@ -42,24 +42,62 @@ function config_theme()
 	vim.o.termguicolors = true
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
-  set_theme_sonokai()
+  --vim.o.cc = "81"
+  config_theme_jellybeans()
   config_status_line()
 end
 
-function set_theme_nightfly()
+function config_theme_flexoki()
+  require("flexoki").setup({
+    styles = {
+        bold = false,
+        italic = false,
+    },
+  })
+  vim.cmd([[colorscheme flexoki]])
+end
+
+function config_theme_jellybeans()
+  require("jellybeans").setup({
+    transparent = false,
+    italics = false,
+    bold = false,
+    flat_ui = false, -- toggles "flat UI" for pickers
+    background = {
+      dark = "jellybeans", -- default dark palette
+      light = "jellybeans", -- default light palette
+    },
+    plugins = {
+      all = false,
+      auto = true, -- will read lazy.nvim and apply the colors for plugins that are installed
+    },
+  })
+  vim.cmd([[colorscheme jellybeans]])
+end
+
+function config_theme_melange()
+  vim.g.melange_enable_font_variants = {
+    bold = false,
+    italic = false,
+    underline = false,
+    undercurl = false,
+    strikethrough = false,
+  }
+  vim.cmd([[colorscheme melange]])
+
+  -- Overwrite Delimiter color for better contrast in melange.lua
+  -- Delimiter = { fg = "#C1A78E" } (this is a.com color)
+  vim.api.nvim_set_hl(0, "Delimiter", { fg = "#C1A78E" })
+end
+
+function config_theme_nightfly()
   vim.g.nightflyIntalics = false
   -- vim.g.nightflyNormalFloat = true
   -- vim.o.winborder = "single"
   vim.cmd([[colorscheme nightfly]])
 end
 
-function set_theme_sonokai()
-  vim.g.sonokai_style = 'andromeda'
-  vim.gsonokai_better_performance = 1
-  vim.cmd([[colorscheme sonokai]])
-end
-
-function set_theme_moonfly()
+function config_theme_moonfly()
   vim.g.moonflyIntalics = false
   -- vim.g.moonflyNormalFloat = true
   -- vim.o.winborder = "single"
@@ -90,12 +128,34 @@ function config_telescope()
         }
       },
     },
+    extensions = {
+      cmdline = {
+        -- Adjust telescope picker size and layout
+        picker = {
+          layout_config = {
+            width  = 120,
+            height = 25,
+          }
+        },
+        -- Adjust your mappings
+        mappings    = {
+          complete      = '<Tab>',
+          run_selection = '<C-CR>',
+          run_input     = '<CR>',
+        },
+        -- Triggers any shell command using overseer.nvim (`:!`)
+        overseer    = {
+          enabled = false,
+        },
+      },
+    }
   }
+  require("telescope").load_extension('cmdline')
 
-  local telescope_builtin = require('telescope.builtin')
-	vim.keymap.set('n', '<leader>a', telescope_builtin.buffers, {})
-	vim.keymap.set('n', '<leader>z', telescope_builtin.find_files, {})
-	vim.keymap.set('n', '<leader>s', telescope_builtin.live_grep, {})
+  local builtin = require('telescope.builtin')
+	vim.keymap.set('n', '<leader>a', builtin.buffers, {})
+	vim.keymap.set('n', '<leader>z', builtin.find_files, {})
+	vim.keymap.set('n', '<leader>s', builtin.live_grep, {})
 end
 
 function config_treesitter()
@@ -124,6 +184,7 @@ function config_key_mappings()
 		return '<c-k>'
 	end, { expr = true, noremap = true })
 
+  -- normal mode
 	vim.keymap.set('n', 'D', '"_D')
 	vim.keymap.set('n', 'dd', '"_dd')
 	vim.keymap.set('n', '<c-n>', '<cmd>split<cr>')
@@ -134,27 +195,29 @@ function config_key_mappings()
 	vim.keymap.set('n', '<leader>c', '<cmd>noh<cr>')
 	vim.keymap.set('n', '<leader>vim', '<cmd>e $MYVIMRC<cr>')
 	vim.keymap.set('n', '<leader>Y', 'ggVG"+y') -- select entire buffer
-	vim.keymap.set('n', '<leader>re', ':%s/<C-r><C-w>//gc<Left><Left><Left>')
-	vim.keymap.set('n', '<leader>ry', ':%s/<C-r>"//gc<Left><Left><Left>')
+	vim.keymap.set('n', '<leader>re', ':%s/<C-r><C-w>\\C//gc<Left><Left><Left>')
+	vim.keymap.set('n', '<leader>ry', ':%s/<C-r>"\\C//gc<Left><Left><Left>')
 	vim.keymap.set('n', '<leader>R', ':%s//gc<Left><Left><Left>')
 	vim.keymap.set('n', 'E', ':Explore<cr>')
-
+  -- normal mode: LSP
 	vim.keymap.set('n', '<leader>fm', vim.lsp.buf.format)
 	vim.keymap.set('n', '<leader>fD', vim.lsp.buf.declaration)
 	vim.keymap.set('n', '<leader>fd', vim.lsp.buf.definition)
 	vim.keymap.set('n', '<leader>fi', vim.lsp.buf.implementation)
 	vim.keymap.set('n', '<leader>fr', vim.lsp.buf.references)
 	vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename)
-
+  -- normal mode: diagnostics
 	vim.keymap.set('n', '<leader>do', vim.diagnostic.open_float)
 	vim.keymap.set('n', '<leader>ds', vim.diagnostic.show)
 	vim.keymap.set('n', '<leader>dh', vim.diagnostic.hide)
 
+  -- visual mode
 	vim.keymap.set('v', 'd', '"_d')
 	vim.keymap.set('v', '<leader>y', '"+y') -- copy to clipboard
 	vim.keymap.set('v', '<leader>re', ':s//gc<Left><Left><Left>') -- rename
 	vim.keymap.set('v', '<leader>ry', 'y:s/<C-r>"//gc<Left><Left><Left>') -- rename from clipboard
 
+  -- insert mode
 	vim.keymap.set('i', '<c-l>', '<Right>')
 	vim.keymap.set('i', '<c-h>', '<Left>')
 	vim.keymap.set('i', '<c-k>', '<Up>')
@@ -270,12 +333,18 @@ function config_zig()
   vim.lsp.enable('zls')
 end
 
-function config_cpp()
+function config_clang_common()
 	vim.cmd([[
     nnoremap <leader>fm :ClangFormat<CR>
     let g:clang_format#code_style = "google"
+  ]])
+	vim.lsp.config('clangd', {})
+end
+
+function config_cpp()
+	vim.cmd([[
 		let g:clang_format#style_options = {
-			\ 'IndentWidth': 2,
+			\ 'IndentWidth': 4,
 			\ 'ColumnLimit': 160,
 			\ 'DerivePointerAlignment': 'false',
 			\ 'SortIncludes': 'true',
@@ -284,14 +353,10 @@ function config_cpp()
 			\ 'SpaceBeforeCpp11BracedList': 'false',
 		\ }
 	]])
-  -- not usable for PASOP
-	-- vim.lsp.config('clangd', {})
 end
 
 function config_c()
 	vim.cmd([[
-    nnoremap <leader>fm :ClangFormat<CR>
-    let g:clang_format#code_style = "google"
 		let g:clang_format#style_options = {
 			\ 'IndentWidth': 4,
 			\ 'ColumnLimit': 120,
@@ -317,11 +382,12 @@ function config_lsp_diagnostics()
   )
 end
 
-function config_langs()
+function config_languages()
+  config_clang_common()
 	config_dotnet()
 	config_dart()
 	config_go()
-	config_type_script()
+	config_typescript()
 	config_python()
   config_rust()
   config_zig()
@@ -356,17 +422,17 @@ function config_go()
   vim.g.go_fmt_command = "goimports"
 end
 
-function config_type_script()
+function config_typescript()
   vim.g.typescript_compiler_binary = "tsc --noEmit"
 end
 
-function main()
-  config_general_settings()
+function config_neovim()
+  config_basics()
   config_key_mappings()
   config_theme()
   config_telescope()
   config_treesitter()
-  config_langs()
+  config_languages()
 end
 
-main()
+config_neovim()
