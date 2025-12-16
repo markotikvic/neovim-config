@@ -43,8 +43,35 @@ function config_theme()
 	vim.o.syntax = "on"
 	vim.o.syntax = "enable"
   --vim.o.cc = "81"
-  config_theme_jellybeans()
+  config_theme_gruvbox()
   config_status_line()
+end
+
+function config_theme_gruvbox()
+  require("gruvbox").setup({
+    terminal_colors = true, -- add neovim terminal colors
+    undercurl = true,
+    underline = true,
+    bold = false,
+    italic = {
+      strings = false,
+      emphasis = false,
+      comments = false,
+      operators = false,
+      folds = false,
+    },
+    strikethrough = false,
+    invert_selection = false,
+    invert_signs = false,
+    invert_tabline = false,
+    inverse = true, -- invert background for search, diffs, statuslines and errors
+    contrast = "hard", -- can be "hard", "soft" or empty string
+    palette_overrides = {},
+    overrides = {},
+    dim_inactive = false,
+    transparent_mode = false,
+  })
+  vim.cmd("colorscheme gruvbox")
 end
 
 function config_theme_flexoki()

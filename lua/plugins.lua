@@ -41,4 +41,5 @@ return require('packer').startup(function(use)
   use { "nuvic/flexoki-nvim", as = "flexoki" }
   use { "savq/melange-nvim" }
   use { "wtfox/jellybeans.nvim", as = "jellybeans" }
+  use { "ellisonleao/gruvbox.nvim" }
 end)
