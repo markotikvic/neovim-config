@@ -1,6 +1,80 @@
-require("plugins")
+function config_lazy()
+  -- Bootstrap lazy.nvim
+  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+  if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+    local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+    if vim.v.shell_error ~= 0 then
+      vim.api.nvim_echo({
+        { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+        { out, "WarningMsg" },
+        { "\nPress any key to exit..." },
+      }, true, {})
+      vim.fn.getchar()
+      os.exit(1)
+    end
+  end
+  vim.opt.rtp:prepend(lazypath)
 
-vim.g.mapleader = ";"
+  -- Make sure to setup `mapleader` and `maplocalleader` before
+  -- loading lazy.nvim so that mappings are correct.
+  -- This is also a good place to setup other settings (vim.opt)
+  vim.g.mapleader = ";"
+  vim.g.maplocalleader = "\\"
+
+  -- Setup lazy.nvim
+  require("lazy").setup({
+    spec = {
+      -- add your plugins here
+      { 'vim-scripts/AutoComplPop' },
+      { 'junegunn/fzf' },
+      { 'junegunn/fzf.vim' },
+      { 'tpope/vim-fugitive' },
+      { 'itchyny/vim-gitbranch' },
+      { 'neovim/nvim-lspconfig' },
+      { 'fatih/vim-go' },
+      { 'moll/vim-node' },
+      { 'pangloss/vim-javascript' },
+      { 'maksimr/vim-jsbeautify' },
+      { 'leafgarland/typescript-vim' },
+      { 'dart-lang/dart-vim-plugin' },
+      { 'natebosch/vim-lsc' },
+      { 'natebosch/vim-lsc-dart' },
+      { 'OmniSharp/omnisharp-vim' },
+      { 'rhysd/vim-clang-format' },
+      { 'averms/black-nvim' },
+      {
+        'nvim-telescope/telescope-fzf-native.nvim',
+        build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release --target install'
+      },
+      {
+        'nvim-telescope/telescope.nvim', tag = 'v0.2.0',
+        dependencies = { 'nvim-lua/plenary.nvim' }
+      },
+      { 'jonarrien/telescope-cmdline.nvim' },
+      { 'udalov/kotlin-vim' },
+      { "rust-lang/rust.vim" },
+      {
+        'nvim-lualine/lualine.nvim'
+        --dependencies = { 'nvim-tree/nvim-web-devicons' }
+      },
+      { "ziglang/zig.vim" },
+      { "peterhoeg/vim-qml", name = "vim-qml" },
+      { "nvim-treesitter/nvim-treesitter", lazy = false, build = ':TSUpdate' },
+      { "bluz71/vim-nightfly-colors", name = "nightfly" },
+      { "bluz71/vim-moonfly-colors", name = "moonfly" },
+      { "nuvic/flexoki-nvim", name = "flexoki" },
+      { "savq/melange-nvim" },
+      { "wtfox/jellybeans.nvim", name = "jellybeans" },
+      { "ellisonleao/gruvbox.nvim" },
+    },
+    -- Configure any other settings here. See the documentation for more details.
+    -- colorscheme that will be used when installing plugins.
+    install = { colorscheme = { "gruvbox" } },
+    -- automatically check for plugin updates
+    checker = { enabled = false },
+  })
+end
 
 function config_status_line()
   require('lualine').setup {
@@ -13,7 +87,7 @@ function config_status_line()
   }
 end
 
-function config_basics()
+function config_vim_o()
 	vim.cmd([[filetype plugin indent on]])
   vim.g.acp_ignorecaseOption = 0
   vim.g.acp_enableAtStartup = 0
@@ -186,17 +260,12 @@ function config_telescope()
 end
 
 function config_treesitter()
-  require'nvim-treesitter.configs'.setup {
-    ensure_installed = { "c", "cpp", "lua", "rust", "go", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
-     highlight = {
-      enable = true,
-      -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-      -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-      -- Using this option may slow down your editor, and you may see some duplicate highlights.
-      -- Instead of true it can also be a list of languages
-      additional_vim_regex_highlighting = false,
-     },
-  }
+  require'nvim-treesitter'.install { "c", "cpp", "lua", "rust", "go", "vim", "vimdoc", "query", "markdown", "markdown_inline" }
+
+  vim.api.nvim_create_autocmd('FileType', {
+    pattern = { 'c', 'cpp', 'lua', 'rs', 'go', 'py', 'cs', 'md', 'js', 'ts' },
+    callback = function() vim.treesitter.start() end,
+  })
 end
 
 function config_key_mappings()
@@ -246,7 +315,7 @@ function config_key_mappings()
 
   -- insert mode
 	vim.keymap.set('i', '<c-l>', '<Right>')
-	vim.keymap.set('i', '<c-h>', '<Left>')
+  vim.keymap.set('i', '<c-h>', '<Left>')
 	vim.keymap.set('i', '<c-k>', '<Up>')
 	vim.keymap.set('i', '<c-j>', '<Down>')
 end
@@ -454,7 +523,8 @@ function config_typescript()
 end
 
 function config_neovim()
-  config_basics()
+  config_lazy()
+  config_vim_o()
   config_key_mappings()
   config_theme()
   config_telescope()
